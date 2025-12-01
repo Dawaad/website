@@ -1,8 +1,9 @@
 "use client";
 
 import { customImageLoader } from "@/lib/image";
+import { cn } from "@/lib/utils";
 import Image from "next/image";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 type PhaseKey = "sunrise" | "day" | "sunset" | "night";
 interface SkylineImage {
@@ -10,12 +11,7 @@ interface SkylineImage {
     src: string;
     alt: string;
     placeholder: string;
-}
-
-// Helper to get initial phase (can be used in SSR/client)
-function getInitialPhase(): number {
-    if (typeof window === "undefined") return 0; // SSR fallback to sunrise
-    return phaseIndexForDate(new Date());
+    offset?: { x: number; y: number }; // Individual pixel offsets for alignment
 }
 
 const SKYLINE_IMAGES: SkylineImage[] = [
@@ -24,48 +20,64 @@ const SKYLINE_IMAGES: SkylineImage[] = [
         src: "landing-sunrise.webp",
         alt: "Home office setup with city skyline at sunrise",
         placeholder:
-            "data:image/jpeg;base64,/9j/2wBDAAoHBwgHBgoICAgLCgoLDhgQDg0NDh0VFhEYIx8lJCIfIiEmKzcvJik0KSEiMEExNDk7Pj4+JS5ESUM8SDc9Pjv/2wBDAQoLCw4NDhwQEBw7KCIoOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozv/wAARCAASACADASIAAhEBAxEB/8QAGgAAAQUBAAAAAAAAAAAAAAAAAAECBAUGB//EACUQAAIBBAIABgMAAAAAAAAAAAECAwAEERIFIQYTFCIxUUFhcf/EABcBAQEBAQAAAAAAAAAAAAAAAAEEAgP/xAAcEQADAAMAAwAAAAAAAAAAAAAAAQIDITERQVH/2gAMAwEAAhEDEQA/AG+HVtU41jIFaQnpTWl4zi7S8gJjVGK/Nc6tL4xtqna64yKS35+7tb6T0c8iAJqRno1xrFVt+GVRnUStG1uVsrSCUaqH2IU4/NUfNTWlxxsYh1Mij34+6rRPJPYmWWdvMJzg1FS4g0dTIdiO61EKX3aC8zpc0ynZ2W3BDEH9GoCu4YkO2SfuiiqY4yT4TIpH0I3bH9pGJ1PZooon2GTiP//Z",
+            "data:image/jpeg;base64,/9j/2wBDAAoHBwgHBgoICAgLCgoLDhgQDg0NDh0VFhEYIx8lJCIfIiEmKzcvJik0KSEiMEExNDk7Pj4+JS5ESUM8SDc9Pjv/2wBDAQoLCw4NDhwQEBw7KCIoOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozv/wAARCAAkAEADASIAAhEBAxEB/8QAGgAAAgMBAQAAAAAAAAAAAAAAAAMEBQYCAf/EACkQAAICAgICAQMDBQAAAAAAAAECAwQAEQUSITFBBhMiFVFhFCNxgZH/xAAWAQEBAQAAAAAAAAAAAAAAAAACAwT/xAAfEQACAgMAAgMAAAAAAAAAAAABAgADESExBBITIkH/2gAMAwEAAhEDEQA/AKHh6wmtwLrYLes2p4WmmjJBGOx0Nj3mT+nZoq9yOWZgqp52c1M98XjWfsNCQ+v2yN5cvrk2+N6KmxkxNPhoHabVVGCyEesmfoVMDzXjH+s743kYxbkgiIbcv5HNQlGOWH7qkFcxtbYDNINYGSJiY+FrfqMyGBOqqDrWdXOOpVarzNVXx68ZMsWOvIzvXbQBVTlZyvKLI9ioz77Edf4yyF2IgZkUHUfQ46lcqCcVkHwfHzmQ5isIrky60A3gZe1vqGGrQaidodn88peWPdu5bZYb3mioOtm+TNeUevXRI8TiKsuxrZy1guItYom++tg5nZrIkrLGF/MN7HxkyNbKKiQxs7a7dgcTZzIqxB1yPsW7lPiZpqknSbv7+cuOM+ub1ThxVskyTeyw/bMdy9uSe4y+UCjXX+cZWSw1UP8Ab7MP5+Mp8VZANkL3WbWv8lynMWrFmRombvJ7AxduexFN/cXU3sk4nhnkgnMzR+D48/GSuSnaz+TwkMD42fjAzKtnqo1Egdq8v2QWWaxGdDbA7IyTcLvWHdNaGQV5L+lZ+kI23ggnGNyLNWAdNbPgbxEk41ACBkZlTWlc7JOE080Mh+3M6/4OGGLH2k1OpWyTSMzMzksT7OdranMgX7rAa1oHDDNBAgBMkpPMCNSv/wBxzWZnOmkY+Pk4YZFgMyqk4iy7AA7855LK5YecMMoZAz//2Q==",
+        offset: { x: 0, y: 0 },
     },
     {
         key: "day",
         src: "landing-day.webp",
         alt: "Home office setup with city skyline during the day",
         placeholder:
-            "data:image/jpeg;base64,/9j/2wBDAAoHBwgHBgoICAgLCgoLDhgQDg0NDh0VFhEYIx8lJCIfIiEmKzcvJik0KSEiMEExNDk7Pj4+JS5ESUM8SDc9Pjv/2wBDAQoLCw4NDhwQEBw7KCIoOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozv/wAARCAASACADASIAAhEBAxEB/8QAGgAAAgIDAAAAAAAAAAAAAAAAAAQFBgIDB//EACMQAAIBBAEFAAMAAAAAAAAAAAECAwAEERIFBhMhQVEiMXH/xAAXAQADAQAAAAAAAAAAAAAAAAAAAQME/8QAGREAAwEBAQAAAAAAAAAAAAAAAQIDADFB/9oADAMBAAIRAxEAPwDZ0jFbDh5O4qM7t4z+xVp4zhrO+txrHHlM5I91zjjOTNsvbXyuuMisIep7215GQ2M8iAJqRnwavKgCgDQvEvRmPNe54LC3gkDxoGDEKRVd6mNpLxSdjUuh/LHqkI76S448zTXDd0tnX1SUl7byQSIZDsw8/KdKqUK5QgyVDnQbuy2ilWIP0GoxZHDEh2BJ+0UVFOHbD5nI5ZNCN2x/aHY6HyaKKF9xTg3/2Q==",
+            "data:image/jpeg;base64,/9j/2wBDAAoHBwgHBgoICAgLCgoLDhgQDg0NDh0VFhEYIx8lJCIfIiEmKzcvJik0KSEiMEExNDk7Pj4+JS5ESUM8SDc9Pjv/2wBDAQoLCw4NDhwQEBw7KCIoOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozv/wAARCAAkAEADASIAAhEBAxEB/8QAGwAAAgMBAQEAAAAAAAAAAAAAAAYDBAUCAQf/xAApEAACAgIBBAEEAQUAAAAAAAABAgMEABEFEhMhMUEGFFFhcQcWJDJS/8QAGAEBAQEBAQAAAAAAAAAAAAAAAwQCAAX/xAAiEQACAgEEAgMBAAAAAAAAAAABAgARAwQSITEFQRMiQpH/2gAMAwEAAhEDEQA/AF7gKqz8lWQjqUuNjPolvh+JVwY6SqT403reI30m0UfIRyzMAiednHt7SWjA4YEdZ9fjH0oFliIPkma1VTUqcXwHGzLP3ggYOQB05L/blctpaqMPyFyzxVmJrU0SEMDKdnGyKohg7iN418YwyKq8iQsmR3oE/wBiLDwvHNyc8X2YOkHSD8HC7wFalF3GgiYH/nNCxIDy1l4jrXSpyhf5KPvS1WbZJ8frExkV1M5N+4cn17nNPiKllEK1Itg+SRiLz1UV+SsJoAK58D1jjDz9aCu9Vtod/wC/7xU+ox/kF976xveTar8kCeh44sGZWMi42RYKoLDXUfZxlgvJ9qUiJ6+n3iY9lWqLEqHrDex6GaMTW0jSKCJmbpDdan4ybFlZOPUfUYvmaxLly9eocFPNSl6J+5735zW4r+oVynwyVbgaawB5cYi81els3mXZQKAOn95JVjsvVDdvqYfv4ygMvBbqE2IkELyYyRc/Yt3ZGhZw8nxnlq3YjmIkXU3slhmdwMstSwZzF49efjL3KXXsgM8HS4PjZ+MydQFfaOpy6UstsOZA/dniJHlgdkZxzBeSsGdPQGspjl2qs5SIbbwyk57NyTS01EiAbOx5w8uRnFVFwIMb3cy6UzkMTo+dZHYsTwTN2pnT+GwwzNfebQ8GZck8rOzs5LE+zkgt2DJ091gNa0DhhlRAqECbllbM4IAmfX85K1qdzppWPj5OGGTsBcoQmpwXYKDvZP5zmaaQkbbDDGIkx7n/2Q==",
+        offset: { x: 0, y: 0 },
     },
     {
         key: "sunset",
         src: "landing-sunset.webp",
         alt: "Home office setup with city skyline at sunset",
         placeholder:
-            "data:image/jpeg;base64,/9j/2wBDAAoHBwgHBgoICAgLCgoLDhgQDg0NDh0VFhEYIx8lJCIfIiEmKzcvJik0KSEiMEExNDk7Pj4+JS5ESUM8SDc9Pjv/2wBDAQoLCw4NDhwQEBw7KCIoOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozv/wAARCAASACADASIAAhEBAxEB/8QAGAAAAwEBAAAAAAAAAAAAAAAAAAIEBQb/xAAjEAACAgICAgEFAAAAAAAAAAABAgADBBESIQUTYSIxMlGR/8QAGQEAAgMBAAAAAAAAAAAAAAAAAgMAAQQF/8QAHhEAAgICAgMAAAAAAAAAAAAAAQIAEQNBBCEiMVH/2gAMAwEAAhEDEQA/AOU8LXjrgln0bCelm/4/xVGXUTWFYr95x+Ldx6Xv6dbEfG8tkY2W641rqAvE99RDJkYeDUZ1k5KIO1ub2VXjY1NgAHLZAPzMjyj492BX69GxRt9RCGvw2te5i5P4mSBqRW49h5EdwwKFE2RAfOG1QMiZmWgEMQfgyIOwYkMd7/cIRq7mD5KUsfgRzb+xdnie4QkXcvJ6E//Z",
+            "data:image/jpeg;base64,/9j/2wBDAAoHBwgHBgoICAgLCgoLDhgQDg0NDh0VFhEYIx8lJCIfIiEmKzcvJik0KSEiMEExNDk7Pj4+JS5ESUM8SDc9Pjv/2wBDAQoLCw4NDhwQEBw7KCIoOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozv/wAARCAAkAEADASIAAhEBAxEB/8QAGwAAAgMBAQEAAAAAAAAAAAAAAAUCAwQGAQf/xAApEAABBAEEAQMDBQAAAAAAAAABAAIDBBEFEiExExQiQRVhcQYkMlGR/8QAGQEAAwEBAQAAAAAAAAAAAAAAAgMEAAEF/8QAHhEAAgICAwEBAAAAAAAAAAAAAQIAAxESITFBIgT/2gAMAwEAAhEDEQA/APn2mweW1E3vJXT/AEuFmPIxgBOBwkOhyRwWmyyu2tZzlPprnrXVn7hgSHgf0kl2DcDie1SK9Oe5VBprXGTFdpAfhafpUGOYmD8hX0rjPVOhjIcC/wBxXRs01ksHmG0tUlv7TVjYdyxKaSM5nGt0uL1cjTG3AAPS8tVK1as6UwDjrITGxL+8lfA7ADmtKV6nfD3T1XOzuI2/ZU1Wu/kRYKkBxJ0qde1VEwhA+CMLnNSh8VqVuMAFOKusx1qLqZBacn3pXqXuIeTkuHab9bciTOayg179kYMCrgjspjHK1lfazO8DgpS6Zprhgad2e1sYyxhjYo3OdjduBXMn2TBztkdQdPZq6dJLXftl3d/Kc0v1TdraWK0pL5OyQuX1Oy6a24AFgbxt+6trCwa+7ZuI+/wiNVbgG0QWvtGRV5Npv2pJnFjnb5OwFVbNiGXErcS95Ku0lz4p/K6LjrlXak51j3viLXA8ZPws1irZqvUJN2ry/cVlk00ZwMkHJCuuB5rDezGFAXxXLtsQyeCCiS4ZKwD2gZPCzMT5AVwCeZjryO5UZZpYpD45Xt/BQhFj6iVJxML5XucXOcSSeypixMX48jgMfBQhOIGIsEy5s8wIxK7/AFTdYmf/ACkcfyUISyBHKTiV7jgHOSvZJHE8lCEcSZ//2Q==",
+        offset: { x: 1, y: 0 },
     },
     {
         key: "night",
         src: "landing-night.webp",
         alt: "Home office setup with city skyline at night",
         placeholder:
-            "data:image/jpeg;base64,/9j/2wBDAAoHBwgHBgoICAgLCgoLDhgQDg0NDh0VFhEYIx8lJCIfIiEmKzcvJik0KSEiMEExNDk7Pj4+JS5ESUM8SDc9Pjv/2wBDAQoLCw4NDhwQEBw7KCIoOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozv/wAARCAASACADASIAAhEBAxEB/8QAGgAAAgIDAAAAAAAAAAAAAAAAAAQBAgMFB//EACIQAAICAQMEAwAAAAAAAAAAAAECAAMRBCExEhMiUWFxkf/EABYBAQEBAAAAAAAAAAAAAAAAAAACA//EABwRAAICAwEBAAAAAAAAAAAAAAABAhEDIUExUf/aAAwDAQACEQMRAD8A5lVWppGTv6jCaZbUAUbjkyKa1cADkDGRIpYV6l0VicDGZvDLuinHVlHoVc+5Rq17RxuRzNimhrt0j39wiwHZYsFoCtmzzxgiZvNbaRax0k30WLMtIKkg/BigdgzEMc/cIRHpPwzJZZ0kdbfsqScHeEIj0T8R/9k=",
+            "data:image/jpeg;base64,/9j/2wBDAAoHBwgHBgoICAgLCgoLDhgQDg0NDh0VFhEYIx8lJCIfIiEmKzcvJik0KSEiMEExNDk7Pj4+JS5ESUM8SDc9Pjv/2wBDAQoLCw4NDhwQEBw7KCIoOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozv/wAARCAAkAEADASIAAhEBAxEB/8QAGgAAAgMBAQAAAAAAAAAAAAAAAAMBAgQFB//EACcQAAICAgEDAwQDAAAAAAAAAAECAAMEESESEzEFFGEiQVGBMnGx/8QAFwEBAQEBAAAAAAAAAAAAAAAAAwIEAf/EAB0RAQADAAIDAQAAAAAAAAAAAAEAAhESMQMhIlH/2gAMAwEAAhEDEQA/APLcavbCMaog8n7ycIqm3fwojWZbFBGjzNVU97Op6JGNiC9yrWBNAnZ+5i+wwPmaEZerpHPPM1rQGGx4i1Ksn6nM7J2BKtUyjZM2WD6z08ainYdwpve5C1CdxiFrZhvcjIr036jhatRKMD8mRkjdat+eITcclcXHZNSA4eteTLtUa6wFGyRz8SvcX24QKQ25sSu/SLXUztrq2OZnbIxQ3JzmFiUMyfy3OhRZemMFYgsRv+pk9Tu68oqqdvpABHzG4vfajq7ZYj/I1XAbeoduWpTuUsruY7BJZvsJNuNk4nSLU07DY2J0PSnZMoWtVwDrmbPVrPdJtqiGU6Xf4mby+TLla9TR4aLTlbucDtXXVMoG28kS9tdgwyLE1qMGauMxIq+rwQT5g+b3cchk0CeBudry7yS2NTZjx2OjIsyL6bD27XXX4MIRc+oFVyY3td3LuxZieSZf3NwIAsYDWuDCEZCSLLrk3rrVrD9xjZeQ/DWsR8mEIbU/JZZzuLLEjZOzB3Y6G4Qlw2f/2Q==",
+        offset: { x: -5, y: -3 },
     },
 ];
 
 // Tunables
 const FULL_CYCLE_MS = 3 * 60 * 1000; // 3 min loop for all 4 phases
-const CROSSFADE_MS = 3000; // crossfade duration between phases
+const CROSSFADE_MS = 1800; // crossfade duration between phases
+const PARALLAX_STENGTH = -0.5; // max parallax offset percentage
+const PARALLAX_DELAY_FACTOR = 0.04; // parallax smoothing factor
 
 // --- Utilities --------------------------------------------------------------
 
 function phaseIndexForDate(d: Date): number {
-    const m = d.getHours() * 60 + d.getMinutes();
-    if (m >= 5 * 60 && m < 9 * 60) return 0; // sunrise 05:00–08:59
-    if (m >= 9 * 60 && m < 17 * 60) return 1; // day     09:00–16:59
-    if (m >= 17 * 60 && m < 20 * 60) return 2; // sunset  17:00–19:59
-    return 3; // night   20:00–04:59
+    const hours = d.getHours();
+    const minutes = d.getMinutes();
+    const m = hours * 60 + minutes;
+    const phase =
+        m >= 5 * 60 && m < 9 * 60
+            ? 0 // sunrise 05:00–08:59
+            : m >= 9 * 60 && m < 17 * 60
+            ? 1 // day     09:00–16:59
+            : m >= 17 * 60 && m < 20 * 60
+            ? 2 // sunset  17:00–19:59
+            : 3; // night   20:00–04:59
+
+    return phase;
 }
 
 function useReducedMotion() {
     const [reduced, setReduced] = useState(false);
     useEffect(() => {
+        if (typeof window === "undefined") return;
+
         const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
         const handler = () => setReduced(mq.matches);
         handler();
@@ -77,19 +89,26 @@ function useReducedMotion() {
 
 // Preload an image in the background (helps avoid crossfade popping)
 function preload(src: string) {
+    if (typeof window === "undefined") return;
+
     const img = new window.Image();
     img.decoding = "async";
     img.src = `https://cdn.jtucker.io/${src}`; // Match customImageLoader CDN path
 }
 
 // Compute per-phase opacities given a fractional segment position [0..4)
+// Uses reveal transition: current image fades out to reveal next underneath
 function opacitiesForSegment(seg: number, count = SKYLINE_IMAGES.length) {
     const values = new Array(count).fill(0);
     const current = Math.floor(seg) % count;
     const next = (current + 1) % count;
     const intra = seg - Math.floor(seg);
+
+    // Next image is always fully visible (underneath)
+    values[next] = 1;
+    // Current image fades out from 1 → 0 to reveal the next
     values[current] = 1 - intra;
-    values[next] = intra;
+
     return values;
 }
 
@@ -97,51 +116,52 @@ function opacitiesForSegment(seg: number, count = SKYLINE_IMAGES.length) {
 
 export function SkylineHero() {
     const reducedMotion = useReducedMotion();
-    const initialPhase = useMemo(() => getInitialPhase(), []);
 
+    // Always use index 0 (sunrise) for SSR and initial hydration - prevents mismatch
+    const [initialPhase] = useState(0);
+    const [isClient, setIsClient] = useState(false);
     const [mode, setMode] = useState<"boot" | "cycle">("boot");
-    const [segment, setSegment] = useState(initialPhase); // Start at correct phase
+    const [segment, setSegment] = useState(0); // Always start at 0 for SSR consistency
     const [ready, setReady] = useState(false);
+    const [parallaxX, setParallaxX] = useState(0);
 
     const rafRef = useRef<number | null>(null);
+    const parallaxRafRef = useRef<number | null>(null);
+    const targetParallaxX = useRef(0);
+    const containerRef = useRef<HTMLElement>(null);
 
-    // Start the cycle immediately after mount
+    // Mark as client-side after mount
     useEffect(() => {
+        setIsClient(true);
+    }, []);
+
+    // Start the cycle after client hydration
+    useEffect(() => {
+        if (!isClient) return;
+
         // Preload all images in background
         SKYLINE_IMAGES.forEach((img) => preload(img.src));
 
-        // Start cycle mode immediately (segment already initialized to correct phase)
-        setMode("cycle");
-    }, []);
+        // Small delay to allow initial render with placeholder, then start cycle
+        const timer = setTimeout(() => {
+            setMode("cycle");
+        }, 100);
 
-    // Continuous loop after initial fade
+        return () => clearTimeout(timer);
+    }, [isClient]);
+
+    // Continuous loop - cycles through phases starting at current time-of-day phase
     useEffect(() => {
-        if (mode !== "cycle") return;
+        if (!isClient || mode !== "cycle") return;
 
-        // Offset the loop so we begin in the correct phase segment
-        const now = new Date();
-        const phase = phaseIndexForDate(now);
-
-        // Intra-phase fraction — coarse but good enough for visual alignment
-        const minutes = now.getHours() * 60 + now.getMinutes();
-        const phaseStartMin =
-            phase === 0 ? 5 * 60 : phase === 1 ? 9 * 60 : phase === 2 ? 17 * 60 : 20 * 60;
-        const phaseEndMin =
-            phase === 0 ? 9 * 60 : phase === 1 ? 17 * 60 : phase === 2 ? 20 * 60 : 29 * 60; // night wraps
-        const span = phaseEndMin + (phase === 3 ? 24 * 60 : 0) - phaseStartMin; // handle wrap for night
-        const intraPhase = Math.max(
-            0,
-            Math.min(1, (minutes + (phase === 3 ? 24 * 60 : 0) - phaseStartMin) / span)
-        );
-
-        const initialSeg = phase + intraPhase; // e.g., 1.42 for "day"
+        // Start at the current actual phase based on time of day
+        const phase = phaseIndexForDate(new Date());
         const t0 = performance.now();
 
         const loop = (t: number) => {
             const elapsed = t - t0;
             const seg =
-                (initialSeg + (elapsed / FULL_CYCLE_MS) * SKYLINE_IMAGES.length) %
-                SKYLINE_IMAGES.length;
+                (phase + (elapsed / FULL_CYCLE_MS) * SKYLINE_IMAGES.length) % SKYLINE_IMAGES.length;
             setSegment(seg);
             rafRef.current = requestAnimationFrame(loop);
         };
@@ -150,44 +170,76 @@ export function SkylineHero() {
         return () => {
             if (rafRef.current) cancelAnimationFrame(rafRef.current);
         };
-    }, [mode]);
+    }, [isClient, mode]);
 
-    // Preload the two most likely images for next transition to avoid pop
+    // Preload the two most likely images for next transition
     useEffect(() => {
+        if (!isClient) return;
+
         const count = SKYLINE_IMAGES.length;
         const current = Math.floor(segment) % count;
         const next = (current + 1) % count;
         preload(SKYLINE_IMAGES[current].src);
         preload(SKYLINE_IMAGES[next].src);
-    }, [segment]);
+    }, [isClient, segment]);
 
-    // Compute opacities: crossfade current -> next based on `segment`
-    const opacities = useMemo(() => {
-        if (mode === "boot") {
-            // Show only the initial phase while booting
-            const v = new Array(SKYLINE_IMAGES.length).fill(0);
-            v[initialPhase] = 1;
-            return v;
-        }
-        // cycle mode: smooth crossfade between phases
-        return opacitiesForSegment(segment);
-    }, [mode, segment, initialPhase]);
+    // Compute opacities
+    const opacities =
+        !isClient || mode === "boot"
+            ? // During SSR/boot: show only sunrise (index 0)
+              SKYLINE_IMAGES.map((_, i) => (i === 0 ? 1 : 0))
+            : // During cycle: reveal transition
+              opacitiesForSegment(segment);
 
-    // Mark ready once first frame paints (avoids gradient flashing)
+    // Mark ready once first frame paints
     useEffect(() => {
+        if (!isClient) return;
+
         const id = requestAnimationFrame(() => setReady(true));
         return () => cancelAnimationFrame(id);
-    }, []);
+    }, [isClient]);
+
+    // Parallax effect
+    useEffect(() => {
+        if (!isClient || reducedMotion) return;
+
+        const handleMouseMove = (e: MouseEvent) => {
+            const normalizedX = (e.clientX / window.innerWidth) * 2 - 1;
+            targetParallaxX.current = normalizedX * PARALLAX_STENGTH;
+        };
+
+        const smoothParallax = () => {
+            setParallaxX((current) => {
+                const target = targetParallaxX.current;
+                const next = current + (target - current) * PARALLAX_DELAY_FACTOR;
+                return Math.abs(next - target) < 0.001 ? target : next;
+            });
+            parallaxRafRef.current = requestAnimationFrame(smoothParallax);
+        };
+
+        parallaxRafRef.current = requestAnimationFrame(smoothParallax);
+        window.addEventListener("mousemove", handleMouseMove, { passive: true });
+
+        return () => {
+            window.removeEventListener("mousemove", handleMouseMove);
+            if (parallaxRafRef.current) cancelAnimationFrame(parallaxRafRef.current);
+        };
+    }, [isClient, reducedMotion]);
 
     return (
         <article className="absolute w-full h-dvh min-h-[800px] overflow-hidden">
-            <div className="absolute inset-0 backdrop-blur-xs w-full h-full z-10" />
+            <div className="absolute inset-0 w-full h-full z-10" />
             <section
+                ref={containerRef}
                 className="relative w-full h-dvh min-h-[800px] overflow-hidden z-0"
                 data-phase={mode}
             >
                 {SKYLINE_IMAGES.map((image, index) => {
-                    const isInitialPhase = index === initialPhase;
+                    // Always treat index 0 as initial for SSR consistency
+                    // const isInitialPhase = index === initialPhase;
+                    const current = Math.floor(segment) % SKYLINE_IMAGES.length;
+                    const next = (current + 1) % SKYLINE_IMAGES.length;
+                    const zIndex = index === current ? 2 : index === next ? 1 : 0;
 
                     return (
                         <div
@@ -197,35 +249,38 @@ export function SkylineHero() {
                                 opacity: opacities[index],
                                 transitionDuration: `${reducedMotion ? 0 : CROSSFADE_MS}ms`,
                                 pointerEvents: "none",
+                                zIndex,
                             }}
                             aria-hidden={opacities[index] < 0.01}
-                            suppressHydrationWarning
                         >
-                            <Image
-                                src={image.src}
-                                alt={image.alt}
-                                loader={customImageLoader}
-                                // sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                                fill
-                                priority={isInitialPhase} // Prioritize initial phase based on time
-                                loading={isInitialPhase ? "eager" : "lazy"}
-                                placeholder="blur"
-                                blurDataURL={image.placeholder}
-                                className="absolute inset-0"
-                                style={{ objectFit: "cover" }}
-                                onLoad={isInitialPhase ? () => setReady(true) : undefined}
-                            />
+                            <div
+                                className="absolute inset-0 will-change-transform"
+                                style={{
+                                    transform: `translateX(calc(${parallaxX}% + ${
+                                        image.offset?.x || 0
+                                    }px)) translateY(${image.offset?.y || 0}px)`,
+                                    width: "110%",
+                                    height: "100%",
+                                    left: "-5%",
+                                }}
+                            >
+                                <Image
+                                    src={image.src}
+                                    alt={image.alt}
+                                    loader={customImageLoader}
+                                    fill
+                                    priority={index === initialPhase}
+                                    loading={index === initialPhase ? "eager" : "lazy"}
+                                    placeholder="blur"
+                                    blurDataURL={image.placeholder}
+                                    className={cn("absolute inset-0")}
+                                    style={{ objectFit: "cover" }}
+                                    onLoad={() => setReady(true)}
+                                />
+                            </div>
                         </div>
                     );
                 })}
-
-                {/* Gentle vignette/grade; tweak per your brand */}
-                <div
-                    className={[
-                        "absolute opacity-100 inset-0 bg-gradient-to-b from-black/30 via-black/10 to-black/60 pointer-events-none",
-                        ready && " transition-opacity duration-300",
-                    ].join(" ")}
-                />
             </section>
         </article>
     );
