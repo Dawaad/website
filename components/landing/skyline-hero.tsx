@@ -1,17 +1,13 @@
 "use client";
 
-import { customImageLoader } from "@/lib/image";
+import { customImageLoader, VisualProps } from "@/lib/image";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 
 type PhaseKey = "sunrise" | "day" | "sunset" | "night";
-interface SkylineImage {
+interface SkylineImage extends VisualProps {
     key: PhaseKey;
-    src: string;
-    alt: string;
-    placeholder: string;
-    offset?: { x: number; y: number }; // Individual pixel offsets for alignment
 }
 
 const SKYLINE_IMAGES: SkylineImage[] = [
@@ -48,6 +44,13 @@ const SKYLINE_IMAGES: SkylineImage[] = [
         offset: { x: -5, y: -3 },
     },
 ];
+
+const CONTINUED_IMAGE: VisualProps = {
+    src: "landing-desk-secondary.webp",
+    alt: "Close-up of home office desk setup with laptop and accessories",
+    placeholder:
+        "data:image/jpeg;base64,/9j/2wBDAAoHBwgHBgoICAgLCgoLDhgQDg0NDh0VFhEYIx8lJCIfIiEmKzcvJik0KSEiMEExNDk7Pj4+JS5ESUM8SDc9Pjv/2wBDAQoLCw4NDhwQEBw7KCIoOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozv/wAARCAAVAEADASIAAhEBAxEB/8QAGwAAAgIDAQAAAAAAAAAAAAAAAAUCBAEDBgf/xAAmEAACAgIBAgUFAAAAAAAAAAABAgADBBESITEFIkFRYRMVUpGh/8QAGAEAAwEBAAAAAAAAAAAAAAAAAgMEAAH/xAAdEQEAAgIDAQEAAAAAAAAAAAABAAIDERMUITES/9oADAMBAAIRAxEAPwDzNDYvEhtA+0L962TsyytaWptdDXpL2J4ZS9ZtyXKoO3zNa5X1lGOn68rOeatePXfUzBTjYut7Mb5GJUzEoToHyibsTwqq/LXzniBsmHzAbYPCttEUAEEHcmxZeuu86r7Jhfmf1NOV4ThVUliWb4k/aovyUdW9Te4gNbrQLOQ4ntI6LjmB0HeXGVHArCkAdhNVlYSvX8ji6xDjNzOLsN0MvnLuuUVMQFHbQhCcsEOj9ksKsXWhW9TqPK8eqglUXXzCEmzLvUbjPIXWfSqZgN6izJyXdVDa1CELFUTbAy2SwEVV5HDMDBAfTRkMzraSOg9oQlABFNlZ/9k=",
+};
 
 // Tunables
 const FULL_CYCLE_MS = 3 * 60 * 1000; // 3 min loop for all 4 phases
@@ -114,7 +117,7 @@ function opacitiesForSegment(seg: number, count = SKYLINE_IMAGES.length) {
 
 // --- Component --------------------------------------------------------------
 
-export function SkylineHero() {
+export const SkylineHero: FC = () => {
     const reducedMotion = useReducedMotion();
 
     // Always use index 0 (sunrise) for SSR and initial hydration - prevents mismatch
@@ -199,13 +202,30 @@ export function SkylineHero() {
         return () => cancelAnimationFrame(id);
     }, [isClient]);
 
-    // Parallax effect
+    // Parallax effect - only active when hovering inside container
     useEffect(() => {
-        if (!isClient || reducedMotion) return;
+        if (!isClient || reducedMotion || !containerRef.current) return;
+
+        const container = containerRef.current;
+        let isInsideContainer = false;
 
         const handleMouseMove = (e: MouseEvent) => {
-            const normalizedX = (e.clientX / window.innerWidth) * 2 - 1;
+            if (!isInsideContainer) return;
+
+            const rect = container.getBoundingClientRect();
+            const relativeX = e.clientX - rect.left;
+            const normalizedX = (relativeX / rect.width) * 2 - 1;
             targetParallaxX.current = normalizedX * PARALLAX_STENGTH;
+        };
+
+        const handleMouseEnter = () => {
+            isInsideContainer = true;
+        };
+
+        const handleMouseLeave = () => {
+            isInsideContainer = false;
+            // Smoothly reset parallax to center when leaving
+            targetParallaxX.current = 0;
         };
 
         const smoothParallax = () => {
@@ -218,20 +238,23 @@ export function SkylineHero() {
         };
 
         parallaxRafRef.current = requestAnimationFrame(smoothParallax);
+        container.addEventListener("mouseenter", handleMouseEnter);
+        container.addEventListener("mouseleave", handleMouseLeave);
         window.addEventListener("mousemove", handleMouseMove, { passive: true });
 
         return () => {
+            container.removeEventListener("mouseenter", handleMouseEnter);
+            container.removeEventListener("mouseleave", handleMouseLeave);
             window.removeEventListener("mousemove", handleMouseMove);
             if (parallaxRafRef.current) cancelAnimationFrame(parallaxRafRef.current);
         };
     }, [isClient, reducedMotion]);
 
     return (
-        <article className="absolute w-full h-dvh min-h-[800px] overflow-hidden">
-            <div className="absolute inset-0 w-full h-full z-10" />
+        <article className="absolute w-full h-auto overflow-hidden">
             <section
                 ref={containerRef}
-                className="relative w-full h-dvh min-h-[800px] overflow-hidden z-0"
+                className="relative w-full min-h-[90dvh] overflow-hidden z-0 shadow-xl"
                 data-phase={mode}
             >
                 {SKYLINE_IMAGES.map((image, index) => {
@@ -282,6 +305,14 @@ export function SkylineHero() {
                     );
                 })}
             </section>
+            <section className="relative mt-0.5 flex flex-col space-y-0.5 ">
+                <div className="h-3 shadow w-full bg-primary" />
+                <div className="h-3 shadow w-full bg-primary/80" />
+                <div className="h-2 shadow w-full bg-primary/60" />
+                <div className="h-2 shadow w-full bg-primary/40" />
+                <div className="h-1 shadow w-full bg-primary/20" />
+                <div className="h-0.5 shadow w-full bg-primary/10" />
+            </section>
         </article>
     );
-}
+};

@@ -3,10 +3,10 @@
 import { Github, User } from "lucide-react";
 import Link from "next/link";
 import { useRef } from "react";
-import GlassSurface from "../GlassSurface";
-import TargetCursor from "../TargetCursor";
+import { Grid } from "../ui/background/grids";
 import { Button } from "../ui/button";
-import { BGPattern } from "../ui/grids";
+import GlassSurface from "../ui/glass-surface";
+import TargetCursor from "../ui/target-cursor";
 
 export const Introduction = () => {
     const containerRef = useRef<HTMLDivElement>(null);
@@ -37,31 +37,44 @@ export const Introduction = () => {
                     opacity={0.9}
                     mixBlendMode="screen"
                 >
-                    <BGPattern
-                        variant="grid"
-                        mask="fade-edges"
-                        className="opacity-20"
-                        fill="white"
-                    />
-                    <div className="gap-6 p-8 md:p-12 flex flex-col items-start ">
-                        <h1 className="text-[36px] leading-[50px] md:text-[64px] font-bold md:leading-[70px] text-neutral-100">
+                    <Grid className="-z-10 opacity-10" dynamic={false} size="sm" />
+                    <div className="gap-3 p-8 md:p-12 flex flex-col items-start ">
+                        <h1 className="text-6xl font-semibold leading-[70px] text-neutral-100">
                             <div>
                                 Hi, I'm{" "}
-                                <span className="bg-amber-500 rounded-lg rounded-br-none text-white px-3 py-1 inline-block cursor-target">
-                                    Jared.
-                                </span>
+                                <Link
+                                    href={"https://www.instagram.com/dawad.t/"}
+                                    target="_blank"
+                                    className="cursor-none"
+                                >
+                                    <span className="bg-amber-500 rounded-lg rounded-br-none text-white px-3 py-1 inline-block cursor-target">
+                                        Jared.
+                                    </span>
+                                </Link>
                             </div>
                             <div>
                                 A Full-stack{" "}
-                                <span className="bg-red-400 rounded-lg rounded-l-none text-white px-3 py-1 inline-block cursor-target">
-                                    Engineer
-                                </span>{" "}
+                                <Link
+                                    className="cursor-none"
+                                    href={"https://www.linkedin.com/in/jared-tucker-00ba74250/"}
+                                    target="_blank"
+                                >
+                                    <span className="bg-red-400 rounded-lg rounded-l-none text-white px-3 py-1 inline-block cursor-target">
+                                        Engineer
+                                    </span>{" "}
+                                </Link>
                             </div>
                             <div>
                                 And{" "}
-                                <span className="bg-purple-300 rounded-lg rounded-tr-none text-white px-3 py-1 inline-block cursor-target">
-                                    Startup Founder{" "}
-                                </span>{" "}
+                                <Link
+                                    href={"https://github.com/rmr-studio/riven"}
+                                    target="_blank"
+                                    className="cursor-none"
+                                >
+                                    <span className="bg-purple-300 rounded-lg rounded-tr-none text-white px-3 py-1 inline-block cursor-target">
+                                        Startup Founder{" "}
+                                    </span>{" "}
+                                </Link>
                             </div>
                             from{" "}
                             <span className="bg-blue-400 rounded-lg rounded-t-none text-white px-3 py-1 inline-block cursor-target">
@@ -69,9 +82,17 @@ export const Introduction = () => {
                             </span>
                         </h1>
 
-                        <p className="text-neutral-200 text-[16px] md:text-[18px] font-medium leading-[28px] md:leading-[30px] max-w-xl">
-                            Software Engineer at Leidos, working on building performative, scalable
-                            enterprise web applications, specializing in React
+                        <p className="text-neutral-200 font-medium max-w-2xl leading-tight italic mt-2">
+                            <div>
+                                Software engineer, solutions Architect, start-up founder, natural
+                                bodybuilder, marathon runner, cat enthusiast, side quest enjoyer.
+                            </div>
+
+                            <div className="mt-2">
+                                I work on, and take <span className="font-semibold">immense</span>{" "}
+                                amounts of pride from building performative, scalable enterprise
+                                level web-based applications.
+                            </div>
                         </p>
 
                         <div className="flex flex-col sm:flex-row flex-wrap gap-4 sm:gap-7 pt-4 cursor-pointer">

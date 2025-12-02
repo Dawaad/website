@@ -1,4 +1,5 @@
 import { ThemeProvider } from "@/components/provider/theme-context";
+import { Navbar } from "@/components/ui/navbar";
 import { CursorProvider } from "@/lib/contexts/cursor-context";
 import { Montserrat } from "next/font/google";
 import "./globals.css";
@@ -23,7 +24,8 @@ export default function RootLayout({
                     disableTransitionOnChange
                 >
                     <CursorProvider>
-                        <main className="w-full relative">{children}</main>
+                        <Navbar />
+                        <main className="w-full relative bg-background">{children}</main>
                     </CursorProvider>
                 </ThemeProvider>
             </body>
