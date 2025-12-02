@@ -120,7 +120,11 @@ export const RelativeTimeZoneDisplay = ({ className, ...props }: RelativeTimeZon
     const display = formatTime(time, zone, timeFormatOptions);
 
     return (
-        <div className={cn("pl-8 text-muted-foreground tabular-nums", className)} {...props}>
+        <div
+            className={cn("pl-8 text-muted-foreground tabular-nums", className)}
+            suppressHydrationWarning
+            {...props}
+        >
             {display}
         </div>
     );
@@ -134,7 +138,7 @@ export const RelativeTimeZoneDate = ({ className, ...props }: RelativeTimeZoneDa
     const display = formatDate(time, zone, dateFormatOptions);
 
     return (
-        <div {...props} className={cn("text-muted-foreground", className)}>
+        <div suppressHydrationWarning {...props} className={cn("text-muted-foreground", className)}>
             {display}
         </div>
     );

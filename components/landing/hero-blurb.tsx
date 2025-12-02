@@ -82,7 +82,7 @@ export const Introduction = () => {
                             </span>
                         </h1>
 
-                        <p className="text-neutral-200 font-medium max-w-2xl leading-tight italic mt-2">
+                        <div className="text-neutral-200 font-medium max-w-2xl leading-tight italic mt-2">
                             <div>
                                 Software engineer, solutions Architect, start-up founder, natural
                                 bodybuilder, marathon runner, cat enthusiast, side quest enjoyer.
@@ -93,7 +93,7 @@ export const Introduction = () => {
                                 amounts of pride from building performative, scalable enterprise
                                 level web-based applications.
                             </div>
-                        </p>
+                        </div>
 
                         <div className="flex flex-col sm:flex-row flex-wrap gap-4 sm:gap-7 pt-4 cursor-pointer">
                             <Button

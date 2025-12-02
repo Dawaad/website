@@ -58,7 +58,7 @@ export const Timezone = () => {
                     </div>
                     <RelativeTimeZone key={AEST_LABEL} zone={AEST_ZONE}>
                         <div className="flex justify-end w-10">
-                            <RelativeTimeZoneLabel className={cn("bg-green-400")}>
+                            <RelativeTimeZoneLabel className={cn("bg-green-400 text-neutral-800")}>
                                 {AEST_LABEL}
                             </RelativeTimeZoneLabel>
                         </div>
