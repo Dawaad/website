@@ -9,22 +9,19 @@ import {
     RelativeTimeZoneDisplay,
     RelativeTimeZoneLabel,
 } from "../kibo-ui/relative-time";
-import { Grid } from "../ui/background/grids";
 
-import GlassSurface from "../ui/glass-surface";
+import { GlassContainer } from "../ui/glass-container";
 
 interface TimezoneProps {
     label: string;
     zone: string;
-    active?: boolean;
 }
 
 export const Timezone = ({ className, ...props }: HTMLAttributes<HTMLDivElement>) => {
-    const {
-        label: AEST_LABEL,
-        zone: AEST_ZONE,
-        active,
-    }: TimezoneProps = { label: "AEST", zone: "Australia/Sydney" };
+    const { label: AEST_LABEL, zone: AEST_ZONE }: TimezoneProps = {
+        label: "AEST",
+        zone: "Australia/Sydney",
+    };
     const { label: EST_LABEL, zone: EST_ZONE }: TimezoneProps = {
         label: "EST",
         zone: "America/New_York",
@@ -32,21 +29,7 @@ export const Timezone = ({ className, ...props }: HTMLAttributes<HTMLDivElement>
 
     return (
         <article className={cn("max-w-2xl translate-x-4", className)} {...props}>
-            <GlassSurface
-                className="rounded-md"
-                width={"100%"}
-                height={"auto"}
-                displace={15}
-                distortionScale={-150}
-                redOffset={5}
-                greenOffset={15}
-                blueOffset={25}
-                brightness={40}
-                backgroundOpacity={0.05}
-                opacity={0.9}
-                mixBlendMode="screen"
-            >
-                <Grid className="-z-10 opacity-10" dynamic={false} size="sm" />
+            <GlassContainer>
                 <RelativeTime className="p-3 flex">
                     <RelativeTimeZone key={EST_LABEL} zone={EST_ZONE}>
                         <div className="flex justify-end w-10">
@@ -67,7 +50,7 @@ export const Timezone = ({ className, ...props }: HTMLAttributes<HTMLDivElement>
                         <RelativeTimeZoneDisplay className={cn("pl-2 text-neutral-200")} />
                     </RelativeTimeZone>
                 </RelativeTime>
-            </GlassSurface>
+            </GlassContainer>
         </article>
     );
 };

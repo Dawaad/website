@@ -20,7 +20,7 @@ export const Grid: FC<Props> = ({ className, dynamic = true, size = "md" }) => {
                 className={cn(
                     "absolute inset-0",
                     sizeMap[size],
-                    "[background-image:linear-gradient(to_right,#e4e4e7_1px,transparent_1px),linear-gradient(to_bottom,#e4e4e7_1px,transparent_1px)]",
+                    "[background-image:linear-gradient(to_right,#c2c2c2_1px,transparent_1px),linear-gradient(to_bottom,#c2c2c2_1px,transparent_1px)]",
                     dynamic &&
                         "dark:[background-image:linear-gradient(to_right,#262626_1px,transparent_1px),linear-gradient(to_bottom,#262626_1px,transparent_1px)]",
                     className

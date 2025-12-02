@@ -72,8 +72,8 @@ const GlassSurface: React.FC<GlassSurfaceProps> = ({
     width = 420,
     height = "auto",
     brightness = 100,
-    opacity = 0.5,
-    blur = 50,
+    opacity = 1,
+    blur = 20,
     backgroundOpacity = 0.1,
     saturation = 1.4,
     className = "",
@@ -105,9 +105,7 @@ const GlassSurface: React.FC<GlassSurfaceProps> = ({
         background = `rgba(255,255,255,${backgroundOpacity})`;
         borderColor = `rgba(255,255,255,${backgroundOpacity * 0.45})`;
         boxShadow = "0 18px 48px rgba(15,23,42,0.35), 0 0 0 1px rgba(255,255,255,0.6)";
-        backdropFilter = `blur(${blur}px) saturate(${saturation}) brightness(${
-            brightness / 100
-        }) opacity(${opacity})`;
+        backdropFilter = `blur(${blur}px) saturate(${saturation}) brightness(${brightness / 100})`;
         webkitBackdropFilter = backdropFilter;
     } else {
         // Fallback for browsers without backdrop-filter support
@@ -128,7 +126,7 @@ const GlassSurface: React.FC<GlassSurfaceProps> = ({
     return (
         <div
             className={cn(
-                "transition-all relative flex items-center justify-center focus-visible:outline-2 focus-visible:outline-[#007AFF] focus-visible:outline-offset-2 rounded-lg shadow-lg",
+                "transition-all relative flex items-center justify-center focus-visible:outline-2 focus-visible:outline-[#007AFF] focus-visible:outline-offset-2 rounded-lg shadow-lg backdrop-blur-xl",
                 className
             )}
             style={containerStyles}
@@ -141,7 +139,7 @@ const GlassSurface: React.FC<GlassSurfaceProps> = ({
                     inset: 0,
                     borderRadius: "inherit",
                     background:
-                        "radial-gradient(circle at 10% 0%, rgba(255,255,255,0.45), transparent 35%)",
+                        "radial-gradient(circle at 15% 0%, rgba(255,255,255,0.45), transparent 50%)",
                     opacity: 0.05,
                     pointerEvents: "none",
                 }}

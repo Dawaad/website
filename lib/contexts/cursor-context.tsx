@@ -9,6 +9,13 @@ interface CursorContextType {
 
 const CursorContext = createContext<CursorContextType | undefined>(undefined);
 
+export const CURSOR_HANDLER = (setLiquidCursorVisible: (visible: boolean) => void) => {
+    return {
+        onMouseEnter: () => setLiquidCursorVisible(false),
+        onMouseLeave: () => setLiquidCursorVisible(true),
+    };
+};
+
 export function CursorProvider({ children }: { children: React.ReactNode }) {
     const [isLiquidCursorVisible, setLiquidCursorVisible] = useState(true);
 
