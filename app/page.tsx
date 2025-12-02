@@ -26,7 +26,7 @@ export default function Home() {
     return (
         <>
             <section className="w-full min-h-screen relative overflow-x-hidden z-20">
-                <Grid className=" opacity-50" size="md" />
+                <Grid className=" opacity-30" size="md" />
                 <div className="absolute inset-0 h-[90dvh] bg-neutral-600"></div>
                 <SkylineHero />
                 <LiquidCursor size={30} />
@@ -35,7 +35,7 @@ export default function Home() {
                 </div>
             </section>
             <section className="w-full min-h-screen relative overflow-x-hidden">
-                <Grid className="z-10 opacity-50" size="md" />
+                <Grid className="z-10 opacity-30" size="md" />
                 <BackgroundBeams className="z-0" />
             </section>
         </>

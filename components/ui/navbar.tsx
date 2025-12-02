@@ -3,7 +3,7 @@
 import { useCursor } from "@/lib/contexts/cursor-context";
 import { Command, Github } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
+import { DOMAttributes, useState } from "react";
 import { Timezone } from "../landing/nav-timezone";
 import TextShift from "../text-shift";
 import { AnimatedThemeToggler } from "./animated-theme-toggler";
@@ -15,6 +15,11 @@ import { NavbarCommandMenu } from "./nav/nav-command-menu";
 export const Navbar = () => {
     const { setLiquidCursorVisible } = useCursor();
     const [commandMenuOpen, setCommandMenuOpen] = useState(false);
+
+    const CURSOR_HANDLER: Partial<DOMAttributes<HTMLDivElement>> = {
+        onMouseEnter: () => setLiquidCursorVisible(false),
+        onMouseLeave: () => setLiquidCursorVisible(true),
+    };
 
     return (
         <>
@@ -34,11 +39,7 @@ export const Navbar = () => {
                         opacity={0.9}
                         mixBlendMode="screen"
                     >
-                        <div
-                            className="py-2 pr-6 pl-8"
-                            onMouseEnter={() => setLiquidCursorVisible(false)}
-                            onMouseLeave={() => setLiquidCursorVisible(true)}
-                        >
+                        <div className="py-2 pr-6 pl-8" {...CURSOR_HANDLER}>
                             <Grid className="-z-10 opacity-10" dynamic={false} size="sm" />
                             <Link href="/">
                                 <TextShift
@@ -53,8 +54,8 @@ export const Navbar = () => {
                     </GlassSurface>
                 </div>
 
-                <Timezone />
-                <nav className="translate-x-2">
+                <Timezone {...CURSOR_HANDLER} />
+                <nav className="translate-x-2" {...CURSOR_HANDLER}>
                     <GlassSurface
                         className="rounded-md p-0"
                         width={"100%"}
@@ -69,7 +70,7 @@ export const Navbar = () => {
                         mixBlendMode="screen"
                     >
                         <Grid className="-z-10 opacity-10" dynamic={false} size="sm" />
-                        <div className="flex p-2 pr-4 items-center">
+                        <div className="flex p-1 pr-4 items-center">
                             <Link href={"/"}>
                                 <Button
                                     variant={"link"}
@@ -84,6 +85,14 @@ export const Navbar = () => {
                                     className="cursor-pointer italic text-white/80"
                                 >
                                     Contact
+                                </Button>
+                            </Link>
+                            <Link href={"/"}>
+                                <Button
+                                    variant={"link"}
+                                    className="cursor-pointer italic text-white/80"
+                                >
+                                    Blog
                                 </Button>
                             </Link>
                             <Link href="https://github.com/Dawaad" target="_blank">

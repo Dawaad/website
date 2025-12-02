@@ -2,6 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import { ArrowRight } from "lucide-react";
+import { HTMLAttributes } from "react";
 import {
     RelativeTime,
     RelativeTimeZone,
@@ -18,7 +19,7 @@ interface TimezoneProps {
     active?: boolean;
 }
 
-export const Timezone = () => {
+export const Timezone = ({ className, ...props }: HTMLAttributes<HTMLDivElement>) => {
     const {
         label: AEST_LABEL,
         zone: AEST_ZONE,
@@ -30,7 +31,7 @@ export const Timezone = () => {
     };
 
     return (
-        <article className="max-w-2xl translate-x-4">
+        <article className={cn("max-w-2xl translate-x-4", className)} {...props}>
             <GlassSurface
                 className="rounded-md"
                 width={"100%"}
@@ -54,7 +55,7 @@ export const Timezone = () => {
                         <RelativeTimeZoneDisplay className={cn("pl-2 text-neutral-200")} />
                     </RelativeTimeZone>
                     <div className="mx-2">
-                        <ArrowRight className="size-4 stroke-secondary" />
+                        <ArrowRight className="size-4 stroke-white/80" />
                     </div>
                     <RelativeTimeZone key={AEST_LABEL} zone={AEST_ZONE}>
                         <div className="flex justify-end w-10">
