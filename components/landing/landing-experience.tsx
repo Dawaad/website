@@ -6,6 +6,8 @@ import { motion, useMotionValueEvent, useScroll } from "motion/react";
 import Link from "next/link";
 import { useRef, useState } from "react";
 import { BackgroundBeams } from "../ui/background/beams";
+import { Grid } from "../ui/background/grids";
+import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
 import { GlassContainer } from "../ui/glass-container";
 import TargetCursor from "../ui/target-cursor";
@@ -78,6 +80,26 @@ export function ExperienceSection() {
                             process pipelines and event-driven automations without code
                         </div>
                     </div>
+                    <div className="flex flex-row mt-4 space-x-1 flex-wrap">
+                        {[
+                            "React",
+                            "TypeScript",
+                            "Kotlin",
+                            "Springboot",
+                            "PostgreSQL",
+                            "Gridstack.js",
+                            "N8N",
+                            "TailwindCSS/ShadCN UI",
+                        ].map((skill, index) => (
+                            <Badge
+                                key={`riven-skill-badge-${index}`}
+                                variant={"secondary"}
+                                className="rounded-sm border-primary/40 px-2 py-1 mb-2"
+                            >
+                                {skill}
+                            </Badge>
+                        ))}
+                    </div>
                 </div>
             ),
             reveal: (
@@ -137,6 +159,30 @@ export function ExperienceSection() {
                             based on dynamic guidelines and acceptance criteria. Improving routing
                             speeds by 30% and improved overall correctness of routing capabilities
                         </div>
+                    </div>
+                    <div className="flex flex-row mt-4 space-x-1 flex-wrap">
+                        {[
+                            "Kotlin",
+                            "Springboot",
+                            "Kafka",
+                            "Kubernetes",
+                            "Ember",
+                            "TypeScript",
+                            "MongoDB",
+                            "Skaffold/Helm",
+                            "Jaeger",
+                            "Redis",
+                            "Agile",
+                            "TailwindCSS/DaisyUI",
+                        ].map((skill, index) => (
+                            <Badge
+                                key={`riven-skill-badge-${index}`}
+                                variant={"secondary"}
+                                className="rounded-sm border-primary/40 px-2 py-1 mb-2"
+                            >
+                                {skill}
+                            </Badge>
+                        ))}
                     </div>
                 </div>
             ),
@@ -204,7 +250,8 @@ export function ExperienceSection() {
     });
 
     return (
-        <motion.section className="min-h-screen">
+        <motion.section id="about">
+            <Grid className="z-0 opacity-40" />
             <BackgroundBeams className="z-0" />
             <TargetCursor
                 spinDuration={2}
@@ -213,7 +260,7 @@ export function ExperienceSection() {
                 containerRef={containerRef}
             />
             <div
-                className="-translate-x-4 z-30 space-y-6 min-w-xl max-w-4xl"
+                className="-translate-x-4 z-30 space-y-6 min-w-xl max-w-4xl mt-40 mb-12"
                 ref={containerRef}
                 data-has-target-cursor="true"
             >

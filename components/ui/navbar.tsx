@@ -60,22 +60,22 @@ export const Navbar = () => {
                         <Link href={"/"}>
                             <Button
                                 variant={"link"}
-                                className="cursor-pointer italic text-white/80"
+                                className="cursor-pointer italic text-white/80 rounded-none hover:bg-neutral-700/50"
                             >
                                 Blog
                             </Button>
                         </Link>
                         <Link href="https://github.com/Dawaad" target="_blank">
-                            <Button variant={"ghost"} className="cursor-pointer">
-                                <Github className="text-white/80" />
+                            <Button variant={"ghost"} className="cursor-pointer text-white/80">
+                                <Github className="" />
                             </Button>
                         </Link>
                         <Button
                             variant={"ghost"}
                             onClick={() => setCommandMenuOpen(true)}
-                            className="cursor-pointer"
+                            className="cursor-pointer text-white/80"
                         >
-                            <Command className="text-white/80" />
+                            <Command className="" />
                         </Button>
 
                         <ModeToggle />

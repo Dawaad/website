@@ -1,6 +1,7 @@
 "use static";
 
 import { Introduction } from "@/components/landing/hero-blurb";
+import { Activity } from "@/components/landing/landing-activity";
 import { ExperienceSection } from "@/components/landing/landing-experience";
 import { SkylineHero } from "@/components/landing/skyline-hero";
 import { LiquidCursor } from "@/components/ui/gsap/liquid-cursor";
@@ -34,6 +35,7 @@ export default function Home() {
                 </div>
             </section>
             <ExperienceSection />
+            <Activity />
             <section className="w-full relative overflow-x-hidden min-h-screen"></section>
         </>
     );
