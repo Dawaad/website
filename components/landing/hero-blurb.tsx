@@ -11,7 +11,7 @@ export const Introduction = () => {
     const containerRef = useRef<HTMLDivElement>(null);
 
     return (
-        <article className="w-full items-center justify-end flex z-30  ">
+        <article className="w-full items-center justify-end flex z-30">
             <TargetCursor
                 spinDuration={2}
                 hideDefaultCursor={true}
@@ -19,12 +19,15 @@ export const Introduction = () => {
                 containerRef={containerRef}
             />
             <div
-                className="space-y-6 min-w-4xl max-w-5xl translate-x-4"
+                className="space-y-6  w-full md:max-w-2xl lg:max-w-4xl lg:translate-x-4"
                 ref={containerRef}
                 data-has-target-cursor="true"
             >
-                <GlassContainer className="gap-3 p-8 md:p-12 flex flex-col items-start ">
-                    <h1 className="text-6xl font-semibold leading-[70px] text-neutral-100">
+                <GlassContainer
+                    className="rounded-none gap-3 p-10 flex flex-col items-end lg:items-start w-full"
+                    surfaceClassname="rounded-none md:rounded-md"
+                >
+                    <h1 className="text-end lg:text-start text-5xl lg:text-6xl font-semibold lg:leading-[70px] text-neutral-100">
                         <div>
                             Hi, I'm{" "}
                             <Link
@@ -38,7 +41,7 @@ export const Introduction = () => {
                             </Link>
                         </div>
                         <div>
-                            A Full-stack{" "}
+                            a Full-stack{" "}
                             <Link
                                 className="cursor-none"
                                 href={"https://www.linkedin.com/in/jared-tucker-00ba74250/"}
@@ -50,7 +53,7 @@ export const Introduction = () => {
                             </Link>
                         </div>
                         <div>
-                            And{" "}
+                            and{" "}
                             <Link
                                 href={"https://github.com/rmr-studio/riven"}
                                 target="_blank"
@@ -67,7 +70,7 @@ export const Introduction = () => {
                         </span>
                     </h1>
 
-                    <div className="text-neutral-200 font-medium max-w-[40rem] leading-tight italic mt-2">
+                    <div className="text-end lg:text-start text-neutral-200 font-medium md:max-w-lg lg:max-w-2xl leading-tight italic mt-2">
                         <div>
                             Software engineer, solutions architect, start-up founder, natural
                             bodybuilder, marathon runner, cat enthusiast, side quest enjoyer.

@@ -34,9 +34,9 @@ export const Navbar = () => {
                     </GlassContainer>
                 </div>
 
-                <Timezone {...CURSOR_ATTRIBUTES} />
+                <Timezone {...CURSOR_ATTRIBUTES} className="hidden lg:block" />
 
-                <nav className="translate-x-2">
+                <nav className="hidden md:block translate-x-2">
                     <GlassContainer
                         className="flex p-1 pr-4 flex-row items-center"
                         {...CURSOR_ATTRIBUTES}

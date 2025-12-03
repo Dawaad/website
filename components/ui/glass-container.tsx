@@ -4,12 +4,15 @@ import { HTMLAttributes } from "react";
 import { Grid } from "./background/grids";
 import GlassSurface from "./glass-surface";
 
-interface Props extends ClassNameProps, HTMLAttributes<HTMLDivElement> {}
+interface Props extends ClassNameProps, HTMLAttributes<HTMLDivElement> {
+    surfaceClassname?: string
+}
 
-export const GlassContainer: FCWC<Props> = ({ className, children, ...props }) => {
+export const GlassContainer: FCWC<Props> = ({ className, children, surfaceClassname, ...props }) => {
     return (
         <GlassSurface
             width={"100%"}
+            className={cn(surfaceClassname)}
             height={"auto"}
             displace={15}
             distortionScale={-150}
@@ -21,7 +24,7 @@ export const GlassContainer: FCWC<Props> = ({ className, children, ...props }) =
             mixBlendMode="screen"
         >
             <Grid className="-z-10 opacity-10" dynamic={false} size="sm" />
-            <div className={cn("w-auto flex flex-col", className)} {...props}>
+            <div className={cn("flex flex-col", className)} {...props}>
                 {children}
             </div>
         </GlassSurface>

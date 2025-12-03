@@ -1,11 +1,13 @@
 "use client";
 
 import { GitHubCalendar } from "react-github-calendar";
+import { RoomBackground } from "../ui/background/room-background";
 import { GlassContainer } from "../ui/glass-container";
 
 export const Activity = () => {
     return (
-        <section className="w-full flex flex-col md:flex-row-reverse py-20 items-center">
+        <section className="w-full flex flex-col xl:flex-row-reverse py-20 items-center my-20">
+            <RoomBackground />
             <article className="flex w-full justify-end">
                 <div className="translate-x-4 z-30 space-y-6 min-w-xl max-w-4xl mt-40 mb-12">
                     <GlassContainer className="w-full gap-3 ml-4 p-8 py-12 flex flex-col items-start justify-start">
@@ -25,7 +27,7 @@ export const Activity = () => {
                         </h1>
                         <div className="text-neutral-200 font-medium max-w-2xl leading-tight italic mt-2">
                             Watch me code!
-                            <span className="text-primary/60 text-xs">
+                            <span className="text-white/60 text-xs">
                                 {" "}
                                 (just not from my room, please)
                             </span>
@@ -33,8 +35,25 @@ export const Activity = () => {
                     </GlassContainer>
                 </div>
             </article>
-            <article className="p-20">
-                <GitHubCalendar username="Dawaad" />
+            <article className="py-20 z-20">
+                <div className="-translate-x-4 z-30 space-y-6 min-w-xl max-w-5xl mt-40 mb-12">
+                    <GlassContainer className="w-full gap-3 ml-4 p-8 py-14 flex flex-col items-start justify-start">
+                        <GitHubCalendar
+                            username="Dawaad"
+                            colorScheme="light"
+                            blockMargin={2}
+                            theme={{
+                                light: [
+                                    "hsl(0, 0%, 92%, 0.3)",
+                                    "#c4edde",
+                                    "#7ac7c4",
+                                    "#f73859",
+                                    "#384259",
+                                ],
+                            }}
+                        />
+                    </GlassContainer>
+                </div>
             </article>
         </section>
     );

@@ -139,3 +139,7 @@
     animation: none;
     mix-blend-mode: normal;
 }
+
+.react-activity-calendar {
+    color: oklch(0.9 0 0);
+}

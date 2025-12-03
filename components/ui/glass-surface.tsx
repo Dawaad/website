@@ -144,9 +144,7 @@ const GlassSurface: React.FC<GlassSurfaceProps> = ({
                     pointerEvents: "none",
                 }}
             />
-            <div className="relative z-10 w-full h-full flex items-center justify-center ">
-                {children}
-            </div>
+            <>{children}</>
         </div>
     );
 };

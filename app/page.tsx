@@ -3,7 +3,8 @@
 import { Introduction } from "@/components/landing/hero-blurb";
 import { Activity } from "@/components/landing/landing-activity";
 import { ExperienceSection } from "@/components/landing/landing-experience";
-import { SkylineHero } from "@/components/landing/skyline-hero";
+import { Skills } from "@/components/landing/landing.skills";
+import { SkylineHero } from "@/components/ui/background/skyline-background";
 import { LiquidCursor } from "@/components/ui/gsap/liquid-cursor";
 import { Metadata } from "next";
 
@@ -25,7 +26,7 @@ export const metadata: Metadata = {
 export default function Home() {
     return (
         <>
-            <section className="w-full min-h-[95dvh] relative overflow-x-hidden z-20">
+            <section className="min-h-[95dvh] relative overflow-hidden z-20">
                 {/* <Grid className=" opacity-30" size="md" /> */}
                 <div className="absolute inset-0 h-[90dvh] bg-neutral-600"></div>
                 <SkylineHero />
@@ -36,7 +37,7 @@ export default function Home() {
             </section>
             <ExperienceSection />
             <Activity />
-            <section className="w-full relative overflow-x-hidden min-h-screen"></section>
+            <Skills />
         </>
     );
 }
