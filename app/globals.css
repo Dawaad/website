@@ -112,6 +112,10 @@
     --sidebar-ring: oklch(0.556 0 0);
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 @layer base {
     * {
         @apply border-border outline-ring/50;
@@ -142,4 +146,5 @@
 
 .react-activity-calendar {
     color: oklch(0.9 0 0);
+    width: 100%;
 }

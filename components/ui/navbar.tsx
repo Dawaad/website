@@ -41,7 +41,7 @@ export const Navbar = () => {
                         className="flex p-1 pr-4 flex-row items-center"
                         {...CURSOR_ATTRIBUTES}
                     >
-                        <Link href={"/"}>
+                        <Link href={"#about"}>
                             <Button
                                 variant={"link"}
                                 className="cursor-pointer italic text-white/80"
@@ -49,7 +49,7 @@ export const Navbar = () => {
                                 About
                             </Button>
                         </Link>
-                        <Link href={"/"}>
+                        <Link href={"#contact"}>
                             <Button
                                 variant={"link"}
                                 className="cursor-pointer italic text-white/80"
@@ -57,14 +57,15 @@ export const Navbar = () => {
                                 Contact
                             </Button>
                         </Link>
-                        <Link href={"/"}>
+                        {/* //todo */}
+                        {/* <Link href={"/"}>
                             <Button
                                 variant={"link"}
                                 className="cursor-pointer italic text-white/80 rounded-none hover:bg-neutral-700/50"
                             >
                                 Blog
                             </Button>
-                        </Link>
+                        </Link> */}
                         <Link href="https://github.com/Dawaad" target="_blank">
                             <Button variant={"ghost"} className="cursor-pointer text-white/80">
                                 <Github className="" />
