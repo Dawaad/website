@@ -1,6 +1,6 @@
 "use client";
 
-import { Github, User } from "lucide-react";
+import { Github } from "lucide-react";
 import Link from "next/link";
 import { useRef } from "react";
 import { Button } from "../ui/button";
@@ -90,13 +90,6 @@ export const Introduction = () => {
                     </div>
 
                     <div className="flex flex-row flex-wrap gap-4 sm:gap-7 pt-4 cursor-pointer">
-                        <Button
-                            size={"lg"}
-                            className="cursor-target hover:rounded-none transition-all"
-                        >
-                            <User className="size-6" />
-                            Learn More
-                        </Button>
                         <Link target="_blank" href={"https://github.com/Dawaad"}>
                             <Button
                                 variant="outline"
