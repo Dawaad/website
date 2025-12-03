@@ -24,10 +24,10 @@ export const Introduction = () => {
                 data-has-target-cursor="true"
             >
                 <GlassContainer
-                    className="rounded-none gap-3 p-10 flex flex-col items-end lg:items-start w-full"
+                    className="rounded-none gap-3 p-10 flex flex-col items-start sm:items-end lg:items-start w-full"
                     surfaceClassname="rounded-none md:rounded-md"
                 >
-                    <h1 className="text-end lg:text-start text-5xl lg:text-6xl font-semibold lg:leading-[70px] text-neutral-100">
+                    <h1 className="text-start sm:text-end lg:text-start text-2xl sm:text-5xl lg:text-6xl font-semibold lg:leading-[70px] text-neutral-100">
                         <div>
                             Hi, I'm{" "}
                             <Link
@@ -64,16 +64,23 @@ export const Introduction = () => {
                                 </span>{" "}
                             </Link>
                         </div>
-                        from{" "}
-                        <span className="bg-blue-400 rounded-lg rounded-t-none text-white px-3 py-1 inline-block cursor-target">
-                            Australia.
-                        </span>
+                        <div className="hidden sm:block">
+                            from{" "}
+                            <span className="bg-blue-400 rounded-lg rounded-t-none text-white px-3 py-1 inline-block cursor-target">
+                                Australia.
+                            </span>
+                        </div>
                     </h1>
 
-                    <div className="text-end lg:text-start text-neutral-200 font-medium md:max-w-lg lg:max-w-2xl leading-tight italic mt-2">
+                    <div className="text-xs sm:text-sm md:text-base text-start sm:text-end lg:text-start text-neutral-200 font-medium  max-w-sm sm:max-w-lg lg:max-w-2xl leading-tight italic mt-2">
                         <div>
                             Software engineer, solutions architect, start-up founder, natural
                             bodybuilder, marathon runner, cat enthusiast, side quest enjoyer.
+                        </div>
+                        <div className="mt-2">
+                            {" "}
+                            Im everything you want me to be{" "}
+                            <span className="text-white/60">(and more bby grill).</span>
                         </div>
 
                         <div className="mt-2">
@@ -82,7 +89,7 @@ export const Introduction = () => {
                         </div>
                     </div>
 
-                    <div className="flex flex-col sm:flex-row flex-wrap gap-4 sm:gap-7 pt-4 cursor-pointer">
+                    <div className="flex flex-row flex-wrap gap-4 sm:gap-7 pt-4 cursor-pointer">
                         <Button
                             size={"lg"}
                             className="cursor-target hover:rounded-none transition-all"
@@ -97,7 +104,7 @@ export const Introduction = () => {
                                 className="cursor-target hover:rounded-none transition-all"
                             >
                                 <Github className="size-6" />
-                                View Github
+                                <span className="hidden sm:block">View Github</span>
                             </Button>
                         </Link>
                     </div>

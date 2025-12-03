@@ -5,8 +5,8 @@ import { ComponentProps, useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 
-import { cn } from "@/lib/utils";
 import { useCursor } from "@/lib/contexts/cursor-context";
+import { cn } from "@/lib/utils";
 
 type LiquidCursorProps = Omit<ComponentProps<"div">, "children"> & {
     size?: number;
@@ -140,7 +140,7 @@ export const LiquidCursor = ({
             {...props}
             ref={cursorRef}
             className={cn(
-                "pointer-events-none fixed z-999 rounded-full saturate-[180%] backdrop-blur-[2px]",
+                "pointer-events-none hidden sm:block fixed z-999 rounded-full saturate-[180%] backdrop-blur-[2px]",
                 "dark:saturate-[160%] dark:backdrop-brightness-[0.8]",
                 className
             )}

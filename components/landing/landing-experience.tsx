@@ -260,12 +260,12 @@ export function ExperienceSection() {
                 containerRef={containerRef}
             />
             <div
-                className="-translate-x-4 z-30 space-y-6 min-w-xl max-w-4xl mt-40 mb-12"
+                className="-translate-x-4 z-30 space-y-6  max-w-2xl md:max-w-4xl mt-40 mb-12"
                 ref={containerRef}
                 data-has-target-cursor="true"
             >
                 <GlassContainer className="w-full gap-3 ml-4 p-8 py-12 flex flex-col items-start justify-start">
-                    <h1 className="text-5xl font-semibold leading-[60px] text-neutral-100">
+                    <h1 className="text-3xl sm:text-4xl md:text-5xl font-semibold leading-12 md:leading-[60px] text-neutral-100">
                         <div>
                             Have a{" "}
                             <span className="bg-red-400 rounded-lg rounded-b-none text-white px-3 py-1 inline-block cursor-target italic">
@@ -280,18 +280,18 @@ export function ExperienceSection() {
                             </span>
                         </div>
                     </h1>
-                    <div className="text-neutral-200 font-medium max-w-2xl leading-tight italic mt-2">
+                    <div className="text-sm sm:text-base text-neutral-200 font-medium max-w-2xl leading-tight italic mt-2">
                         Why don't we add <span className="font-semibold">your</span> company here
                         next?
                     </div>
                 </GlassContainer>
             </div>
             <section className="relative flex justify-center" ref={ref}>
-                <motion.div className="hidden md:sticky overflow-hidden rounded-md h-40 md:w-2/5 md:top-30 mt-12 md:flex justify-center items-center">
+                <motion.div className="hidden lg:sticky pl-8 md:pl-4 overflow-hidden rounded-md h-40 w-2/5 xl:w-1/5 lg:top-30 mt-12 lg:flex justify-center items-center">
                     {content[activeCard]?.reveal ?? null}
                 </motion.div>
-                <TracingBeam className="relative flex items-start mt-12 px-4 w-full">
-                    <div className="max-w-2xl">
+                <TracingBeam className="relative flex mt-12 w-full">
+                    <div className="w-auto break-word lg:max-w-3xl ml-24 mr-12">
                         {content.map((item, index) => (
                             <motion.div
                                 key={`scroll-item-${index}`}
@@ -303,6 +303,7 @@ export function ExperienceSection() {
                                     opacity: activeCard === index ? 1 : 0.3,
                                 }}
                             >
+                                <div className="lg:hidden mb-12 ">{item.reveal}</div>
                                 {item.static}
                             </motion.div>
                         ))}
