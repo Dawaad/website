@@ -1,7 +1,7 @@
 "use client";
 
 import { CURSOR_HANDLER, useCursor } from "@/lib/contexts/cursor-context";
-import { Command, Scroll } from "lucide-react";
+import { Command, Menu, Scroll } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { FaGithub } from "react-icons/fa";
@@ -85,9 +85,9 @@ export const Navbar = () => {
                             </Link>
                         </GlassContainer>
                     </nav>
-                    <div className="translate-x-2">
+                    <div className="md:translate-x-2">
                         <GlassContainer
-                            className="flex p-1 pr-4 flex-row items-center"
+                            className="flex p-1 md:pr-4 flex-row items-center"
                             {...CURSOR_ATTRIBUTES}
                         >
                             <Button
@@ -99,6 +99,16 @@ export const Navbar = () => {
                             </Button>
 
                             <ModeToggle />
+                        </GlassContainer>
+                    </div>
+                    <div className="block md:hidden translate-x-2">
+                        <GlassContainer
+                            className="flex p-1 pr-4 flex-row items-center"
+                            {...CURSOR_ATTRIBUTES}
+                        >
+                            <Button variant={"ghost"} className="cursor-pointer text-white/80">
+                                <Menu />
+                            </Button>
                         </GlassContainer>
                     </div>
                 </div>

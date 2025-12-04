@@ -50,11 +50,11 @@ const infrastructureSkills = [
 const backendSkills = [
     { icon: SiSpringboot, title: "Spring Boot" },
     { icon: SiApachekafka, title: "Kafka" },
+    { icon: FaCogs, title: "Microservices" },
     { icon: FaServer, title: "REST APIs" },
     { icon: SiGraphql, title: "GraphQL" },
     { icon: SiMongodb, title: "MongoDB" },
     { icon: SiPostgresql, title: "PostgreSQL" },
-    { icon: FaCogs, title: "Microservices" },
 ];
 
 const frontendSkills = [
@@ -114,34 +114,34 @@ export const Skills = () => {
                 </GlassContainer>
             </div>
             {/* Mobile Layout - All cards visible vertically */}
-            <article className="w-full flex flex-col gap-6 px-4 md:hidden">
+            <article className="w-full flex flex-col-reverse gap-6 px-4 md:hidden">
                 <DisplayCard className="skew-y-0 w-full">
                     <div className="flex border-b pb-2 mb-3">Lowkey into Languages</div>
-                    <div className="flex flex-wrap gap-6 h-full w-full items-start">
+                    <div className="flex flex-wrap space-x-3 h-full w-full items-start pr-24">
                         {languageSkills.map((skill, index) => (
-                            <div key={index} className="flex flex-col items-center gap-2">
+                            <div key={index} className="flex flex-col items-center gap-2 my-2">
                                 <skill.icon className="text-4xl" />
                                 <span className="text-xs font-medium">{skill.title}</span>
                             </div>
                         ))}
                     </div>
                 </DisplayCard>
-                <DisplayCard className="skew-y-0 w-full">
+                <DisplayCard className="skew-y-0 w-full h-52">
                     <div className="flex border-b pb-2 mb-3">Intimately into Infrastructure</div>
-                    <div className="flex flex-wrap gap-6 h-full w-full items-start">
+                    <div className="flex flex-wrap space-x-3 h-full w-full items-start pr-24">
                         {infrastructureSkills.map((skill, index) => (
-                            <div key={index} className="flex flex-col items-center gap-2">
+                            <div key={index} className="flex flex-col items-center gap-2 my-2">
                                 <skill.icon className="text-4xl" />
                                 <span className="text-xs font-medium">{skill.title}</span>
                             </div>
                         ))}
                     </div>
                 </DisplayCard>
-                <DisplayCard className="skew-y-0 w-full">
+                <DisplayCard className="skew-y-0 w-full h-60">
                     <div className="flex border-b pb-2 mb-3">Baller in the Backend</div>
-                    <div className="flex flex-wrap gap-6 h-full w-full items-start">
+                    <div className="flex flex-wrap space-x-3 h-full w-full items-start pr-24">
                         {backendSkills.map((skill, index) => (
-                            <div key={index} className="flex flex-col items-center gap-2">
+                            <div key={index} className="flex flex-col items-center gap-2 my-2">
                                 <skill.icon className="text-4xl" />
                                 <span className="text-xs font-medium">{skill.title}</span>
                             </div>
@@ -150,9 +150,9 @@ export const Skills = () => {
                 </DisplayCard>
                 <DisplayCard className="skew-y-0 w-full">
                     <div className="flex border-b pb-2 mb-3">Freaky in the Frontend</div>
-                    <div className="flex flex-wrap gap-6 h-full w-full items-start">
+                    <div className="flex flex-wrap space-x-3 h-full w-full items-start pr-24">
                         {frontendSkills.map((skill, index) => (
-                            <div key={index} className="flex flex-col items-center gap-2">
+                            <div key={index} className="flex flex-col items-center gap-2 my-2">
                                 <skill.icon className="text-4xl" />
                                 <span className="text-xs font-medium">{skill.title}</span>
                             </div>
@@ -162,7 +162,7 @@ export const Skills = () => {
             </article>
 
             {/* Desktop Layout - Stacked deck with hover interaction */}
-            <article className="w-full items-start pr-36 2xl:pr-0 justify-end 2xl:pl-12 2xl:justify-center hidden md:flex">
+            <article className="w-full items-start md:pr-36 2xl:pr-0 justify-end 2xl:pl-12 2xl:justify-center hidden md:flex">
                 <DisplayStack className="group">
                     <DisplayCard
                         className={cn(activeCard === 0 ? "-translate-x-20" : "translate-x-4")}
@@ -198,12 +198,9 @@ export const Skills = () => {
                         <div className="flex border-b pb-2 mb-3">
                             Intimately into Infrastructure
                         </div>
-                        <div className="flex flex-wrap gap-6 h-full w-full items-start">
+                        <div className="flex flex-wrap space-x-4 h-full w-full items-start">
                             {infrastructureSkills.map((skill, index) => (
-                                <div
-                                    key={index}
-                                    className="flex flex-col items-center gap-2 hover:translate-x-2 hover:scale-110 peer transition-all cursor-pointer has-[:hover]:peer-hover:-translate-x-1"
-                                >
+                                <div key={index} className="flex flex-col items-center">
                                     <skill.icon className="text-4xl" />
                                     <span className="text-xs font-medium">{skill.title}</span>
                                 </div>
@@ -222,12 +219,9 @@ export const Skills = () => {
                         onMouseLeave={handleCardMouseLeave}
                     >
                         <div className="flex border-b pb-2 mb-3">Baller in the Backend</div>
-                        <div className="flex flex-wrap gap-6 h-full w-full items-start">
+                        <div className="flex flex-wrap space-x-4 h-full w-full items-start">
                             {backendSkills.map((skill, index) => (
-                                <div
-                                    key={index}
-                                    className="flex flex-col items-center gap-2 hover:translate-x-2 hover:scale-110 peer transition-all cursor-pointer has-[:hover]:peer-hover:-translate-x-1"
-                                >
+                                <div key={index} className="flex flex-col items-center">
                                     <skill.icon className="text-4xl" />
                                     <span className="text-xs font-medium">{skill.title}</span>
                                 </div>
@@ -246,12 +240,9 @@ export const Skills = () => {
                         onMouseLeave={handleCardMouseLeave}
                     >
                         <div className="flex border-b pb-2 mb-3">Freaky in the Frontend</div>
-                        <div className="flex flex-wrap gap-6 h-full w-full items-start">
+                        <div className="flex flex-wrap space-x-4 h-full w-full items-start">
                             {frontendSkills.map((skill, index) => (
-                                <div
-                                    key={index}
-                                    className="flex flex-col items-center gap-2 hover:translate-x-2 hover:scale-110 peer transition-all cursor-pointer has-[:hover]:peer-hover:-translate-x-1"
-                                >
+                                <div key={index} className="flex flex-col items-center">
                                     <skill.icon className="text-4xl" />
                                     <span className="text-xs font-medium">{skill.title}</span>
                                 </div>
@@ -260,7 +251,7 @@ export const Skills = () => {
                     </DisplayCard>
                 </DisplayStack>
             </article>
-            <div className="absolute bottom-0 h-[10rem] w-full bg-gradient-to-b from-transparent via-background/30 to-background"></div>
+            <div className="absolute bottom-0 h-40 w-full bg-linear-to-b from-transparent via-background/30 to-background"></div>
         </section>
     );
 };
