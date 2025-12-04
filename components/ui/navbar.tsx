@@ -1,9 +1,10 @@
 "use client";
 
 import { CURSOR_HANDLER, useCursor } from "@/lib/contexts/cursor-context";
-import { Command, Github, Scroll } from "lucide-react";
+import { Command, Scroll } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
+import { FaGithub } from "react-icons/fa";
 import { Timezone } from "../landing/nav-timezone";
 import TextShift from "../text-shift";
 import { Button } from "./button";
@@ -66,7 +67,10 @@ export const Navbar = () => {
                                 Blog
                             </Button>
                         </Link> */}
-                            <Link href="/resume">
+                            <Link
+                                href="https://github.com/Dawaad/Resume/blob/main/Resume.pdf"
+                                target="_blank"
+                            >
                                 <Button
                                     variant={"link"}
                                     className="cursor-pointer italic text-white/80"
@@ -76,7 +80,7 @@ export const Navbar = () => {
                             </Link>
                             <Link href="https://github.com/Dawaad" target="_blank">
                                 <Button variant={"ghost"} className="cursor-pointer text-white/80">
-                                    <Github className="" />
+                                    <FaGithub className="" />
                                 </Button>
                             </Link>
                         </GlassContainer>

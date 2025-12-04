@@ -15,7 +15,7 @@ export const EnvironmentBackground = () => {
     const [hasLoaded, setReady] = useState(false);
     return (
         <article className="absolute w-full h-[80dvh] h-auto overflow-hidden">
-            <div className="absolute inset-0 backdrop-blur-xs w-full h-full z-10" />
+            <div className="absolute inset-0 backdrop-blur-md w-full h-full z-10" />
             <section className="relative w-full min-h-[80dvh] overflow-hidden z-0">
                 <div
                     className="absolute inset-0"

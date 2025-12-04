@@ -260,6 +260,7 @@ export const Skills = () => {
                     </DisplayCard>
                 </DisplayStack>
             </article>
+            <div className="absolute bottom-0 h-[10rem] w-full bg-gradient-to-b from-transparent via-background/30 to-background"></div>
         </section>
     );
 };

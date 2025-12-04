@@ -91,7 +91,7 @@ const GlassSurface: React.FC<GlassSurfaceProps> = ({
         width: typeof width === "number" ? `${width}px` : width,
         height: typeof height === "number" ? `${height}px` : height,
         position: "relative",
-        overflow: "hidden",
+        // overflow: "hidden",
     };
 
     let background: string;

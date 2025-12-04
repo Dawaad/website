@@ -12,6 +12,7 @@ import { Button } from "../ui/button";
 import { GlassContainer } from "../ui/glass-container";
 import TargetCursor from "../ui/target-cursor";
 import { TracingBeam } from "../ui/tracing-beam";
+import { FaGithub } from "react-icons/fa";
 
 interface ScrollItem {
     static: React.ReactNode;
@@ -41,7 +42,7 @@ export function ExperienceSection() {
                                 size={"icon"}
                                 className="ml-1 mt-1 cursor-pointer"
                             >
-                                <Github className=" text-primary/70 size-5" />
+                                <FaGithub className=" text-primary/70 size-5" />
                             </Button>
                         </Link>
                     </h1>
