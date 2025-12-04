@@ -15,20 +15,12 @@ export const EnvironmentBackground = () => {
     const [hasLoaded, setReady] = useState(false);
     return (
         <article className="absolute w-full h-[80dvh] h-auto overflow-hidden">
-            <section className="relative mt-0.5 flex flex-col space-y-0.5 ">
-                <div className="h-0.5 shadow w-full bg-primary/5" />
-                <div className="h-1 shadow w-full bg-primary/5" />
-                <div className="h-2 shadow w-full bg-primary/10" />
-                <div className="h-2 shadow w-full bg-primary/20" />
-                <div className="h-3 shadow w-full bg-primary/30" />
-                <div className="h-3 shadow w-full bg-primary/40" />
-            </section>
+            <div className="absolute inset-0 backdrop-blur-xs w-full h-full z-10" />
             <section className="relative w-full min-h-[80dvh] overflow-hidden z-0">
-                <div className=""></div>
                 <div
                     className="absolute inset-0"
                     style={{
-                        transform: `${IMAGE.offset?.x || 0}px)) translateY(${
+                        transform: `translateX(${IMAGE.offset?.x || 0}px) translateY(${
                             IMAGE.offset?.y || 0
                         }px)`,
                     }}
@@ -51,6 +43,7 @@ export const EnvironmentBackground = () => {
                         onLoad={() => setReady(true)}
                     />
                 </div>
+                <div className="absolute opacity-100 inset-0 bg-gradient-to-b from-background via-background/30 to-background/40 pointer-events-none" />
             </section>
         </article>
     );

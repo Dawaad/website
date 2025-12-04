@@ -1,12 +1,14 @@
 "use client";
 
 import { GitHubCalendar } from "react-github-calendar";
+import { Grid } from "../ui/background/grids";
 import { RoomBackground } from "../ui/background/room-background";
 import { GlassContainer } from "../ui/glass-container";
 
 export const Activity = () => {
     return (
-        <section className="w-full py-20 mt-32 h-[60dvh] items-center my-20">
+        <section className="w-full py-32 h-full min-h-[80dvh] items-center relative">
+            <Grid className="opacity-40" />
             <RoomBackground />
             <section className="mt-40 flex flex-col 2xl:flex-row-reverse">
                 <article className="flex w-full justify-end">

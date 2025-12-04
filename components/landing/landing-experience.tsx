@@ -251,7 +251,7 @@ export function ExperienceSection() {
     });
 
     return (
-        <motion.section id="about">
+        <motion.section id="about" className="relative">
             <Grid className="z-0 opacity-40" />
             <BackgroundBeams className="z-0" />
             <TargetCursor
