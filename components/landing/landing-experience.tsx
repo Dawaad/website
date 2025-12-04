@@ -45,14 +45,15 @@ export function ExperienceSection() {
                             </Button>
                         </Link>
                     </h1>
-                    <Link
+                    {/* //todo Develop the landing page and host it lol */}
+                    {/* <Link
                         href={"https://getriven.io"}
                         target="_blank"
                         className="italic text-primary/70 text-xs hover:underline hover:text-primary transition-colors"
                         {...CURSOR_ATTRIBUTES}
                     >
                         https://getriven.io
-                    </Link>
+                    </Link> */}
 
                     <div className="text-primary/80 text-sm italic flex flex-col space-y-3 items-center mt-6">
                         <div>
