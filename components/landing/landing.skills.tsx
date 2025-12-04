@@ -92,7 +92,7 @@ export const Skills = () => {
     const hasActiveCard = !isHovering;
 
     return (
-        <section className="w-full relative overflow-x-hidden z-20 pt-24 flex flex-col gap-y-12 2xl:flex-row h-full min-h-[80dvh] overflow-hidden">
+        <section className="w-full relative overflow-x-hidden z-20 pt-24 flex flex-col gap-y-12 2xl:flex-row h-full min-h-[60dvh] overflow-hidden">
             <div className="-translate-x-4 z-30 space-y-6 w-fit lg:w-full max-w-3xl mb-6 2xl:mb-12">
                 <GlassContainer className="w-full gap-3 ml-4 p-8 py-12 flex flex-col items-start justify-start">
                     <h1 className="text-3xl sm:text-4xl  font-semibold leading-12 md:leading-[60px] text-neutral-100">

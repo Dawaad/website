@@ -1,4 +1,7 @@
-import { VisualProps } from "@/lib/image";
+import { customImageLoader, VisualProps } from "@/lib/image";
+import { cn } from "@/lib/utils";
+import Image from "next/image";
+import { useState } from "react";
 
 const IMAGE: VisualProps = {
     src: "landing-environment-sunset.webp",
@@ -9,5 +12,46 @@ const IMAGE: VisualProps = {
 };
 
 export const EnvironmentBackground = () => {
-    return <div>environment-background</div>;
+    const [hasLoaded, setReady] = useState(false);
+    return (
+        <article className="absolute w-full h-[80dvh] h-auto overflow-hidden">
+            <section className="relative mt-0.5 flex flex-col space-y-0.5 ">
+                <div className="h-0.5 shadow w-full bg-primary/5" />
+                <div className="h-1 shadow w-full bg-primary/5" />
+                <div className="h-2 shadow w-full bg-primary/10" />
+                <div className="h-2 shadow w-full bg-primary/20" />
+                <div className="h-3 shadow w-full bg-primary/30" />
+                <div className="h-3 shadow w-full bg-primary/40" />
+            </section>
+            <section className="relative w-full min-h-[80dvh] overflow-hidden z-0">
+                <div className=""></div>
+                <div
+                    className="absolute inset-0"
+                    style={{
+                        transform: `${IMAGE.offset?.x || 0}px)) translateY(${
+                            IMAGE.offset?.y || 0
+                        }px)`,
+                    }}
+                >
+                    <Image
+                        src={IMAGE.src}
+                        alt={IMAGE.alt}
+                        loader={customImageLoader}
+                        fill
+                        priority={true}
+                        // loading="lazy"
+                        placeholder="blur"
+                        blurDataURL={IMAGE.placeholder}
+                        className={cn(
+                            `absolute inset-0 transition-all duration-500 ${
+                                !hasLoaded && "blur-xl"
+                            }}`
+                        )}
+                        style={{ objectFit: "cover" }}
+                        onLoad={() => setReady(true)}
+                    />
+                </div>
+            </section>
+        </article>
+    );
 };

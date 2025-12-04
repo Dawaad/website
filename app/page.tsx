@@ -2,6 +2,7 @@
 
 import { Introduction } from "@/components/landing/hero-blurb";
 import { Activity } from "@/components/landing/landing-activity";
+import { Contact } from "@/components/landing/landing-contact";
 import { ExperienceSection } from "@/components/landing/landing-experience";
 import { Skills } from "@/components/landing/landing.skills";
 import { SkylineHero } from "@/components/ui/background/skyline-background";
@@ -38,6 +39,7 @@ export default function Home() {
             <ExperienceSection />
             <Activity />
             <Skills />
+            <Contact />
         </>
     );
 }
