@@ -15,3 +15,12 @@ export interface ChildNodeProps {
 export interface ClassNameProps {
     className?: string;
 }
+
+export interface LinkProps {
+    href: string;
+    label: string;
+}
+
+export interface NavbarProps extends ClassNameProps {
+    links: LinkProps[];
+}

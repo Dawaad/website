@@ -27,7 +27,7 @@ export const metadata: Metadata = {
 export default function Home() {
     return (
         <>
-            <section className="min-h-[95dvh] relative overflow-hidden z-20">
+            <section id="home" className="min-h-[95dvh] relative overflow-hidden z-20">
                 {/* <Grid className=" opacity-30" size="md" /> */}
                 <div className="absolute inset-0 h-[90dvh] bg-neutral-600"></div>
                 <SkylineHero />
@@ -36,10 +36,18 @@ export default function Home() {
                     <Introduction />
                 </div>
             </section>
-            <ExperienceSection />
-            <Activity />
-            <Skills />
-            <Contact />
+            <div id="experience">
+                <ExperienceSection />
+            </div>
+            <div id="activity">
+                <Activity />
+            </div>
+            <div id="skills">
+                <Skills />
+            </div>
+            <div id="contact">
+                <Contact />
+            </div>
         </>
     );
 }
