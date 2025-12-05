@@ -23,15 +23,16 @@ export const Introduction = () => {
                 containerRef={containerRef}
             />
             <div
-                className="space-y-6  w-full md:max-w-2xl lg:max-w-4xl lg:translate-x-4"
+                className="space-y-4 md:space-y-6 flex  flex-col w-full items-end md:max-w-2xl lg:max-w-4xl md:translate-x-4 p-2 md:p-0"
                 ref={containerRef}
                 data-has-target-cursor="true"
             >
+                {/* Title Container */}
                 <GlassContainer
-                    className="rounded-none gap-3 p-10 flex flex-col items-end lg:items-start w-full"
-                    surfaceClassname="rounded-none md:rounded-md"
+                    className="p-6 md:p-10 flex flex-col items-end md:items-start"
+                    surfaceClassname="rounded-lg overflow-hidden w-fit md:w-full translate-x-4 pr-8 md:translate-x-0 md:pr-0"
                 >
-                    <h1 className="text-end lg:text-start text-2xl sm:text-5xl lg:text-6xl font-semibold lg:leading-[70px] text-neutral-100">
+                    <h1 className="text-end md:text-start text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold leading-tight sm:leading-snug lg:leading-[70px] text-neutral-100">
                         <div>
                             Hi, I'm{" "}
                             <Link
@@ -75,8 +76,14 @@ export const Introduction = () => {
                             </span>
                         </div>
                     </h1>
+                </GlassContainer>
 
-                    <div className="text-xs sm:text-sm md:text-base text-start sm:text-end lg:text-start text-neutral-200 font-medium  max-w-sm sm:max-w-lg lg:max-w-2xl leading-tight italic mt-2">
+                {/* Description & CTA Container */}
+                <GlassContainer
+                    className=" p-6 md:p-8 lg:p-10 flex flex-col items-start w-full"
+                    surfaceClassname="rounded-lg -translate-x-4 md:translate-x-0 pl-8 w-fit md:w-full"
+                >
+                    <div className="text-xs sm:text-sm md:text-base text-start text-neutral-200 font-medium max-w-full md:max-w-lg lg:max-w-2xl leading-tight italic">
                         <div>
                             Software engineer, solutions architect, start-up founder,
                             <Tooltip content={<BodybuilderTooltipContent />}>
@@ -103,7 +110,7 @@ export const Introduction = () => {
                         </div>
                     </div>
 
-                    <div className="flex flex-row flex-wrap gap-4 sm:gap-7 pt-4 cursor-pointer">
+                    <div className="flex flex-row justify-start flex-wrap gap-4 sm:gap-7 pt-6 cursor-pointer w-full">
                         <Link target="_blank" href={"https://github.com/Dawaad"}>
                             <Button
                                 variant="outline"
@@ -111,7 +118,7 @@ export const Introduction = () => {
                                 className="cursor-target hover:rounded-none transition-all"
                             >
                                 <FaGithub className="size-6" />
-                                <span className="hidden sm:block">View Github</span>
+                                <span>View my Github</span>
                             </Button>
                         </Link>
                     </div>

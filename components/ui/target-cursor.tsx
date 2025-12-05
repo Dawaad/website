@@ -1,5 +1,3 @@
-"use client";
-
 import { useCursor } from "@/lib/contexts/cursor-context";
 import { gsap } from "gsap";
 import React, { useCallback, useEffect, useMemo, useRef } from "react";
@@ -363,7 +361,7 @@ const TargetCursor: React.FC<TargetCursorProps> = ({
         }
     }, [spinDuration, isMobile]);
 
-    if (!isMounted || isMobile) {
+    if (isMobile) {
         return null;
     }
 

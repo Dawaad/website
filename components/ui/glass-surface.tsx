@@ -69,10 +69,7 @@ const detectBackdropFilterSupport = (): boolean => {
 
 const GlassSurface: React.FC<GlassSurfaceProps> = ({
     children,
-    width = 420,
-    height = "auto",
     brightness = 100,
-    opacity = 1,
     blur = 20,
     backgroundOpacity = 0.1,
     saturation = 1.4,
@@ -88,8 +85,6 @@ const GlassSurface: React.FC<GlassSurfaceProps> = ({
 
     const baseStyles: React.CSSProperties = {
         ...style,
-        width: typeof width === "number" ? `${width}px` : width,
-        height: typeof height === "number" ? `${height}px` : height,
         position: "relative",
         // overflow: "hidden",
     };

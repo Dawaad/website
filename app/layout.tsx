@@ -27,7 +27,9 @@ export default function RootLayout({
                 >
                     <CursorProvider>
                         <Navbar />
-                        <main className="w-full relative bg-background ">{children}</main>
+                        <main className="w-full relative bg-background overflow-hidden ">
+                            {children}
+                        </main>
                     </CursorProvider>
                 </ThemeProvider>
             </body>
