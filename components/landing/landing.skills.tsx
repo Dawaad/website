@@ -126,7 +126,7 @@ export const Skills = () => {
                         ))}
                     </div>
                 </DisplayCard>
-                <DisplayCard className="skew-y-0 w-full h-52">
+                <DisplayCard className="skew-y-0 w-full">
                     <div className="flex border-b pb-2 mb-3">Intimately into Infrastructure</div>
                     <div className="flex flex-wrap space-x-3 h-full w-full items-start pr-24">
                         {infrastructureSkills.map((skill, index) => (
@@ -137,7 +137,7 @@ export const Skills = () => {
                         ))}
                     </div>
                 </DisplayCard>
-                <DisplayCard className="skew-y-0 w-full h-60">
+                <DisplayCard className="skew-y-0 w-full">
                     <div className="flex border-b pb-2 mb-3">Baller in the Backend</div>
                     <div className="flex flex-wrap space-x-3 h-full w-full items-start pr-24">
                         {backendSkills.map((skill, index) => (

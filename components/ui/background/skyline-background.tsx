@@ -299,12 +299,12 @@ export const SkylineHero: FC = () => {
                 })}
             </section>
             <section className="relative mt-0.5 flex flex-col space-y-0.5 ">
-                <div className="h-3 shadow w-full bg-primary/70" />
-                <div className="h-3 shadow w-full bg-primary/50" />
-                <div className="h-2 shadow w-full bg-primary/30" />
+                <div className="h-3 shadow w-full bg-primary/40" />
+                <div className="h-3 shadow w-full bg-primary/30" />
                 <div className="h-2 shadow w-full bg-primary/20" />
-                <div className="h-1 shadow w-full bg-primary/10" />
-                <div className="h-0.5 shadow w-full bg-primary/5" />
+                <div className="h-2 shadow w-full bg-primary/10" />
+                <div className="h-1 shadow w-full bg-primary/5" />
+                <div className="h-0.5 shadow w-full bg-primary/[2.5%]s" />
             </section>
         </article>
     );

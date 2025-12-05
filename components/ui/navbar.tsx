@@ -10,12 +10,25 @@ import TextShift from "../text-shift";
 import { Button } from "./button";
 import { GlassContainer } from "./glass-container";
 import { NavbarCommandMenu } from "./nav/nav-command-menu";
+import { MobileNavbar } from "./nav/nav-mobile-menu";
 import { ModeToggle } from "./theme-toggle";
 
 export const Navbar = () => {
     const { setLiquidCursorVisible } = useCursor();
     const [commandMenuOpen, setCommandMenuOpen] = useState(false);
+    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const CURSOR_ATTRIBUTES = CURSOR_HANDLER(setLiquidCursorVisible);
+
+    const mobileLinks = [
+        { label: "Home", href: "#home" },
+        { label: "About", href: "#about" },
+        { label: "Experience", href: "#experience" },
+        { label: "Activity", href: "#activity" },
+        { label: "Skills", href: "#skills" },
+        { label: "Contact", href: "#contact" },
+        { label: "Resume", href: "https://github.com/Dawaad/Resume/blob/main/Resume.pdf" },
+        { label: "GitHub", href: "https://github.com/Dawaad" },
+    ];
 
     return (
         <>
@@ -85,7 +98,7 @@ export const Navbar = () => {
                             </Link>
                         </GlassContainer>
                     </nav>
-                    <div className="md:translate-x-2">
+                    <div className="md:translate-x-8">
                         <GlassContainer
                             className="flex p-1 md:pr-4 flex-row items-center"
                             {...CURSOR_ATTRIBUTES}
@@ -106,7 +119,11 @@ export const Navbar = () => {
                             className="flex p-1 pr-4 flex-row items-center"
                             {...CURSOR_ATTRIBUTES}
                         >
-                            <Button variant={"ghost"} className="cursor-pointer text-white/80">
+                            <Button
+                                variant={"ghost"}
+                                onClick={() => setMobileMenuOpen(true)}
+                                className="cursor-pointer text-white/80"
+                            >
                                 <Menu />
                             </Button>
                         </GlassContainer>
@@ -114,6 +131,12 @@ export const Navbar = () => {
                 </div>
             </header>
             <NavbarCommandMenu open={commandMenuOpen} setOpen={setCommandMenuOpen} />
+            <MobileNavbar
+                links={mobileLinks}
+                open={mobileMenuOpen}
+                setOpen={setMobileMenuOpen}
+                showTrigger={false}
+            />
         </>
     );
 };

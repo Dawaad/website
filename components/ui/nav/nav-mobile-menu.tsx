@@ -4,38 +4,56 @@ import { LinkProps, NavbarProps } from "@/lib/interfaces/interface";
 import { cn } from "@/lib/utils";
 
 import { Menu, X } from "lucide-react";
-import { motion, AnimatePresence } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React, { Dispatch, FC, useState } from "react";
 import { Button } from "../button";
 
-export const MobileNavbar: FC<NavbarProps> = ({ links, className }) => {
-    const [toggleSidebar, setToggleSidebar] = useState<boolean>(false);
+interface MobileNavbarExtendedProps extends NavbarProps {
+    open?: boolean;
+    setOpen?: Dispatch<React.SetStateAction<boolean>>;
+    showTrigger?: boolean;
+}
+
+export const MobileNavbar: FC<MobileNavbarExtendedProps> = ({
+    links,
+    className,
+    open: externalOpen,
+    setOpen: externalSetOpen,
+    showTrigger = true,
+}) => {
+    const [internalOpen, setInternalOpen] = useState<boolean>(false);
+
+    // Use external state if provided, otherwise use internal state
+    const isOpen = externalOpen !== undefined ? externalOpen : internalOpen;
+    const setIsOpen = externalSetOpen !== undefined ? externalSetOpen : setInternalOpen;
 
     return (
         <>
-            <div className={cn("px-4 w-full flex items-center", className)}>
-                <Button
-                    variant={"ghost"}
-                    size={"icon"}
-                    onClick={() => setToggleSidebar((prev) => !prev)}
-                    className="size-12"
-                >
-                    <Menu className="size-8" />
-                </Button>
+            {showTrigger && (
+                <div className={cn("px-4 w-full flex items-center", className)}>
+                    <Button
+                        variant={"ghost"}
+                        size={"icon"}
+                        onClick={() => setIsOpen((prev) => !prev)}
+                        className="size-12"
+                    >
+                        <Menu className="size-8" />
+                    </Button>
 
-                <section className="flex w-auto flex-grow justify-end pr-6 pt-1">
-                    <Link href={"/"} className="justify-end mb-2 lg:w-fit">
-                        {/* <Logo className="cursor-pointer w-[10rem]" variant="minimal" /> */}
-                        jtucker.io
-                    </Link>
-                </section>
-            </div>
+                    <section className="flex w-auto flex-grow justify-end pr-6 pt-1">
+                        <Link href={"/"} className="justify-end mb-2 lg:w-fit">
+                            {/* <Logo className="cursor-pointer w-[10rem]" variant="minimal" /> */}
+                            jtucker.io
+                        </Link>
+                    </section>
+                </div>
+            )}
 
             <AnimatePresence>
-                {toggleSidebar ? (
-                    <LinkSection links={links} toggle={setToggleSidebar} className={className} />
+                {isOpen ? (
+                    <LinkSection links={links} toggle={setIsOpen} className={className} />
                 ) : null}
             </AnimatePresence>
         </>
@@ -125,7 +143,7 @@ const LinkSection: FC<NavbarMenuProps> = ({ links, toggle }) => {
                     delay: 1,
                 },
             }}
-            className="inset-0 absolute h-screen w-screen  bg-neutral-950/90 z-[90]"
+            className="inset-0 fixed h-screen w-screen  bg-neutral-950/90 z-[100]"
         >
             <motion.aside
                 onClick={(e) => {
@@ -186,13 +204,32 @@ interface NavbarItemProps extends LinkProps {
 }
 
 const MobileNavLink: FC<NavbarItemProps> = ({ label, href, toggle }) => {
+    const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+        // Check if it's an internal link (starts with #)
+        if (href.startsWith("#")) {
+            e.preventDefault();
+            const sectionId = href.substring(1);
+            const element = document.getElementById(sectionId);
+            if (element) {
+                element.scrollIntoView({ behavior: "smooth", block: "start" });
+            }
+            toggle(false);
+        } else {
+            // For external links, just close the menu
+            toggle(false);
+        }
+    };
+
     return (
         <motion.div
-            onClick={() => toggle(false)}
             variants={mobileLinkVars}
             className="pointer-events-auto text-3xl font-semibold uppercase text-secondary-header group-hover:text-foreground/40 hover:group-hover:text-secondary-foreground"
         >
-            <Link href={href}>
+            <Link
+                href={href}
+                onClick={handleClick}
+                target={href.startsWith("http") ? "_blank" : undefined}
+            >
                 <div className="flex space-x-3 w-fit py-1 items-center transition-colors">
                     {label}
                 </div>

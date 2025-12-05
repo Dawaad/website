@@ -1,3 +1,5 @@
+"use client";
+
 import { useCursor } from "@/lib/contexts/cursor-context";
 import { gsap } from "gsap";
 import React, { useCallback, useEffect, useMemo, useRef } from "react";
@@ -19,6 +21,7 @@ const TargetCursor: React.FC<TargetCursorProps> = ({
     parallaxOn = true,
     containerRef,
 }) => {
+    const [isMounted, setIsMounted] = React.useState(false);
     const cursorRef = useRef<HTMLDivElement>(null);
     const cornersRef = useRef<NodeListOf<HTMLDivElement> | null>(null);
     const spinTl = useRef<gsap.core.Timeline | null>(null);
@@ -39,6 +42,11 @@ const TargetCursor: React.FC<TargetCursorProps> = ({
         const mobileRegex = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i;
         const isMobileUserAgent = mobileRegex.test(userAgent.toLowerCase());
         return (hasTouchScreen && isSmallScreen) || isMobileUserAgent;
+    }, []);
+
+    // Only render on client to avoid hydration mismatch
+    useEffect(() => {
+        setIsMounted(true);
     }, []);
 
     const constants = useMemo(() => ({ borderWidth: 3, cornerSize: 12 }), []);
@@ -355,7 +363,7 @@ const TargetCursor: React.FC<TargetCursorProps> = ({
         }
     }, [spinDuration, isMobile]);
 
-    if (isMobile) {
+    if (!isMounted || isMobile) {
         return null;
     }
 
