@@ -1,0 +1,103 @@
+# ==========================
+# Block Major AI Crawlers
+# ==========================
+
+# OpenAI / ChatGPT
+User-agent: GPTBot
+Disallow: /
+
+User-agent: ChatGPT-User
+Disallow: /
+
+User-agent: Omgilibot
+Disallow: /
+
+# Anthropic / Claude
+User-agent: anthropic-ai
+Disallow: /
+
+User-agent: ClaudeBot
+Disallow: /
+
+# Google AI Crawling
+User-agent: Google-Extended
+Disallow: /
+
+User-agent: GoogleOther
+Disallow: /
+
+User-agent: GoogleOther-Image
+Disallow: /
+
+# Perplexity
+User-agent: PerplexityBot
+Disallow: /
+
+User-agent: Perplexity/1.0
+Disallow: /
+
+# Meta (Facebook / Instagram LLM training)
+User-agent: FacebookBot
+Disallow: /
+
+User-agent: Meta-External-Agent
+Disallow: /
+
+# Apple
+User-agent: Applebot-Extended
+Disallow: /
+
+# Amazon
+User-agent: Amazonbot
+Disallow: /
+
+User-agent: Amazonbot/1.0
+Disallow: /
+
+# ByteDance / TikTok
+User-agent: Bytespider
+Disallow: /
+
+# Common scrapers repurposed for dataset collection
+User-agent: CCBot
+Disallow: /
+
+User-agent: Diffbot
+Disallow: /
+
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: SemrushBot
+Disallow: /
+
+User-agent: DataForSeoBot
+Disallow: /
+
+User-agent: intelxbot
+Disallow: /
+
+User-agent: GPTScraper
+Disallow: /
+
+# Misc ML scrapers
+User-agent: Webzio-LLM
+Disallow: /
+
+User-agent: YouBot
+Disallow: /
+
+User-agent: SeekrBot
+Disallow: /
+
+User-agent: Yeti
+Disallow: /
+
+
+# ==========================
+# Allow all normal search engines
+# ==========================
+
+User-agent: *
+Allow: /
+
