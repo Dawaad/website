@@ -5,6 +5,7 @@ import { Activity } from "@/components/landing/landing-activity";
 import { Contact } from "@/components/landing/landing-contact";
 import { ExperienceSection } from "@/components/landing/landing-experience";
 import { Skills } from "@/components/landing/landing.skills";
+import { Grid } from "@/components/ui/background/grids";
 import { SkylineHero } from "@/components/ui/background/skyline-background";
 import { LiquidCursor } from "@/components/ui/gsap/liquid-cursor";
 import { Metadata } from "next";
@@ -27,9 +28,9 @@ export const metadata: Metadata = {
 export default function Home() {
     return (
         <>
-            <section id="home" className="min-h-[95dvh] relative overflow-hidden z-20">
-                {/* <Grid className=" opacity-30" size="md" /> */}
-                <div className="absolute inset-0 h-[90dvh] bg-neutral-600"></div>
+            <section id="home" className="min-h-[120dvh] md:min-h-dvh relative overflow-hidden z-20">
+                <Grid className=" opacity-30" size="md" />
+
                 <SkylineHero />
                 <LiquidCursor size={30} />
                 <div className="z-30 flex flex-col items-end justify-center h-[90dvh] space-y-4">

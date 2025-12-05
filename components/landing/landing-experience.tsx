@@ -1,10 +1,11 @@
 "use client";
 
 import { CURSOR_HANDLER, useCursor } from "@/lib/contexts/cursor-context";
-import { Calendar, Github, Pin } from "lucide-react";
+import { Calendar, Pin } from "lucide-react";
 import { motion, useMotionValueEvent, useScroll } from "motion/react";
 import Link from "next/link";
 import { useRef, useState } from "react";
+import { FaGithub } from "react-icons/fa";
 import { BackgroundBeams } from "../ui/background/beams";
 import { Grid } from "../ui/background/grids";
 import { Badge } from "../ui/badge";
@@ -12,7 +13,6 @@ import { Button } from "../ui/button";
 import { GlassContainer } from "../ui/glass-container";
 import TargetCursor from "../ui/target-cursor";
 import { TracingBeam } from "../ui/tracing-beam";
-import { FaGithub } from "react-icons/fa";
 
 interface ScrollItem {
     static: React.ReactNode;
@@ -266,8 +266,8 @@ export function ExperienceSection() {
                 ref={containerRef}
                 data-has-target-cursor="true"
             >
-                <GlassContainer className="w-full gap-3 ml-4 p-8 py-12 flex flex-col items-start justify-start">
-                    <h1 className="text-3xl sm:text-4xl md:text-5xl font-semibold leading-12 md:leading-[60px] text-neutral-100">
+                <GlassContainer className="w-full gap-3 ml-4 p-4 sm:p-8 sm:py-12 flex flex-col items-start justify-start">
+                    <h1 className="text-xl sm:text-4xl md:text-5xl font-semibold leading-tight md:leading-[60px] text-neutral-100">
                         <div>
                             Have a{" "}
                             <span className="bg-red-400 rounded-lg rounded-b-none text-white px-3 py-1 inline-block cursor-target italic">

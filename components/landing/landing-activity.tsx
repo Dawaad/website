@@ -12,9 +12,12 @@ export const Activity = () => {
             <RoomBackground />
             <section className="mt-40 flex flex-col 2xl:flex-row-reverse">
                 <article className="flex w-full justify-end">
-                    <div className="translate-x-4 z-30 space-y-6  w-full md:w-auto md:max-w-4xl mb-6 2xl:mb-12 ">
-                        <GlassContainer className="w-full gap-3 ml-4 px-4 md:p-8 py-6 md:py-12 flex flex-col items-start justify-start pr-16">
-                            <h1 className="text-4xl sm:text-5xl font-semibold leading-[60px] text-neutral-100">
+                    <div className="translate-x-4 z-30 space-y-6  md:w-auto md:max-w-4xl mb-6 2xl:mb-12 ">
+                        <GlassContainer
+                            className="w-full gap-3 ml-4 px-4 md:p-8 py-6 md:py-12 flex flex-col items-start justify-start sm:pr-16"
+                            surfaceClassname="w-fit md:w-full"
+                        >
+                            <h1 className="text-3xl sm:text-4xl md:text-5xl font-semibold leading-[60px] text-neutral-100">
                                 <div>
                                     <span className="bg-red-400 rounded-lg rounded-b-none text-white px-3 py-1 inline-block cursor-target italic">
                                         Peep

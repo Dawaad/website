@@ -23,16 +23,16 @@ export const Introduction = () => {
                 containerRef={containerRef}
             />
             <div
-                className="space-y-4 md:space-y-6 flex  flex-col w-full items-end md:max-w-2xl lg:max-w-4xl md:translate-x-4 p-2 md:p-0"
+                className="space-y-4 md:space-y-6 flex mt-32 md:mt-0  flex-col w-full items-end md:max-w-2xl lg:max-w-4xl md:translate-x-4 p-2 md:p-0"
                 ref={containerRef}
                 data-has-target-cursor="true"
             >
                 {/* Title Container */}
                 <GlassContainer
                     className="p-6 md:p-10 flex flex-col items-end md:items-start"
-                    surfaceClassname="rounded-lg overflow-hidden w-fit md:w-full translate-x-4 pr-8 md:translate-x-0 md:pr-0"
+                    surfaceClassname="rounded-lg overflow-hidden w-fit md:w-full translate-x-4 sm:pr-8 md:translate-x-0 md:pr-0"
                 >
-                    <h1 className="text-end md:text-start text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold leading-tight sm:leading-snug lg:leading-[70px] text-neutral-100">
+                    <h1 className="text-end md:text-start text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold leading-tight sm:leading-snug lg:leading-[70px] text-neutral-100">
                         <div>
                             Hi, I'm{" "}
                             <Link
@@ -81,7 +81,7 @@ export const Introduction = () => {
                 {/* Description & CTA Container */}
                 <GlassContainer
                     className=" p-6 md:p-8 lg:p-10 flex flex-col items-start w-full"
-                    surfaceClassname="rounded-lg -translate-x-4 md:translate-x-0 pl-8 w-fit md:w-full"
+                    surfaceClassname="rounded-lg -translate-x-4 md:translate-x-0 sm:pl-8 md:pl-0 w-fit md:w-full"
                 >
                     <div className="text-xs sm:text-sm md:text-base text-start text-neutral-200 font-medium max-w-full md:max-w-lg lg:max-w-2xl leading-tight italic">
                         <div>

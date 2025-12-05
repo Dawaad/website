@@ -247,7 +247,7 @@ export const SkylineHero: FC = () => {
         <article className="absolute w-full h-auto overflow-hidden">
             <section
                 ref={containerRef}
-                className="relative w-full min-h-[90dvh] overflow-hidden z-0 shadow-xl"
+                className="relative w-full min-h-dvh md:min-h-[90dvh] overflow-hidden z-0 shadow-xl"
                 data-phase={mode}
             >
                 {SKYLINE_IMAGES.map((image, index) => {
