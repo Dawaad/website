@@ -35,7 +35,7 @@ export const DisplayCard: FCWC<DisplayCardProps> = ({
     return (
         <div
             className={cn(
-                "transition-all relative flex min-h-52 w-[32rem] -skew-y-[8deg] select-none flex-col justify-between rounded-xl border-2 border-primary/60 hover:border-primary  bg-primary/10 backdrop-blur-sm px-6 py-4 duration-700 after:absolute after:-right-1 after:top-[-5%] after:h-[110%] after:w-[20rem] after:bg-gradient-to-l after:from-background after:to-transparent after:content-[''] hover:bg-muted [&>*]:flex [&>*]:items-center [&>*]:gap-2",
+                "transition-all relative flex min-h-52 w-[32rem] -skew-y-[8deg] select-none flex-col justify-evenly rounded-xl border-2 border-primary/60 hover:border-primary  bg-primary/10 backdrop-blur-sm px-6 py-4 duration-700 after:absolute after:-right-1 after:top-[-5%] after:h-[110%] after:w-[20rem] after:bg-gradient-to-l after:from-background after:to-transparent after:content-[''] hover:bg-muted [&>*]:flex [&>*]:items-center [&>*]:gap-2",
                 "[grid-area:stack] before:absolute before:w-[100%] before:rounded-xl  before:h-full before:content-[''] before:bg-blend-overlay before:bg-background/20 grayscale-100 hover:before:opacity-0 before:transition-opacity before:duration:700 hover:grayscale-0 before:left-0 before:top-0",
                 "hover:opacity-100",
                 getOpacityClass(),
