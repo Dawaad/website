@@ -40,7 +40,7 @@ export const Activity = () => {
                 </article>
                 <article className="z-20">
                     <div className="-translate-x-4 z-30 w-fit mb-12">
-                        <GlassContainer className="p-10 lg:p-14 w-full max-w-lg md:max-w-[50rem] lg:max-w-none">
+                        <GlassContainer className="p-8 lg:p-14 w-full max-w-sm md:max-w-[50rem] lg:max-w-none">
                             <GitHubCalendar
                                 username="Dawaad"
                                 colorScheme="light"

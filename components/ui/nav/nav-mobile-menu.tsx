@@ -186,9 +186,9 @@ const LinkSection: FC<NavbarMenuProps> = ({ links, toggle }) => {
                                 key={`mobile-link-${index}`}
                                 label={link.label}
                                 href={link.href}
-                                // active={getActiveLink(pathName, link)}
-                                // todo: Scroll position calculation
                                 active={false}
+                                external={link.external}
+                                shouldCloseOnClick={link.shouldCloseOnClick}
                             />
                         );
                     })}
@@ -203,7 +203,13 @@ interface NavbarItemProps extends LinkProps {
     active: boolean;
 }
 
-const MobileNavLink: FC<NavbarItemProps> = ({ label, href, toggle }) => {
+const MobileNavLink: FC<NavbarItemProps> = ({
+    label,
+    href,
+    toggle,
+    shouldCloseOnClick = true,
+    external = false,
+}) => {
     const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
         // Check if it's an internal link (starts with #)
         if (href.startsWith("#")) {
@@ -213,10 +219,15 @@ const MobileNavLink: FC<NavbarItemProps> = ({ label, href, toggle }) => {
             if (element) {
                 element.scrollIntoView({ behavior: "smooth", block: "start" });
             }
-            toggle(false);
+            // Close the menu after navigating
+            if (shouldCloseOnClick) {
+                toggle(false);
+            }
         } else {
             // For external links, just close the menu
-            toggle(false);
+            if (shouldCloseOnClick) {
+                toggle(false);
+            }
         }
     };
 
@@ -225,11 +236,7 @@ const MobileNavLink: FC<NavbarItemProps> = ({ label, href, toggle }) => {
             variants={mobileLinkVars}
             className="pointer-events-auto text-3xl font-semibold uppercase text-secondary-header group-hover:text-foreground/40 hover:group-hover:text-secondary-foreground"
         >
-            <Link
-                href={href}
-                onClick={handleClick}
-                target={href.startsWith("http") ? "_blank" : undefined}
-            >
+            <Link href={href} onClick={handleClick} target={external ? "_blank" : "_self"}>
                 <div className="flex space-x-3 w-fit py-1 items-center transition-colors">
                     {label}
                 </div>

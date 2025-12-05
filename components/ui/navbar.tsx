@@ -1,6 +1,7 @@
 "use client";
 
 import { CURSOR_HANDLER, useCursor } from "@/lib/contexts/cursor-context";
+import { LinkProps } from "@/lib/interfaces/interface";
 import { Command, Menu, Scroll } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
@@ -19,15 +20,25 @@ export const Navbar = () => {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const CURSOR_ATTRIBUTES = CURSOR_HANDLER(setLiquidCursorVisible);
 
-    const mobileLinks = [
+    const mobileLinks: LinkProps[] = [
         { label: "Home", href: "#home" },
         { label: "About", href: "#about" },
         { label: "Experience", href: "#experience" },
         { label: "Activity", href: "#activity" },
         { label: "Skills", href: "#skills" },
         { label: "Contact", href: "#contact" },
-        { label: "Resume", href: "https://github.com/Dawaad/Resume/blob/main/Resume.pdf" },
-        { label: "GitHub", href: "https://github.com/Dawaad" },
+        {
+            label: "Resume",
+            href: "https://github.com/Dawaad/Resume/blob/main/Resume.pdf",
+            external: true,
+            shouldCloseOnClick: false,
+        },
+        {
+            label: "GitHub",
+            href: "https://github.com/Dawaad",
+            external: true,
+            shouldCloseOnClick: false,
+        },
     ];
 
     return (

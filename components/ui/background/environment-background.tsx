@@ -14,9 +14,9 @@ const IMAGE: VisualProps = {
 export const EnvironmentBackground = () => {
     const [hasLoaded, setReady] = useState(false);
     return (
-        <article className="absolute w-full h-[80dvh] h-auto overflow-hidden">
-            <div className="absolute inset-0 backdrop-blur-md w-full h-full z-10" />
-            <section className="relative w-full min-h-[80dvh] overflow-hidden z-0">
+        <article className="absolute w-full md:h-[80dvh] h-full overflow-hidden z-0 inset-0">
+            {/* <div className="absolute inset-0 backdrop-blur-md w-full h-full z-10" /> */}
+            <section className="relative w-full min-h-[80dvh] h-full overflow-hidden z-0">
                 <div
                     className="absolute inset-0"
                     style={{

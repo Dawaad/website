@@ -15,12 +15,10 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html
-            lang="en"
-            suppressHydrationWarning={true}
-            className="min-w-screen w-dvw overflow-x-hidden"
-        >
-            <body className={`${MontserratFont.className} antialiased bg-neutral-200 min-w-screen`}>
+        <html lang="en" suppressHydrationWarning={true} className="overflow-x-hidden">
+            <body
+                className={`${MontserratFont.className} antialiased bg-neutral-200 overflow-hidden`}
+            >
                 <ThemeProvider
                     attribute={"class"}
                     defaultTheme="theme"
@@ -29,7 +27,7 @@ export default function RootLayout({
                 >
                     <CursorProvider>
                         <Navbar />
-                        <main className="min-w-dvw w-dvw relative bg-background">{children}</main>
+                        <main className="w-full relative bg-background ">{children}</main>
                     </CursorProvider>
                 </ThemeProvider>
             </body>

@@ -28,10 +28,10 @@ export const Introduction = () => {
                 data-has-target-cursor="true"
             >
                 <GlassContainer
-                    className="rounded-none gap-3 p-10 flex flex-col items-start sm:items-end lg:items-start w-full"
+                    className="rounded-none gap-3 p-10 flex flex-col items-end lg:items-start w-full"
                     surfaceClassname="rounded-none md:rounded-md"
                 >
-                    <h1 className="text-start sm:text-end lg:text-start text-2xl sm:text-5xl lg:text-6xl font-semibold lg:leading-[70px] text-neutral-100">
+                    <h1 className="text-end lg:text-start text-2xl sm:text-5xl lg:text-6xl font-semibold lg:leading-[70px] text-neutral-100">
                         <div>
                             Hi, I'm{" "}
                             <Link
@@ -39,19 +39,19 @@ export const Introduction = () => {
                                 target="_blank"
                                 className="cursor-none"
                             >
-                                <span className="bg-amber-500 rounded-lg rounded-br-none text-white px-3 py-1 inline-block cursor-target">
+                                <span className="bg-amber-500 rounded-lg rounded-b-none md:rounded-bl-lg md:rounded-br-none text-white px-3 py-1 inline-block cursor-target">
                                     Jared.
                                 </span>
                             </Link>
                         </div>
                         <div>
-                            a Full-stack{" "}
+                            a full-stack{" "}
                             <Link
                                 className="cursor-none"
                                 href={"https://www.linkedin.com/in/jared-tucker-00ba74250/"}
                                 target="_blank"
                             >
-                                <span className="bg-red-400 rounded-lg rounded-l-none text-white px-3 py-1 inline-block cursor-target">
+                                <span className="bg-red-400 rounded-lg rounded-tr-none md:rounded-tr-md rounded-b-none md:rounded-l-none text-white px-3 py-1 inline-block cursor-target">
                                     Engineer
                                 </span>{" "}
                             </Link>
@@ -63,7 +63,7 @@ export const Introduction = () => {
                                 target="_blank"
                                 className="cursor-none"
                             >
-                                <span className="bg-purple-300 rounded-lg rounded-tr-none text-white px-3 py-1 inline-block cursor-target">
+                                <span className="bg-purple-300 rounded-lg rounded-tr-none md:rounded-tr-lg text-white px-3 py-1 inline-block cursor-target">
                                     Startup Founder{" "}
                                 </span>{" "}
                             </Link>
@@ -83,9 +83,9 @@ export const Introduction = () => {
                                 <span className="italic animate-pulse mx-1 cursor-target pointer-events-auto">
                                     natural bodybuilder,
                                 </span>
-                            </Tooltip>{" "}
+                            </Tooltip>
                             <Tooltip content={<MarathonTooltipContent />}>
-                                <span className="italic animate-pulse mx-1 cursor-target pointer-events-auto">
+                                <span className="italic animate-pulse mr-1 cursor-target pointer-events-auto">
                                     marathon runner,
                                 </span>
                             </Tooltip>
