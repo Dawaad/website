@@ -208,7 +208,7 @@ export function ExperienceSection() {
                         Monash University
                     </h1>
                     <h2 className="font-semibold text-primary/80">
-                        Bachelors of Software Engineering
+                        Bachelor's Degree of Computer Science
                     </h2>
 
                     <div className="text-primary/80 text-sm italic flex flex-col space-y-3  ">
