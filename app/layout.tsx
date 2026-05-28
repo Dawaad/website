@@ -1,8 +1,20 @@
 import type { Metadata } from "next";
+import localFont from "next/font/local";
+
+import { PortfolioShell } from "@/components/feature-modules/portfolio/components/portfolio-shell";
+
+import "./globals.css";
+
+const jetbrainsMono = localFont({
+  src: "../public/fonts/JetBrainsMono-Variable.ttf",
+  variable: "--font-jetbrains-mono",
+  display: "swap",
+  weight: "100 900",
+});
 
 export const metadata: Metadata = {
-  title: "kade okafor — portfolio",
-  description: "systems & interaction design — terminal portfolio",
+  title: "Jared Tucker",
+  description: "Personal Portfolio",
 };
 
 export default function RootLayout({
@@ -11,8 +23,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className="scheme-phosphor">{children}</body>
+    <html lang="en" className={jetbrainsMono.variable}>
+      <body className="scheme-beige flex h-dvh items-center justify-center overflow-hidden p-6 font-mono text-[13px] leading-[1.55] text-fg-1">
+        <PortfolioShell>{children}</PortfolioShell>
+      </body>
     </html>
   );
 }

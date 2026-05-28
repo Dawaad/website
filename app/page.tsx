@@ -1,6 +1,5 @@
-import "./portfolio/portfolio.css";
-import App from "./portfolio/App.jsx";
+import { AboutSection } from '@/components/feature-modules/portfolio/components/sections/about-section';
 
 export default function Home() {
-  return <App />;
+  return <AboutSection />;
 }
