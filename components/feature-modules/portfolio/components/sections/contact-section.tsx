@@ -97,7 +97,7 @@ export const ContactSection: FC = () => {
           </div>
         </div>
       </Panel>
-      <Panel label="~/ascii.txt" className="ascii-panel">
+      <Panel label="~/ascii.txt" className="ascii-panel max-md:hidden">
         {/* Single-colour ASCII SVG rendered as a currentColor-driven mask so it
             inherits each theme's foreground instead of its baked-in grey, and
             `absolute inset-0` bleeds it past the Panel padding to fill the
