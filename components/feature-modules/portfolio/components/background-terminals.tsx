@@ -487,7 +487,7 @@ export function BackgroundTerminals() {
   return (
     <div
       aria-hidden
-      className="pointer-events-none fixed inset-0 z-0 flex select-none items-center justify-center overflow-hidden opacity-85"
+      className="pointer-events-none fixed inset-0 z-0 flex select-none items-center justify-center overflow-hidden opacity-85 max-md:hidden"
     >
       <div className="relative h-[min(980px,100dvh)] w-full max-w-[max(94dvw,52rem)]">
         {/* ── top band ── */}

@@ -1,16 +1,19 @@
 import type { ReactNode } from 'react';
 
+import { cn } from '@/lib/util/utils';
+
 interface PanelProps {
   label?: ReactNode;
   accent?: ReactNode;
   meta?: ReactNode;
+  className?: string;
   children: ReactNode;
 }
 
 /** A labeled sub-section (one side of a tab's two-panel workspace). */
-export function Panel({ label, accent, meta, children }: PanelProps) {
+export function Panel({ label, accent, meta, className, children }: PanelProps) {
   return (
-    <div className="flex min-h-0 min-w-0 flex-col">
+    <div className={cn('flex min-h-0 min-w-0 flex-col max-md:shrink-0', className)}>
       {(label || meta) && (
         <div
           data-static
@@ -26,7 +29,7 @@ export function Panel({ label, accent, meta, children }: PanelProps) {
           {meta && <span className="min-w-0 truncate text-fg-3">{meta}</span>}
         </div>
       )}
-      <div className="min-h-0 flex-1 overflow-auto px-6 py-[22px] [scrollbar-color:var(--fg-3)_transparent] [scrollbar-width:thin]">
+      <div className="min-h-0 flex-1 overflow-auto px-6 py-[22px] [scrollbar-color:var(--fg-3)_transparent] [scrollbar-width:thin] max-md:overflow-visible max-md:px-4">
         {children}
       </div>
     </div>

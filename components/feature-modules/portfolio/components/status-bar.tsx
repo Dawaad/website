@@ -2,18 +2,25 @@
 
 import { usePathname } from 'next/navigation';
 
+import { SchemeMenu } from '@/components/feature-modules/portfolio/components/scheme-switcher';
 import { TABS } from '@/components/feature-modules/portfolio/config/tabs';
 import { useClock } from '@/components/feature-modules/portfolio/hooks/use-clock';
 import { useSelectionValue } from '@/components/feature-modules/portfolio/context/selection-provider';
+import type { SchemeName } from '@/lib/types/portfolio';
 
-export function StatusBar() {
+interface StatusBarProps {
+  scheme: SchemeName;
+  setScheme: (scheme: SchemeName) => void;
+}
+
+export function StatusBar({ scheme, setScheme }: StatusBarProps) {
   const pathname = usePathname();
   const clock = useClock();
   const { sel, total } = useSelectionValue();
   const tab = TABS.find((t) => t.href === pathname) ?? TABS[0];
 
   return (
-    <div className="relative z-[2] flex flex-none items-center justify-between gap-3 overflow-hidden whitespace-nowrap border-t border-fg-4 bg-bg-0 px-3.5 py-[7px] text-[10.5px] tracking-[0.03em] text-fg-2">
+    <div className="relative z-[2] flex flex-none items-center justify-between gap-3 whitespace-nowrap border-t border-fg-4 bg-bg-0 px-3.5 py-[7px] text-[10.5px] tracking-[0.03em] text-fg-2 md:overflow-hidden">
       <div className="flex flex-none items-center gap-3">
         <span>
           ~/portfolio/<span className="text-fg-0">{tab.key}</span>
@@ -28,17 +35,18 @@ export function StatusBar() {
         )}
       </div>
       <div className="flex flex-none items-center gap-3">
-        <span className="text-fg-1">● online</span>
-        <span className="text-fg-4">│</span>
-        <span className="whitespace-nowrap">
+        <span className="text-fg-1 max-md:hidden">● online</span>
+        <span className="text-fg-4 max-md:hidden">│</span>
+        <span className="whitespace-nowrap max-md:hidden">
           <span className="text-amber">↑↓</span>&nbsp;nav
         </span>
-        <span className="whitespace-nowrap">
+        <span className="whitespace-nowrap max-md:hidden">
           <span className="text-amber">1-5</span>&nbsp;tabs
         </span>
-        <span className="whitespace-nowrap">
+        <span className="whitespace-nowrap max-md:hidden">
           <span className="text-amber">⏎</span>&nbsp;open
         </span>
+        <SchemeMenu scheme={scheme} setScheme={setScheme} />
         <span className="text-fg-4">│</span>
         <span>{clock}</span>
       </div>

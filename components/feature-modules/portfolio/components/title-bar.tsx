@@ -18,11 +18,11 @@ export function TitleBar({ user }: TitleBarProps) {
       </div>
       <div className="flex-1" />
       <div className="flex flex-none gap-3 whitespace-nowrap text-[10.5px] tracking-[0.08em] text-fg-3">
-        <span className="text-fg-1">tls 1.3</span>
-        <span className="text-fg-4">│</span>
+        <span className="text-fg-1 max-md:hidden">tls 1.3</span>
+        <span className="text-fg-4 max-md:hidden">│</span>
         <span className="text-fg-1">04:21:08</span>
-        <span className="text-fg-4">│</span>
-        <span className="text-fg-1">v3.0.2</span>
+        <span className="text-fg-4 max-md:hidden">│</span>
+        <span className="text-fg-1 max-md:hidden">v3.0.2</span>
       </div>
     </div>
   );

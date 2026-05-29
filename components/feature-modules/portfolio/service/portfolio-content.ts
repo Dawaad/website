@@ -4,7 +4,7 @@ import type { PortfolioContent } from "@/lib/types/portfolio";
 // of truth for everything rendered in the terminal.
 export const portfolioContent: PortfolioContent = {
   user: {
-    handle: "dawad",
+    handle: "dawad0",
     name: "Jared",
     role: "Forward Embedded Engineer & Systems Architect",
     based: "Melbourne, au — utc+10",

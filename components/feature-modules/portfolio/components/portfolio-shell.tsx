@@ -119,14 +119,14 @@ export function PortfolioShell({ children }: { children: ReactNode }) {
   return (
     <SelectionProvider>
       <BackgroundTerminals />
-      <div className="relative z-10 flex h-[min(820px,calc(100dvh-48px))] w-full max-w-[min(max(80dvw,48rem),var(--breakpoint-3xl))] flex-col overflow-hidden border border-fg-3 bg-bg-1 shadow-sm">
+      <div className="relative z-10 flex h-[min(820px,calc(100dvh-48px))] w-full max-w-[min(max(80dvw,48rem),var(--breakpoint-3xl))] flex-col overflow-hidden border border-fg-3 bg-bg-1 shadow-sm max-md:h-dvh max-md:max-w-none max-md:border-0">
         <TitleBar user={portfolioContent.user} />
         <TabBar onNavigate={navigate} />
         <div className="relative z-[1] min-h-0 flex-1">
           <div
             ref={contentRef}
             data-portfolio-content
-            className="grid h-full grid-cols-2 [&>div:first-child]:border-r [&>div:first-child]:border-fg-4"
+            className="flex h-full flex-col overflow-y-auto md:grid md:grid-cols-2 md:overflow-hidden md:[&>*:not(:last-child)]:border-r md:[&>*:not(:last-child)]:border-fg-4"
           >
             {children}
           </div>
@@ -171,7 +171,7 @@ export function PortfolioShell({ children }: { children: ReactNode }) {
             <BootOverlay onDone={() => setIntro('scramble')} topOffset={coverTop} />
           )}
         </div>
-        <StatusBar />
+        <StatusBar scheme={scheme} setScheme={setScheme} />
         {/* CRT scanline + phosphor-glow overlay. */}
         <div
           aria-hidden

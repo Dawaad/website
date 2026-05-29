@@ -24,7 +24,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={jetbrainsMono.variable}>
-      <body className="scheme-beige flex h-dvh items-center justify-center overflow-hidden p-6 font-mono text-[13px] leading-[1.55] text-fg-1">
+      <body className="scheme-beige flex h-dvh items-center justify-center overflow-hidden p-6 font-mono text-[13px] leading-[1.55] text-fg-1 max-md:p-0">
         <PortfolioShell>{children}</PortfolioShell>
       </body>
     </html>
