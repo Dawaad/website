@@ -1,18 +1,18 @@
-'use client';
+"use client";
 
-import { Fragment } from 'react';
-import type { FC } from 'react';
+import type { FC } from "react";
+import { Fragment } from "react";
 
-import { Panel } from '@/components/feature-modules/portfolio/components/panel';
-import { useReportSelection } from '@/components/feature-modules/portfolio/context/selection-provider';
-import { portfolioContent } from '@/components/feature-modules/portfolio/service/portfolio-content';
+import { Panel } from "@/components/feature-modules/portfolio/components/panel";
+import { useReportSelection } from "@/components/feature-modules/portfolio/context/selection-provider";
+import { portfolioContent } from "@/components/feature-modules/portfolio/service/portfolio-content";
 
 const H2 =
   "mb-4 font-mono text-[13px] font-medium uppercase tracking-[0.14em] text-amber before:content-['>_']";
 const KV =
-  'mt-[22px] grid grid-cols-[90px_1fr] gap-x-[14px] gap-y-1.5 border-t border-dashed border-fg-4 pt-4 text-[12px]';
-const DT = 'text-[11px] uppercase tracking-[0.08em] text-fg-3';
-const DD = 'm-0 text-fg-1';
+  "mt-[22px] grid grid-cols-[90px_1fr] gap-x-[14px] gap-y-1.5 border-t border-dashed border-fg-4 pt-4 text-[12px]";
+const DT = "text-[11px] uppercase tracking-[0.08em] text-fg-3";
+const DD = "m-0 text-fg-1";
 
 export const AboutSection: FC = () => {
   const { user, about, now, stack } = portfolioContent;
@@ -24,7 +24,7 @@ export const AboutSection: FC = () => {
         label="~/about/bio"
         meta={
           <span>
-            edited <span className="text-fg-1">2026.05.20</span>
+            edited <span className="text-fg-1">29.05.2026</span>
           </span>
         }
       >
@@ -63,7 +63,9 @@ export const AboutSection: FC = () => {
       >
         <div className="text-[13px] leading-[1.65] text-fg-1">
           <h2 className={H2}>now</h2>
-          <p className="text-[11px] text-fg-3">a /now page — what i&apos;m doing this season.</p>
+          <p className="text-[11px] text-fg-3">
+            a /now page — what i&apos;m doing this season.
+          </p>
           <ul className="m-0 list-none p-0">
             {now.items.map((line, i) => (
               <li
@@ -89,4 +91,4 @@ export const AboutSection: FC = () => {
       </Panel>
     </>
   );
-}
+};

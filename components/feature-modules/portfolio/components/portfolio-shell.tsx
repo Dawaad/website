@@ -66,6 +66,17 @@ export const PortfolioShell: FC<PortfolioShellProps> = ({ children }) => {
   const sharedVisible = phase === 'out' || phase === 'union' || phase === 'collapse';
   const bOnlyVisible = phase === 'union' || phase === 'collapse';
 
+  // During the intro the real content is clipped to the already-decoded edge
+  // (the complement of the skeleton's wipe) rather than hidden under an opaque
+  // cover — so the shell's own glass/blur stays visible the whole time and the
+  // boot state matches the settled state. At boot (introDecode 0) it is fully
+  // clipped away; the decode sweep reveals it edge-to-edge. A nested cover can't
+  // be glassy (its backdrop-filter can't see past the shell's), hence the clip.
+  const introClip =
+    intro === 'done'
+      ? undefined
+      : decodeClip(1 - introDecode, DECODE_DIR === 'ltr' ? 'rtl' : 'ltr');
+
   // Swap the active scheme class on <body> without clobbering layout classes.
   useEffect(() => {
     const body = document.body;
@@ -160,13 +171,14 @@ export const PortfolioShell: FC<PortfolioShellProps> = ({ children }) => {
         <BackgroundTerminals scheme={scheme} />
         <DesktopTopBar handle={portfolioContent.user.handle} />
         <DesktopDock />
-        <div className="terminal-shell relative z-10 flex h-[min(820px,calc(100dvh-48px))] w-full max-w-[min(max(80dvw,48rem),var(--breakpoint-3xl))] flex-col overflow-hidden border border-fg-3 bg-bg-1 shadow-sm max-md:h-dvh max-md:max-w-none max-md:border-0">
+        <div className="terminal-shell relative z-10 flex h-[min(820px,calc(100dvh-48px))] w-full max-w-[min(max(80dvw,48rem),var(--breakpoint-3xl))] flex-col overflow-hidden rounded-xs border border-fg-3 bg-bg-1 shadow-sm max-md:h-dvh max-md:max-w-none max-md:rounded-none max-md:border-0">
         <TitleBar user={portfolioContent.user} />
         <TabBar onNavigate={navigate} />
         <div className="relative z-[1] min-h-0 flex-1">
           <div
             ref={contentRef}
             data-portfolio-content
+            style={{ clipPath: introClip }}
             className="term-no-native-scrollbar flex h-full flex-col overflow-y-auto md:grid md:grid-cols-2 md:overflow-hidden md:[&>*:not(:last-child)]:border-r md:[&>*:not(:last-child)]:border-fg-4"
           >
             {/* Sections call `useSearchParams` (via useListNavigation) for
@@ -183,7 +195,7 @@ export const PortfolioShell: FC<PortfolioShellProps> = ({ children }) => {
             <div
               aria-hidden
               className={cn(
-                'term-cover pointer-events-none absolute inset-0 z-20 bg-bg-1 transition-opacity duration-150',
+                'pointer-events-none absolute inset-0 z-20 bg-bg-1 transition-opacity duration-150',
                 backdropVisible ? 'opacity-100' : 'opacity-0',
               )}
             >
@@ -196,17 +208,15 @@ export const PortfolioShell: FC<PortfolioShellProps> = ({ children }) => {
           <AsciiSkeleton bones={shared} visible={sharedVisible} />
           {/* Incoming-only bones — fade in at the union frame. */}
           <AsciiSkeleton bones={bOnly} visible={bOnlyVisible} />
-          {/* Intro — opaque cover hides the (still-loading) content while the
-              grounded StripBand keeps the pane header visible. During boot only
-              the boot log shows over the clean cover; the jumble appears for the
-              scramble phase, then the whole thing sweeps away to reveal content. */}
+          {/* Intro — the content itself is clipped (see `introClip`), so this
+              layer stays transparent and the shell's glass shows through. It
+              only hosts the grounded StripBand that keeps the pane header
+              visible while the body decodes. During boot the boot log shows over
+              the glass; the jumble plays for the scramble phase, then the decode
+              sweep reveals the real content edge-to-edge. */}
           {intro !== 'done' && (
             <>
-              <div
-                aria-hidden
-                className="term-cover pointer-events-none absolute inset-0 z-20 bg-bg-1"
-                style={{ clipPath: introDecode > 0 ? decodeClip(introDecode, DECODE_DIR) : undefined }}
-              >
+              <div aria-hidden className="pointer-events-none absolute inset-0 z-20">
                 <StripBand height={coverTop} />
               </div>
               {intro === 'scramble' && (

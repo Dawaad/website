@@ -108,7 +108,7 @@ export const FauxTerminal: FC<FauxTerminalProps> = ({
         if (e.target === e.currentTarget && !open) setClosing(false);
       }}
       className={cn(
-        'terminal-glass absolute flex min-h-0 min-w-0 flex-col overflow-hidden border border-fg-3 bg-bg-2 shadow-sm',
+        'terminal-glass absolute flex min-h-0 min-w-0 flex-col overflow-hidden rounded-xs border border-fg-3 bg-bg-2 shadow-sm',
         'transition duration-300 ease-out',
         shown ? 'scale-100 opacity-100' : 'scale-95 opacity-0',
         className,

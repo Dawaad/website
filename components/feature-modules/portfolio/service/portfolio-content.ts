@@ -6,98 +6,92 @@ export const portfolioContent: PortfolioContent = {
   user: {
     handle: "dawad",
     name: "Jared",
-    role: "Forward Embedded Engineer & Systems Architect",
+    role: "Forward Deployed Engineer & Systems Architect",
     based: "Melbourne, au — utc+10",
-    pgp: "0xAE12 8841",
   },
 
   about: {
     intro: [
-      "I build small tools for small teams.",
+      "I build and design systems",
       "Most of my recent work has been around interfaces that feel like they're on your side — predictable, keyboard-first, no surprises.",
       "Before that: 6y at a research lab making instruments for biologists. Before THAT: undergrad in cognitive science.",
     ],
     bullets: [
-      ["focus", "design systems · prototyping · keyboard UX"],
-      ["tools", "figma · react · swift · tailwind"],
-      ["status", "currently consulting · open to small projects"],
-      ["values", "fewer features · sharper defaults · respect the user"],
+      [
+        "focus",
+        "systems design & architecture · ai augmented pattern recognition · videography",
+      ],
+      ["status", "start-up founder · forward deployed engineer"],
     ],
   },
 
   now: {
-    updated: "2026.05.20",
+    updated: "29.05.2026",
     items: [
-      "Consulting two days a week on a developer tools startup.",
-      "Reading The Timeless Way of Building, Alexander.",
-      "Learning Rust, slowly. Reading more than writing.",
-      "Trying to release one small thing every month this year.",
+      "embedded in a YC backed startup building AI governance and alignment infrastructure for critical systems",
+      "researching and developing a programmable extension of the LLM wiki for 10k+ documents.",
+      "learning videography, content creation and blog writing.",
+      "building a home server/nas for large scale media storage/editing & local model hosting.",
+      "trying to build more TUIs.",
     ],
   },
 
   stack: [
-    ["editor", "neovim · helix"],
-    ["terminal", "ghostty · tmux"],
-    ["shell", "fish · starship"],
-    ["browser", "arc · firefox dev"],
-    ["design", "figma · linear · raycast"],
-    ["lang", "ts · python · swift · rust (learning)"],
-    ["server", "fly.io · cloudflare · litestream"],
-    ["audio", "ableton · sm7b · sub37"],
+    ["lang", "kotlin · ts · python"],
+    [
+      "backend",
+      "spring boot · distributed systems · kafka · graphql · postgres · redis",
+    ],
+    [
+      "ml/ai",
+      "mcp development · knowledge base construction · semantic/pattern extraction · information retrieval accuracy management",
+    ],
+
+    ["editor", "vscode · intellij"],
+    ["terminal", "ghostty · kitty"],
   ],
 
   contact: {
-    email: "kade@signal.so",
-    pgp: "0xAE12 8841 7F3C 9D14",
-    matrix: "@kade:signal.so",
-    rss: "/feed.xml",
-    note: "I read every email. Replies in 1–3 days. No recruiter pitches.",
+    email: "jared@rmr.studio",
+    note: "I read every email. Replies in 1–3 days.",
   },
 
   experience: [
     {
-      slug: "signal-labs",
-      date: "2024 — now",
-      org: "signal labs",
-      role: "principal designer",
-      tag: "[design]",
+      slug: "lyra",
+      date: "2026 — now",
+      org: "lyra",
+      role: "forward deployed engineer",
+      tag: "[engineering]",
       detail:
-        "Lead designer for a developer-tools startup. Set up the design system, shipped the v1 IDE plugin, wrote the docs. Currently 4 ICs.",
+        "Shipping exceptional products for Silicon Valley startups. Currently embedded in a YC backed startup building the deterministic layer for frontier intelligence",
     },
     {
-      slug: "vector",
-      date: "2022 — 2024",
-      org: "vector",
-      role: "senior product designer",
-      tag: "[design]",
+      slug: "cranium",
+      date: "2026 — now",
+      org: "cranium",
+      role: "technical founder",
+      tag: "[architecture]",
       detail:
-        "Owned the data-exploration product. Led migration from Material to a custom keyboard-first system. Hired two designers.",
+        "The Open Sourced Self Adapting Hive Mind for Engineering Teams. Building the allignment substrate for AI-Augmented engineering teams. Infrastructure that embeds system design, team standards and interactions as context for agentic development and orchestration.",
     },
     {
-      slug: "radial-research",
+      slug: "leidos",
+      date: "2023 — 2026",
+      org: "leidos",
+      role: "software engineer",
+      tag: "[engineering]",
+      detail:
+        "Solving the toughest challenges in government intelligence. Worked across a major engineering team to transform and modernise critical government capabilities. Lead the design and development of some critical domains and functionality with distributed systems, data pipelines, and internal tools.",
+    },
+    {
+      slug: "monash",
       date: "2018 — 2022",
-      org: "radial research",
-      role: "design engineer",
-      tag: "[r&d]",
+      org: "monash university",
+      role: "student",
+      tag: "[education]",
       detail:
-        "Built instruments for cell biologists. Lots of XState, lots of weird sensors. Got two papers cited.",
-    },
-    {
-      slug: "freelance",
-      date: "2016 — 2018",
-      org: "freelance",
-      role: "contract",
-      tag: "[contract]",
-      detail: "Logos, sites, the occasional iOS app. Quietly miss this period.",
-    },
-    {
-      slug: "northwestern",
-      date: "2012 — 2016",
-      org: "northwestern",
-      role: "b.s. cognitive science",
-      tag: "[edu]",
-      detail:
-        "Minored in music tech. Honors thesis on attention and interface affordances.",
+        "Bachelor of Computer Science. This is where I learned to code, and where I fell in love with systems design and architecture.",
     },
   ],
 

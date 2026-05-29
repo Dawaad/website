@@ -10,6 +10,8 @@ describe('DESKTOP_WINDOWS', () => {
       title: 'cmus — music',
       label: 'music',
       mnemonic: 'cm',
+      icon: '/icons/cmus.svg',
+      tint: '#1ed760',
     });
   });
 
