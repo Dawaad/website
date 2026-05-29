@@ -1,7 +1,7 @@
 'use client';
 
 import { createContext, useContext, useEffect, useState } from 'react';
-import type { ReactNode } from 'react';
+import type { FC, ReactNode } from 'react';
 
 interface SelectionValue {
   sel: number;
@@ -13,10 +13,14 @@ interface SelectionContextType {
   set: (value: SelectionValue) => void;
 }
 
+interface SelectionProviderProps {
+  children: ReactNode;
+}
+
 const SelectionContext = createContext<SelectionContextType | undefined>(undefined);
 
 /** Holds the active section's selected-row index + entry count for the status bar. */
-export function SelectionProvider({ children }: { children: ReactNode }) {
+export const SelectionProvider: FC<SelectionProviderProps> = ({ children }) => {
   const [value, set] = useState<SelectionValue>({ sel: 0, total: null });
   return <SelectionContext.Provider value={{ value, set }}>{children}</SelectionContext.Provider>;
 }

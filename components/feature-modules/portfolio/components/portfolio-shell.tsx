@@ -1,18 +1,23 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
-import type { ReactNode } from 'react';
+import { Suspense, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import type { FC, ReactNode } from 'react';
 
 import { AsciiSkeleton } from '@/components/feature-modules/portfolio/components/ascii-skeleton';
 import { BackgroundTerminals } from '@/components/feature-modules/portfolio/components/background-terminals';
 import { BootOverlay } from '@/components/feature-modules/portfolio/components/boot-overlay';
+import { DesktopDock } from '@/components/feature-modules/portfolio/components/desktop-dock';
+import { DesktopTopBar } from '@/components/feature-modules/portfolio/components/desktop-top-bar';
 import { SchemeSwitcher } from '@/components/feature-modules/portfolio/components/scheme-switcher';
 import { StatusBar } from '@/components/feature-modules/portfolio/components/status-bar';
 import { TabBar } from '@/components/feature-modules/portfolio/components/tab-bar';
+import { TerminalScrollbar } from '@/components/feature-modules/portfolio/components/terminal-scrollbar';
 import { TitleBar } from '@/components/feature-modules/portfolio/components/title-bar';
 import { DEFAULT_SCHEME, SCHEMES } from '@/components/feature-modules/portfolio/config/schemes';
+import { StripBand } from '@/components/feature-modules/portfolio/components/strip-band';
 import { SelectionProvider } from '@/components/feature-modules/portfolio/context/selection-provider';
+import { WindowManagerProvider } from '@/components/feature-modules/portfolio/context/window-manager-provider';
 import { usePageTransition } from '@/components/feature-modules/portfolio/hooks/use-page-transition';
 import { useRouteTabKeys } from '@/components/feature-modules/portfolio/hooks/use-route-tab-keys';
 import { portfolioContent } from '@/components/feature-modules/portfolio/service/portfolio-content';
@@ -32,31 +37,24 @@ const SCRAMBLE_MS = 200;
 const DECODE_MS = 420;
 /** Direction the intro jumble resolves; flip to 'rtl' to sweep right→left. */
 const DECODE_DIR: DecodeDir = 'ltr';
-
 /**
- * Recreates the pane-header strip's bar (dark band, bottom rule, centre
- * divider) on top of an opaque cover, so the strip reads as a persistent frame
- * while the ASCII skeleton scrambles its dynamic labels above it.
+ * Natural height of a pane-header strip. Seeds the cover so the header reads as
+ * grounded on the first painted frame, before the suspended content commits and
+ * the real strips can be measured (which then refines it).
  */
-function StripBand({ height }: { height: number }) {
-  if (!height) return null;
-  return (
-    <div
-      className="absolute inset-x-0 top-0 border-b border-fg-4 bg-black/[0.18]"
-      style={{ height }}
-    >
-      <div className="absolute inset-y-0 left-1/2 border-l border-fg-4" />
-    </div>
-  );
+const INITIAL_COVER_TOP = 33;
+
+interface PortfolioShellProps {
+  children: ReactNode;
 }
 
 /** Persistent terminal frame shared across all section routes. */
-export function PortfolioShell({ children }: { children: ReactNode }) {
+export const PortfolioShell: FC<PortfolioShellProps> = ({ children }) => {
   const [scheme, setScheme] = useState(DEFAULT_SCHEME);
   const [intro, setIntro] = useState<IntroPhase>('boot');
   const [introBones, setIntroBones] = useState<SkeletonBone[]>([]);
   const [introDecode, setIntroDecode] = useState(0);
-  const [coverTop, setCoverTop] = useState(0);
+  const [coverTop, setCoverTop] = useState(INITIAL_COVER_TOP);
   const contentRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
 
@@ -80,24 +78,67 @@ export function PortfolioShell({ children }: { children: ReactNode }) {
   // Measure the bottom of the static pane-header strips so every opaque cover
   // (boot, intro scramble, route transition) can sit below them and keep them
   // visible. Re-measured per route since the strips belong to the content.
-  useLayoutEffect(() => {
+  const measureCover = useCallback(() => {
     const content = contentRef.current;
     if (!content) return;
     const base = content.getBoundingClientRect();
-    let top = 0;
-    content.querySelectorAll('[data-static]').forEach((el) => {
-      top = Math.max(top, el.getBoundingClientRect().bottom - base.top);
-    });
+    // Only the strips on the top-most row count: on mobile the panels stack, so
+    // lower panels' strips sit far down the scroll and must not push the cover
+    // off-screen (which would expose the real content during the intro).
+    const strips = [...content.querySelectorAll('[data-static]')]
+      .map((el) => {
+        const r = el.getBoundingClientRect();
+        return { top: r.top - base.top, bottom: r.bottom - base.top, height: r.height };
+      })
+      .filter((s) => s.height > 0);
+    // Keep the seeded/last-good height until the real strips commit, so the
+    // header stays grounded instead of collapsing to 0 during the intro.
+    if (strips.length === 0) return;
+    const minTop = Math.min(...strips.map((s) => s.top));
+    const top = strips
+      .filter((s) => s.top <= minTop + s.height)
+      .reduce((m, s) => Math.max(m, s.bottom), 0);
     setCoverTop(top);
-  }, [pathname]);
+  }, []);
 
-  // After the boot sequence, scramble the real content briefly, then undecode
-  // it edge-to-edge over the latter end of the intro before the final reveal.
+  useLayoutEffect(() => {
+    const content = contentRef.current;
+    if (!content) return;
+    measureCover();
+    // The route content mounts behind a Suspense boundary (sections call
+    // useSearchParams), so its static strips can commit a frame or two after
+    // this effect first runs. Without a re-measure, coverTop stays seeded, the
+    // intro/transition covers may not line up with the real header. Re-measure
+    // on any subtree commit so the covers sit below the strips precisely.
+    const observer = new MutationObserver(measureCover);
+    observer.observe(content, { childList: true, subtree: true });
+    return () => observer.disconnect();
+  }, [pathname, measureCover]);
+
+  // Measure the real content's shape into the intro jumble during boot, so the
+  // bones are ready the instant the scramble starts. The section mounts behind
+  // Suspense, so this probes every frame until the bones exist — the decode is
+  // gated on them, so the sweep never reveals raw, unjumbled content.
   useEffect(() => {
-    if (intro !== 'scramble') return;
-    const measure = requestAnimationFrame(() => {
-      if (contentRef.current) setIntroBones(measureSkeleton(contentRef.current));
-    });
+    if (intro === 'done' || introBones.length > 0) return;
+    let frame = 0;
+    const probe = () => {
+      const bones = contentRef.current ? measureSkeleton(contentRef.current) : [];
+      if (bones.length > 0) {
+        setIntroBones(bones);
+        return;
+      }
+      frame = requestAnimationFrame(probe);
+    };
+    frame = requestAnimationFrame(probe);
+    return () => cancelAnimationFrame(frame);
+  }, [intro, introBones.length]);
+
+  // After the boot sequence, hold the pure-jumble window, then undecode the
+  // jumble edge-to-edge into the real content before the final reveal. Gated on
+  // the content-shaped bones existing, so the sweep never reveals raw content.
+  useEffect(() => {
+    if (intro !== 'scramble' || introBones.length === 0) return;
     const start = performance.now();
     let frame = 0;
     const tick = (now: number) => {
@@ -110,33 +151,39 @@ export function PortfolioShell({ children }: { children: ReactNode }) {
       frame = requestAnimationFrame(tick);
     };
     frame = requestAnimationFrame(tick);
-    return () => {
-      cancelAnimationFrame(measure);
-      cancelAnimationFrame(frame);
-    };
-  }, [intro]);
+    return () => cancelAnimationFrame(frame);
+  }, [intro, introBones.length]);
 
   return (
     <SelectionProvider>
-      <BackgroundTerminals />
-      <div className="relative z-10 flex h-[min(820px,calc(100dvh-48px))] w-full max-w-[min(max(80dvw,48rem),var(--breakpoint-3xl))] flex-col overflow-hidden border border-fg-3 bg-bg-1 shadow-sm max-md:h-dvh max-md:max-w-none max-md:border-0">
+      <WindowManagerProvider>
+        <BackgroundTerminals scheme={scheme} />
+        <DesktopTopBar handle={portfolioContent.user.handle} />
+        <DesktopDock />
+        <div className="terminal-shell relative z-10 flex h-[min(820px,calc(100dvh-48px))] w-full max-w-[min(max(80dvw,48rem),var(--breakpoint-3xl))] flex-col overflow-hidden border border-fg-3 bg-bg-1 shadow-sm max-md:h-dvh max-md:max-w-none max-md:border-0">
         <TitleBar user={portfolioContent.user} />
         <TabBar onNavigate={navigate} />
         <div className="relative z-[1] min-h-0 flex-1">
           <div
             ref={contentRef}
             data-portfolio-content
-            className="flex h-full flex-col overflow-y-auto md:grid md:grid-cols-2 md:overflow-hidden md:[&>*:not(:last-child)]:border-r md:[&>*:not(:last-child)]:border-fg-4"
+            className="term-no-native-scrollbar flex h-full flex-col overflow-y-auto md:grid md:grid-cols-2 md:overflow-hidden md:[&>*:not(:last-child)]:border-r md:[&>*:not(:last-child)]:border-fg-4"
           >
-            {children}
+            {/* Sections call `useSearchParams` (via useListNavigation) for
+                deep-linking, which requires a Suspense ancestor in Next. One
+                boundary here covers every route. */}
+            <Suspense fallback={null}>{children}</Suspense>
           </div>
+          {/* Mobile scrolls this whole column; on desktop it is overflow-hidden
+              and the bar self-hides (panels carry their own). */}
+          <TerminalScrollbar targetRef={contentRef} />
           {/* Opaque cover hiding the route swap; the strip bar is repainted on
               top so it stays visible while its labels scramble with the body. */}
           {transitioning && (
             <div
               aria-hidden
               className={cn(
-                'pointer-events-none absolute inset-0 z-20 bg-bg-1 transition-opacity duration-150',
+                'term-cover pointer-events-none absolute inset-0 z-20 bg-bg-1 transition-opacity duration-150',
                 backdropVisible ? 'opacity-100' : 'opacity-0',
               )}
             >
@@ -149,26 +196,26 @@ export function PortfolioShell({ children }: { children: ReactNode }) {
           <AsciiSkeleton bones={shared} visible={sharedVisible} />
           {/* Incoming-only bones — fade in at the union frame. */}
           <AsciiSkeleton bones={bOnly} visible={bOnlyVisible} />
-          {/* Intro scramble — opaque cover + ASCII jumble of the real content,
-              played briefly once boot finishes, then collapses to reveal. */}
-          {intro === 'scramble' && (
-            <div
-              aria-hidden
-              className="pointer-events-none absolute inset-0 z-20 bg-bg-1"
-              style={{ clipPath: introDecode > 0 ? decodeClip(introDecode, DECODE_DIR) : undefined }}
-            >
-              <StripBand height={coverTop} />
-            </div>
-          )}
-          <AsciiSkeleton
-            bones={intro === 'scramble' ? introBones : []}
-            visible={intro === 'scramble'}
-            decode={introDecode}
-            decodeDir={DECODE_DIR}
-          />
-          {/* Boot sequence — sits below the static strips so they stay visible. */}
-          {intro === 'boot' && (
-            <BootOverlay onDone={() => setIntro('scramble')} topOffset={coverTop} />
+          {/* Intro — opaque cover hides the (still-loading) content while the
+              grounded StripBand keeps the pane header visible. During boot only
+              the boot log shows over the clean cover; the jumble appears for the
+              scramble phase, then the whole thing sweeps away to reveal content. */}
+          {intro !== 'done' && (
+            <>
+              <div
+                aria-hidden
+                className="term-cover pointer-events-none absolute inset-0 z-20 bg-bg-1"
+                style={{ clipPath: introDecode > 0 ? decodeClip(introDecode, DECODE_DIR) : undefined }}
+              >
+                <StripBand height={coverTop} />
+              </div>
+              {intro === 'scramble' && (
+                <AsciiSkeleton bones={introBones} visible decode={introDecode} decodeDir={DECODE_DIR} />
+              )}
+              {intro === 'boot' && (
+                <BootOverlay onDone={() => setIntro('scramble')} topOffset={coverTop} />
+              )}
+            </>
           )}
         </div>
         <StatusBar scheme={scheme} setScheme={setScheme} />
@@ -183,6 +230,7 @@ export function PortfolioShell({ children }: { children: ReactNode }) {
         />
       </div>
       <SchemeSwitcher scheme={scheme} setScheme={setScheme} />
+      </WindowManagerProvider>
     </SelectionProvider>
   );
 }

@@ -1,6 +1,7 @@
 'use client';
 
 import { Fragment } from 'react';
+import type { FC } from 'react';
 
 import { Panel } from '@/components/feature-modules/portfolio/components/panel';
 import { useReportSelection } from '@/components/feature-modules/portfolio/context/selection-provider';
@@ -13,7 +14,7 @@ const KV =
 const DT = 'text-[11px] uppercase tracking-[0.08em] text-fg-3';
 const DD = 'm-0 text-fg-1';
 
-export function AboutSection() {
+export const AboutSection: FC = () => {
   const { user, about, now, stack } = portfolioContent;
   useReportSelection(0, null);
 

@@ -1,13 +1,15 @@
 'use client';
 
+import type { FC } from 'react';
+
 import { MasterDetail } from '@/components/feature-modules/portfolio/components/sections/master-detail';
 import { ProjectRow } from '@/components/feature-modules/portfolio/components/sections/project-row';
 import { useListNavigation } from '@/components/feature-modules/portfolio/hooks/use-list-navigation';
 import { portfolioContent } from '@/components/feature-modules/portfolio/service/portfolio-content';
 import type { Project } from '@/lib/types/portfolio';
 
-export function ProjectsSection() {
-  const { selected, setSelected } = useListNavigation(portfolioContent.projects.length);
+export const ProjectsSection: FC = () => {
+  const { selected, open, opened, close } = useListNavigation(portfolioContent.projects);
   return (
     <MasterDetail<Project>
       detailLabel="projects.detail"
@@ -15,7 +17,9 @@ export function ProjectsSection() {
       listCmd="ls -la projects/"
       items={portfolioContent.projects}
       selected={selected}
-      setSelected={setSelected}
+      open={open}
+      opened={opened}
+      close={close}
       RowComponent={ProjectRow}
       renderDetail={(sel) => (
         <div className="text-[13px] leading-[1.65] text-fg-1">

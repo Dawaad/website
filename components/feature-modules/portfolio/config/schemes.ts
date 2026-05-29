@@ -1,5 +1,12 @@
-import type { SchemeName } from '@/lib/types/portfolio';
+import type { SchemeName } from "@/lib/types/portfolio";
 
-export const SCHEMES: SchemeName[] = ['beige', 'phosphor', 'amber', 'blueprint', 'mono'];
+export const SCHEMES: SchemeName[] = [
+  "beige",
+  "phosphor",
+  "amber",
+  "blueprint",
+  "mono",
+  "moonlit",
+];
 
-export const DEFAULT_SCHEME: SchemeName = 'beige';
+export const DEFAULT_SCHEME: SchemeName = "moonlit";

@@ -1,13 +1,15 @@
 'use client';
 
+import type { FC } from 'react';
+
 import { ExperienceRow } from '@/components/feature-modules/portfolio/components/sections/experience-row';
 import { MasterDetail } from '@/components/feature-modules/portfolio/components/sections/master-detail';
 import { useListNavigation } from '@/components/feature-modules/portfolio/hooks/use-list-navigation';
 import { portfolioContent } from '@/components/feature-modules/portfolio/service/portfolio-content';
 import type { ExperienceEntry } from '@/lib/types/portfolio';
 
-export function ExperienceSection() {
-  const { selected, setSelected } = useListNavigation(portfolioContent.experience.length);
+export const ExperienceSection: FC = () => {
+  const { selected, open, opened, close } = useListNavigation(portfolioContent.experience);
   return (
     <MasterDetail<ExperienceEntry>
       detailLabel="experience.detail"
@@ -15,7 +17,9 @@ export function ExperienceSection() {
       listCmd="cat experience.log | sort -r"
       items={portfolioContent.experience}
       selected={selected}
-      setSelected={setSelected}
+      open={open}
+      opened={opened}
+      close={close}
       RowComponent={ExperienceRow}
       renderDetail={(sel) => (
         <div className="text-[13px] leading-[1.65] text-fg-1">

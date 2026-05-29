@@ -1,8 +1,10 @@
+import type { FC } from 'react';
+
 import type { RowProps } from '@/components/feature-modules/portfolio/components/sections/master-detail';
 import type { Post } from '@/lib/types/portfolio';
 import { cn } from '@/lib/util/utils';
 
-export function PostRow({ item, active, onClick }: RowProps<Post>) {
+export const PostRow: FC<RowProps<Post>> = ({ item, active, onClick }) => {
   return (
     <div
       onClick={onClick}

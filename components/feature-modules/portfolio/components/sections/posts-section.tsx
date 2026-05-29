@@ -1,13 +1,15 @@
 'use client';
 
+import type { FC } from 'react';
+
 import { MasterDetail } from '@/components/feature-modules/portfolio/components/sections/master-detail';
 import { PostRow } from '@/components/feature-modules/portfolio/components/sections/post-row';
 import { useListNavigation } from '@/components/feature-modules/portfolio/hooks/use-list-navigation';
 import { portfolioContent } from '@/components/feature-modules/portfolio/service/portfolio-content';
 import type { Post } from '@/lib/types/portfolio';
 
-export function PostsSection() {
-  const { selected, setSelected } = useListNavigation(portfolioContent.posts.length);
+export const PostsSection: FC = () => {
+  const { selected, open, opened, close } = useListNavigation(portfolioContent.posts);
   return (
     <MasterDetail<Post>
       detailLabel="post.preview"
@@ -15,7 +17,9 @@ export function PostsSection() {
       listCmd="tail -f posts/"
       items={portfolioContent.posts}
       selected={selected}
-      setSelected={setSelected}
+      open={open}
+      opened={opened}
+      close={close}
       RowComponent={PostRow}
       renderDetail={(sel) => (
         <div className="text-[13px] leading-[1.65] text-fg-1">

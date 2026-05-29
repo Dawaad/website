@@ -1,12 +1,14 @@
+import type { FC } from 'react';
+
 import type { PortfolioUser } from '@/lib/types/portfolio';
 
 interface TitleBarProps {
   user: PortfolioUser;
 }
 
-export function TitleBar({ user }: TitleBarProps) {
+export const TitleBar: FC<TitleBarProps> = ({ user }) => {
   return (
-    <div className="relative z-[2] flex flex-none items-center gap-4 border-b border-fg-4 bg-bg-0 px-4 py-2.5">
+    <div className="panel-chrome relative z-[2] flex flex-none items-center gap-4 border-b border-fg-4 bg-bg-0 px-4 py-2.5">
       <div className="flex gap-1.5">
         <span className="h-2.5 w-2.5 rounded-full bg-red-dim" />
         <span className="h-2.5 w-2.5 rounded-full bg-amber-dim" />

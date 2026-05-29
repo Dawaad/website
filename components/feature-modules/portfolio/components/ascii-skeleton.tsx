@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import type { FC } from 'react';
 
 import {
   decodeClip,
@@ -25,7 +26,13 @@ interface AsciiSkeletonProps {
  * advances, the jumble is wiped away from one edge so the real content beneath
  * appears to undecode into place.
  */
-export function AsciiSkeleton({ bones, visible, fontSize = 12, decode = 0, decodeDir = 'ltr' }: AsciiSkeletonProps) {
+export const AsciiSkeleton: FC<AsciiSkeletonProps> = ({
+  bones,
+  visible,
+  fontSize = 12,
+  decode = 0,
+  decodeDir = 'ltr',
+}) => {
   const [, setTick] = useState(0);
 
   useEffect(() => {

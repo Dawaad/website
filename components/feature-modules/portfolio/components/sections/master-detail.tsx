@@ -1,10 +1,8 @@
 'use client';
 
-import { useState } from 'react';
 import type { ComponentType, ReactNode } from 'react';
 
 import { Panel } from '@/components/feature-modules/portfolio/components/panel';
-import { cn } from '@/lib/util/utils';
 
 export interface RowProps<T> {
   item: T;
@@ -18,25 +16,33 @@ interface MasterDetailProps<T> {
   listCmd: string;
   items: T[];
   selected: number;
-  setSelected: (index: number) => void;
+  open: (index: number) => void;
+  opened: boolean;
+  close: () => void;
   RowComponent: ComponentType<RowProps<T>>;
   renderDetail: (item: T) => ReactNode;
 }
 
-/** Two-panel master/detail layout shared by experience, projects, and posts. */
-export function MasterDetail<T>({
+/**
+ * Two-panel master/detail layout shared by experience, projects, and posts.
+ * Desktop shows both panes side by side; mobile shows the list until an entry
+ * is opened (`?item=`), then swaps to a full-width detail with a back control.
+ */
+// A generic component cannot be typed with `FC<Props>` (the helper has no slot
+// for the type parameter), so it stays a generic arrow `const` per rule 1.
+export const MasterDetail = <T,>({
   detailLabel,
   listLabel,
   listCmd,
   items,
   selected,
-  setSelected,
+  open,
+  opened,
+  close,
   RowComponent,
   renderDetail,
-}: MasterDetailProps<T>) {
+}: MasterDetailProps<T>) => {
   const sel = items[selected] ?? items[0];
-  // Mobile shows one pane at a time; the switch below flips between them.
-  const [view, setView] = useState<'list' | 'detail'>('list');
   const count = (
     <>
       {(selected + 1).toString().padStart(2, '0')}/{items.length.toString().padStart(2, '0')}
@@ -45,21 +51,22 @@ export function MasterDetail<T>({
 
   return (
     <>
-      {/* Pane switch — mobile only; sits above the active pane in the scroll. */}
-      <div className="sticky top-0 z-10 flex flex-none border-b border-fg-4 bg-bg-0 text-[11px] uppercase tracking-[0.14em] md:hidden">
-        <SwitchTab active={view === 'list'} onClick={() => setView('list')}>
-          {listLabel}
-        </SwitchTab>
-        <SwitchTab active={view === 'detail'} onClick={() => setView('detail')}>
-          detail <span className="text-[10px] text-fg-3">{count}</span>
-        </SwitchTab>
-      </div>
-
       <Panel
         label={detailLabel}
         accent={<span>&nbsp;{count}</span>}
-        className={view === 'list' ? 'max-md:hidden' : undefined}
+        className={opened ? undefined : 'max-md:hidden'}
       >
+        {/* Back control — mobile only; desktop always shows both panes. */}
+        <button
+          type="button"
+          onClick={close}
+          className="mb-4 hidden w-full select-none items-center gap-2 border-b border-dashed border-fg-4 pb-3 text-left text-[11px] uppercase tracking-[0.12em] text-fg-2 hover:text-amber max-md:flex"
+        >
+          <span className="text-amber">←</span>
+          <span>cd ..</span>
+          <span className="text-fg-4">/</span>
+          <span className="text-fg-3">{listLabel}</span>
+        </button>
         {sel ? (
           renderDetail(sel)
         ) : (
@@ -71,7 +78,7 @@ export function MasterDetail<T>({
       <Panel
         label={listLabel}
         meta={<span>{items.length} entries</span>}
-        className={view === 'detail' ? 'max-md:hidden' : undefined}
+        className={opened ? 'max-md:hidden' : undefined}
       >
         <div className="mb-2 flex items-center gap-2.5 overflow-hidden whitespace-nowrap border-b border-fg-4 pb-2.5 text-[12px] text-fg-2">
           <span className="text-amber">&gt;</span>
@@ -83,39 +90,11 @@ export function MasterDetail<T>({
               key={i}
               item={item}
               active={i === selected}
-              onClick={() => {
-                setSelected(i);
-                setView('detail');
-              }}
+              onClick={() => open(i)}
             />
           ))}
         </div>
       </Panel>
     </>
-  );
-}
-
-function SwitchTab({
-  active,
-  onClick,
-  children,
-}: {
-  active: boolean;
-  onClick: () => void;
-  children: ReactNode;
-}) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      className={cn(
-        'flex flex-1 cursor-pointer select-none items-center justify-center gap-2 border-r border-fg-4 px-3 py-2.5 text-fg-2 last:border-r-0',
-        active && 'bg-bg-1 text-amber',
-      )}
-    >
-      <span className="text-[10px] text-fg-3">[</span>
-      {children}
-      <span className="text-[10px] text-fg-3">]</span>
-    </button>
   );
 }

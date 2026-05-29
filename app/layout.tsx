@@ -23,8 +23,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={jetbrainsMono.variable}>
-      <body className="scheme-beige flex h-dvh items-center justify-center overflow-hidden p-6 font-mono text-[13px] leading-[1.55] text-fg-1 max-md:p-0">
+    <html lang="en" className={jetbrainsMono.variable} suppressHydrationWarning>
+      <body className="scheme-moonlit flex h-dvh items-center justify-center overflow-hidden p-6 font-mono text-[13px] leading-[1.55] text-fg-1 max-md:p-0">
         <PortfolioShell>{children}</PortfolioShell>
       </body>
     </html>

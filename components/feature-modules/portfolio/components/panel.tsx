@@ -1,5 +1,6 @@
-import type { ReactNode } from 'react';
+import type { FC, ReactNode } from 'react';
 
+import { TerminalScroll } from '@/components/feature-modules/portfolio/components/terminal-scroll';
 import { cn } from '@/lib/util/utils';
 
 interface PanelProps {
@@ -11,7 +12,7 @@ interface PanelProps {
 }
 
 /** A labeled sub-section (one side of a tab's two-panel workspace). */
-export function Panel({ label, accent, meta, className, children }: PanelProps) {
+export const Panel: FC<PanelProps> = ({ label, accent, meta, className, children }) => {
   return (
     <div className={cn('flex min-h-0 min-w-0 flex-col max-md:shrink-0', className)}>
       {(label || meta) && (
@@ -29,9 +30,12 @@ export function Panel({ label, accent, meta, className, children }: PanelProps) 
           {meta && <span className="min-w-0 truncate text-fg-3">{meta}</span>}
         </div>
       )}
-      <div className="min-h-0 flex-1 overflow-auto px-6 py-[22px] [scrollbar-color:var(--fg-3)_transparent] [scrollbar-width:thin] max-md:overflow-visible max-md:px-4">
+      <TerminalScroll
+        className="flex-1"
+        viewportClassName="px-6 py-[22px] max-md:overflow-visible max-md:px-4"
+      >
         {children}
-      </div>
+      </TerminalScroll>
     </div>
   );
 }

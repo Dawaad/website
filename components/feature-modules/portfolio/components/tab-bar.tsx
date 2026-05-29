@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import type { MouseEvent } from 'react';
+import type { FC, MouseEvent } from 'react';
 
 import { TABS } from '@/components/feature-modules/portfolio/config/tabs';
 import { cn } from '@/lib/util/utils';
@@ -11,7 +11,7 @@ interface TabBarProps {
   onNavigate: (href: string) => void;
 }
 
-export function TabBar({ onNavigate }: TabBarProps) {
+export const TabBar: FC<TabBarProps> = ({ onNavigate }) => {
   const pathname = usePathname();
 
   const handleClick = (e: MouseEvent<HTMLAnchorElement>, href: string) => {
@@ -22,7 +22,7 @@ export function TabBar({ onNavigate }: TabBarProps) {
   };
 
   return (
-    <div className="relative z-[2] flex flex-none border-b border-fg-4 bg-bg-0 max-md:overflow-x-auto max-md:[scrollbar-width:none] max-md:[&::-webkit-scrollbar]:hidden">
+    <div className="relative z-[2] flex flex-none border-b border-fg-4 bg-bg-0 max-md:touch-pan-x max-md:overflow-x-auto max-md:overflow-y-hidden max-md:overscroll-x-contain max-md:[scrollbar-width:none] max-md:[&::-webkit-scrollbar]:hidden">
       {TABS.map((t, i) => {
         const isActive = t.href === pathname;
         return (

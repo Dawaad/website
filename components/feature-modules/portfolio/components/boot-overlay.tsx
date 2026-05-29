@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import type { FC } from 'react';
 
 interface BootOverlayProps {
   onDone: () => void;
@@ -17,7 +18,7 @@ const LINES = [
 ];
 
 /** Fake boot sequence that reveals one line every 80ms, then dismisses. */
-export function BootOverlay({ onDone, topOffset = 0 }: BootOverlayProps) {
+export const BootOverlay: FC<BootOverlayProps> = ({ onDone, topOffset = 0 }) => {
   const [phase, setPhase] = useState(0);
 
   useEffect(() => {
@@ -42,9 +43,11 @@ export function BootOverlay({ onDone, topOffset = 0 }: BootOverlayProps) {
 
   return (
     <div
-      className="absolute inset-x-0 bottom-0 z-40 bg-bg-1 px-[60px] py-10 font-mono text-fg-1"
+      className="pointer-events-none absolute inset-x-0 bottom-0 z-40 px-[60px] py-10 font-mono text-fg-1"
       style={{ top: topOffset }}
     >
+      {/* Transparent — the intro's opaque cover sits behind the boot log, so no
+          jumble shows during boot; the jumble starts once the log finishes. */}
       <pre className="m-0 whitespace-pre text-[12px] leading-[1.7] text-fg-2">
         {LINES.slice(0, phase).join('\n') + (phase < 7 ? '\n_' : '')}
       </pre>

@@ -3,7 +3,7 @@
 
 export type SectionKey = 'about' | 'experience' | 'projects' | 'posts' | 'contact';
 
-export type SchemeName = 'beige' | 'phosphor' | 'amber' | 'blueprint' | 'mono';
+export type SchemeName = 'beige' | 'phosphor' | 'amber' | 'blueprint' | 'mono' | 'moonlit';
 
 export interface Tab {
   key: SectionKey;
@@ -23,6 +23,14 @@ export interface PortfolioUser {
 /** A key/value pair rendered as a definition-list row. */
 export type KeyValue = [label: string, value: string];
 
+/**
+ * Anything addressable by a stable, URL-safe slug. List entries extend this so
+ * a single item can be deep-linked via `?item=<slug>` and survive a reload.
+ */
+export interface Identifiable {
+  slug: string;
+}
+
 export interface AboutContent {
   intro: string[];
   bullets: KeyValue[];
@@ -41,7 +49,7 @@ export interface Contact {
   note: string;
 }
 
-export interface ExperienceEntry {
+export interface ExperienceEntry extends Identifiable {
   date: string;
   org: string;
   role: string;
@@ -49,14 +57,14 @@ export interface ExperienceEntry {
   detail: string;
 }
 
-export interface Project {
+export interface Project extends Identifiable {
   date: string;
   name: string;
   tag: string;
   detail: string;
 }
 
-export interface Post {
+export interface Post extends Identifiable {
   date: string;
   title: string;
   tag: string;

@@ -1,8 +1,10 @@
+import type { FC } from 'react';
+
 import type { RowProps } from '@/components/feature-modules/portfolio/components/sections/master-detail';
 import type { ExperienceEntry } from '@/lib/types/portfolio';
 import { cn } from '@/lib/util/utils';
 
-export function ExperienceRow({ item, active, onClick }: RowProps<ExperienceEntry>) {
+export const ExperienceRow: FC<RowProps<ExperienceEntry>> = ({ item, active, onClick }) => {
   return (
     <div
       onClick={onClick}
