@@ -72,10 +72,23 @@ export interface Project extends Identifiable {
 }
 
 export interface Post extends Identifiable {
+  /** ISO `YYYY-MM-DD`; formatted to dotted style for display. */
   date: string;
   title: string;
   tag: string;
-  detail: string;
+  description: string;
+  readTime: number;
+}
+
+export interface Heading {
+  text: string;
+  slug: string;
+  level: 2 | 3;
+}
+
+export interface PostDoc extends Post {
+  content: string;
+  headings: Heading[];
 }
 
 export interface PortfolioContent {
@@ -86,5 +99,4 @@ export interface PortfolioContent {
   contact: Contact;
   experience: ExperienceEntry[];
   projects: Project[];
-  posts: Post[];
 }

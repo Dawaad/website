@@ -1,6 +1,7 @@
 import type { FC } from 'react';
 
 import type { RowProps } from '@/components/feature-modules/portfolio/components/sections/master-detail';
+import { formatDate } from '@/lib/posts/format';
 import type { Post } from '@/lib/types/portfolio';
 import { cn } from '@/lib/util/utils';
 
@@ -21,7 +22,7 @@ export const PostRow: FC<RowProps<Post>> = ({ item, active, onClick }) => {
       >
         {' '}
       </span>
-      <span className="text-[11px] tracking-[0.06em] text-fg-2">{item.date}</span>
+      <span className="text-[11px] tracking-[0.06em] text-fg-2">{formatDate(item.date)}</span>
       <span className={active ? 'text-fg-0' : 'text-fg-1'}>{item.title}</span>
       <span className="text-right text-[11px] text-fg-3">{item.tag}</span>
     </div>

@@ -1,0 +1,35 @@
+---
+title: 'On small models and small teams'
+date: '2026-05-12'
+tag: '[design]'
+description: 'A long argument that small teams should ship more, not less. Notes from working on signal/cli for a year.'
+---
+
+Small teams have a structural advantage that large teams spend enormous effort
+trying to recover: everyone can hold the whole system in their head at once.
+You lose that the moment the team outgrows a single shared context.
+
+## Why smaller wins
+
+The cost of coordination grows faster than the team does. Two people need one
+conversation; five people need ten. The work that used to be implicit becomes a
+meeting.
+
+- Decisions stay cheap to reverse.
+- The feedback loop between idea and ship stays short.
+- Nobody has to ask permission to fix the thing in front of them.
+
+> The best process is the one you don't notice you're following.
+
+## What this looks like in practice
+
+A year on `signal/cli` taught me the failure mode is almost never "too little
+process" — it's losing the thread of why a thing exists.
+
+```ts
+// ship the smallest change that proves the idea
+export const ship = (idea: Idea): Result =>
+  idea.smallestTestableSlice().deploy();
+```
+
+Ship the slice. Learn. Repeat.
