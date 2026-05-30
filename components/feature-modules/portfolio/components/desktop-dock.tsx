@@ -30,9 +30,6 @@ export const DesktopDock: FC = () => {
             aria-pressed={open}
             title={`${w.label} — ${open ? "hide" : "show"}`}
             style={{
-              backgroundImage: open
-                ? `linear-gradient(155deg, color-mix(in srgb, ${w.tint} 34%, var(--bg-2)), color-mix(in srgb, ${w.tint} 12%, var(--bg-1)))`
-                : `linear-gradient(155deg, color-mix(in srgb, ${w.tint} 12%, var(--bg-1)), var(--bg-0))`,
               boxShadow: open
                 ? `0 4px 10px -2px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.18), inset 0 0 0 1px color-mix(in srgb, ${w.tint} 45%, transparent)`
                 : "0 1px 3px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.06)",

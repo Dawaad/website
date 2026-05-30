@@ -12,9 +12,7 @@ export const portfolioContent: PortfolioContent = {
 
   about: {
     intro: [
-      "I build and design systems",
-      "Most of my recent work has been around interfaces that feel like they're on your side — predictable, keyboard-first, no surprises.",
-      "Before that: 6y at a research lab making instruments for biologists. Before THAT: undergrad in cognitive science.",
+      "I am a software engineer, bodybuilder, ironman-in-trainer, startup founder and content creator focused on architecting, designing and building both systems and my life",
     ],
     bullets: [
       [
@@ -28,7 +26,7 @@ export const portfolioContent: PortfolioContent = {
   now: {
     updated: "29.05.2026",
     items: [
-      "embedded in a YC backed startup building AI governance and alignment infrastructure for critical systems",
+      "engineer currently at a YC backed startup building AI governance and alignment infrastructure",
       "researching and developing a programmable extension of the LLM wiki for 10k+ documents.",
       "learning videography, content creation and blog writing.",
       "building a home server/nas for large scale media storage/editing & local model hosting.",
@@ -64,7 +62,7 @@ export const portfolioContent: PortfolioContent = {
       role: "forward deployed engineer",
       tag: "[engineering]",
       detail:
-        "Shipping exceptional products for Silicon Valley startups. Currently embedded in a YC backed startup building the deterministic layer for frontier intelligence",
+        "Shipping exceptional products for Silicon Valley startups. Currently building in a YC backed startup building the deterministic layer for frontier intelligence",
     },
     {
       slug: "cranium",

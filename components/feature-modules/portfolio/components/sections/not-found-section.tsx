@@ -47,7 +47,7 @@ export const NotFoundSection: FC = () => {
           </p>
         </div>
       </Panel>
-      <Panel label="~/ascii.txt" meta="signal lost" className="ascii-panel">
+      <Panel label="~/ascii.txt" meta="signal lost" className="ascii-panel max-md:aspect-square">
         {/* The portrait is a single-colour ASCII SVG; rendering it as a
             currentColor-driven mask lets it inherit each theme's foreground
             (light-on-dark or dark-on-light) instead of its baked-in green.

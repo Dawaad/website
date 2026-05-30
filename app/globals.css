@@ -1,6 +1,17 @@
 @import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600;700&family=VT323&display=swap");
 @import "tailwindcss";
 
+/* Symbols-only Nerd Font: carries the icon glyph codepoints and nothing else,
+   so it sits first in the mono stack and only resolves those characters — all
+   latin text falls through to JetBrains Mono. */
+@font-face {
+  font-family: "Symbols Nerd Font Mono";
+  src: url("/fonts/SymbolsNerdFontMono-Regular.ttf") format("truetype");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* ============ COLOR SCHEMES ============
    Runtime-swappable palettes. The active scheme is set via a `.scheme-*`
    class on <body>; every color utility below resolves through these vars. */
@@ -34,6 +45,11 @@
   --glow-fg-rgb: 120, 110, 95;
   --glow-amber-rgb: 191, 90, 46;
   --glow-cyan-rgb: 63, 111, 122;
+
+  /* Crest tint: a high-contrast inverse of the body so the ascii portrait
+     stands proud of the background. On the warm paper scheme that means a
+     deep blue; on the dark/blue schemes it lifts toward white. */
+  --crest: #0c1733;
 
   --active-border: linear-gradient(120deg, var(--cyan), var(--amber));
 }
@@ -147,6 +163,8 @@
   --glow-amber-rgb: 255, 155, 80;
   --glow-cyan-rgb: 103, 232, 249;
 
+  --crest: #b6f5c4;
+
   --active-border: linear-gradient(120deg, var(--fg-1), var(--cyan));
 }
 
@@ -175,6 +193,8 @@
   --glow-fg-rgb: 255, 180, 84;
   --glow-amber-rgb: 255, 92, 92;
   --glow-cyan-rgb: 136, 204, 255;
+
+  --crest: #ffd9a8;
 
   --active-border: linear-gradient(120deg, var(--fg-1), var(--amber));
 }
@@ -205,6 +225,8 @@
   --glow-amber-rgb: 255, 193, 74;
   --glow-cyan-rgb: 136, 227, 255;
 
+  --crest: #ffffff;
+
   --active-border: linear-gradient(120deg, var(--cyan), var(--fg-1));
 }
 
@@ -234,6 +256,8 @@
   --glow-fg-rgb: 212, 212, 220;
   --glow-amber-rgb: 255, 155, 80;
   --glow-cyan-rgb: 168, 200, 255;
+
+  --crest: #dfe8ff;
 
   --active-border: linear-gradient(120deg, var(--cyan), var(--magenta));
 }
@@ -267,6 +291,8 @@
   --glow-amber-rgb: 240, 184, 120;
   --glow-cyan-rgb: 143, 212, 232;
 
+  --crest: #bcd0ff;
+
   --active-border: linear-gradient(120deg, var(--cyan), var(--magenta));
 }
 
@@ -297,8 +323,8 @@
   --color-yellow: var(--yellow);
 
   --font-mono:
-    var(--font-jetbrains-mono), "IBM Plex Mono", ui-monospace, Menlo, Consolas,
-    monospace;
+    "Symbols Nerd Font Mono", var(--font-jetbrains-mono), "IBM Plex Mono",
+    ui-monospace, Menlo, Consolas, monospace;
 }
 
 @layer base {

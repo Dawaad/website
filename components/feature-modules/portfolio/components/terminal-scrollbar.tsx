@@ -46,6 +46,7 @@ export const TerminalScrollbar: FC<TerminalScrollbarProps> = ({ targetRef, class
   const [metrics, setMetrics] = useState<Metrics>(HIDDEN);
   const [dragging, setDragging] = useState(false);
   const drag = useRef<{ startY: number; startScroll: number } | null>(null);
+  const frame = useRef<number | null>(null);
 
   const measure = useCallback(() => {
     const el = targetRef.current;
@@ -62,25 +63,39 @@ export const TerminalScrollbar: FC<TerminalScrollbarProps> = ({ targetRef, class
     setMetrics({ thumbTop, thumbHeight, scrollable: true });
   }, [targetRef]);
 
+  // Coalesce bursts of scroll/resize/mutation events into a single measure per
+  // frame. measure() reads layout (scrollHeight, getComputedStyle) and commits
+  // React state; running it inline on every scroll event forces a synchronous
+  // reflow + re-render per event, which janks badly when the frame is already
+  // heavy (e.g. the mobile column repainting the masked ascii art).
+  const scheduleMeasure = useCallback(() => {
+    if (frame.current != null) return;
+    frame.current = requestAnimationFrame(() => {
+      frame.current = null;
+      measure();
+    });
+  }, [measure]);
+
   // Keep the thumb synced with scroll position, viewport size, and content
   // changes (route swaps, the intro scramble mutating the DOM, etc.).
   useEffect(() => {
     const el = targetRef.current;
     if (!el) return;
     measure();
-    el.addEventListener('scroll', measure, { passive: true });
-    const ro = new ResizeObserver(measure);
+    el.addEventListener('scroll', scheduleMeasure, { passive: true });
+    const ro = new ResizeObserver(scheduleMeasure);
     ro.observe(el);
-    const mo = new MutationObserver(measure);
+    const mo = new MutationObserver(scheduleMeasure);
     mo.observe(el, { childList: true, subtree: true, characterData: true });
-    window.addEventListener('resize', measure);
+    window.addEventListener('resize', scheduleMeasure);
     return () => {
-      el.removeEventListener('scroll', measure);
+      el.removeEventListener('scroll', scheduleMeasure);
       ro.disconnect();
       mo.disconnect();
-      window.removeEventListener('resize', measure);
+      window.removeEventListener('resize', scheduleMeasure);
+      if (frame.current != null) cancelAnimationFrame(frame.current);
     };
-  }, [targetRef, measure]);
+  }, [targetRef, measure, scheduleMeasure]);
 
   const onThumbDown = useCallback(
     (e: ReactPointerEvent<HTMLDivElement>) => {

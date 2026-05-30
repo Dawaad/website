@@ -1,26 +1,28 @@
 "use client";
 
 import type { FC } from "react";
-import { Fragment } from "react";
 
+import {
+  Fastfetch,
+  FastFetchInfo,
+} from "@/components/feature-modules/portfolio/components/fastfetch";
 import { Panel } from "@/components/feature-modules/portfolio/components/panel";
 import { useReportSelection } from "@/components/feature-modules/portfolio/context/selection-provider";
 import { portfolioContent } from "@/components/feature-modules/portfolio/service/portfolio-content";
 
 const H2 =
   "mb-4 font-mono text-[13px] font-medium uppercase tracking-[0.14em] text-amber before:content-['>_']";
-const KV =
-  "mt-[22px] grid grid-cols-[90px_1fr] gap-x-[14px] gap-y-1.5 border-t border-dashed border-fg-4 pt-4 text-[12px]";
 const DT = "text-[11px] uppercase tracking-[0.08em] text-fg-3";
 const DD = "m-0 text-fg-1";
 
 export const AboutSection: FC = () => {
-  const { user, about, now, stack } = portfolioContent;
+  const { about, now, stack } = portfolioContent;
   useReportSelection(0, null);
 
   return (
     <>
       <Panel
+        className="hidden md:flex"
         label="~/about/bio"
         meta={
           <span>
@@ -28,30 +30,7 @@ export const AboutSection: FC = () => {
           </span>
         }
       >
-        <div className="text-[13px] leading-[1.65] text-fg-1">
-          <h2 className={H2}>whoami</h2>
-          {about.intro.map((p, i) => (
-            <p key={i} className="mb-3 max-w-[56ch]">
-              {p}
-            </p>
-          ))}
-          <dl className={KV}>
-            <dt className={DT}>name</dt>
-            <dd className={DD}>{user.name}</dd>
-            <dt className={DT}>role</dt>
-            <dd className={DD}>{user.role}</dd>
-            <dt className={DT}>based</dt>
-            <dd className={DD}>{user.based}</dd>
-            <dt className={DT}>handle</dt>
-            <dd className={DD}>@{user.handle}</dd>
-            {about.bullets.map(([k, v]) => (
-              <Fragment key={k}>
-                <dt className={DT}>{k}</dt>
-                <dd className={DD}>{v}</dd>
-              </Fragment>
-            ))}
-          </dl>
-        </div>
+        <Fastfetch />
       </Panel>
       <Panel
         label="~/now"
@@ -61,7 +40,16 @@ export const AboutSection: FC = () => {
           </span>
         }
       >
-        <div className="text-[13px] leading-[1.65] text-fg-1">
+        <FastFetchInfo classname="block xl:hidden" />
+        <div className="mt-7 border-t border-dashed border-fg-4 pt-5">
+          <h2 className={H2}>whoami</h2>
+          {about.intro.map((p, i) => (
+            <p key={i} className="mb-3 max-w-[85ch]">
+              {p}
+            </p>
+          ))}
+        </div>
+        <div className="mt-7 text-[13px] leading-[1.65] text-fg-1">
           <h2 className={H2}>now</h2>
           <p className="text-[11px] text-fg-3">
             a /now page — what i&apos;m doing this season.
@@ -77,17 +65,35 @@ export const AboutSection: FC = () => {
             ))}
           </ul>
         </div>
-        <div className="mt-7 text-[13px] leading-[1.65] text-fg-1">
-          <h2 className={H2}>stack</h2>
-          <dl className="mt-2 grid grid-cols-[90px_1fr] gap-x-[14px] gap-y-1.5 text-[12px]">
-            {stack.map(([k, v]) => (
-              <Fragment key={k}>
-                <dt className={DT}>{k}</dt>
-                <dd className={DD}>{v}</dd>
-              </Fragment>
-            ))}
-          </dl>
-        </div>
+      </Panel>
+      <Panel
+        label="~/ascii.txt"
+        className="ascii-panel max-md:aspect-square md:hidden"
+      >
+        {/* Single-colour ASCII SVG rendered as a currentColor-driven mask so it
+            inherits each theme's foreground instead of its baked-in grey, and
+            `absolute inset-0` bleeds it past the Panel padding to fill the
+            whole section. */}
+        <div
+          aria-hidden
+          className="absolute inset-0 bg-fg-1"
+          style={{
+            WebkitMaskImage:
+              "url(/ascii/hand.svg), radial-gradient(ellipse 78% 78% at center, #000 55%, transparent 100%)",
+            maskImage:
+              "url(/ascii/hand.svg), radial-gradient(ellipse 78% 78% at center, #000 55%, transparent 100%)",
+            WebkitMaskRepeat: "no-repeat, no-repeat",
+            maskRepeat: "no-repeat, no-repeat",
+            WebkitMaskPosition: "center, center",
+            maskPosition: "center, center",
+            WebkitMaskSize: "cover, 100% 100%",
+            maskSize: "cover, 100% 100%",
+            WebkitMaskComposite: "source-in",
+            maskComposite: "intersect",
+            transform: "translateZ(0)",
+            contain: "paint",
+          }}
+        />
       </Panel>
     </>
   );

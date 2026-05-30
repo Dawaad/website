@@ -97,7 +97,7 @@ export const ContactSection: FC = () => {
           </div>
         </div>
       </Panel>
-      <Panel label="~/ascii.txt" className="ascii-panel max-md:hidden">
+      <Panel label="~/ascii.txt" className="ascii-panel max-md:aspect-square">
         {/* Single-colour ASCII SVG rendered as a currentColor-driven mask so it
             inherits each theme's foreground instead of its baked-in grey, and
             `absolute inset-0` bleeds it past the Panel padding to fill the
@@ -106,14 +106,23 @@ export const ContactSection: FC = () => {
           aria-hidden
           className="absolute inset-0 bg-fg-1"
           style={{
-            WebkitMaskImage: "url(/ascii/contact.svg)",
-            maskImage: "url(/ascii/contact.svg)",
-            WebkitMaskRepeat: "no-repeat",
-            maskRepeat: "no-repeat",
-            WebkitMaskPosition: "center",
-            maskPosition: "center",
-            WebkitMaskSize: "cover",
-            maskSize: "cover",
+            // Two mask layers, intersected: the glyph shape AND a radial
+            // opacity ramp that fades the art out toward all four corners so it
+            // dissolves softly into the panel.
+            WebkitMaskImage:
+              "url(/ascii/contact.svg), radial-gradient(ellipse 78% 78% at center, #000 55%, transparent 100%)",
+            maskImage:
+              "url(/ascii/contact.svg), radial-gradient(ellipse 78% 78% at center, #000 55%, transparent 100%)",
+            WebkitMaskRepeat: "no-repeat, no-repeat",
+            maskRepeat: "no-repeat, no-repeat",
+            WebkitMaskPosition: "center, center",
+            maskPosition: "center, center",
+            WebkitMaskSize: "cover, 100% 100%",
+            maskSize: "cover, 100% 100%",
+            WebkitMaskComposite: "source-in",
+            maskComposite: "intersect",
+            transform: "translateZ(0)",
+            contain: "paint",
           }}
         />
       </Panel>
