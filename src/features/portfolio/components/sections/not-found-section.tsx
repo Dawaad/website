@@ -61,8 +61,8 @@ export const NotFoundSection: FC = () => {
           aria-hidden
           className="absolute inset-0 bg-fg-1"
           style={{
-            WebkitMaskImage: "url(/ascii/portrait.svg)",
-            maskImage: "url(/ascii/portrait.svg)",
+            WebkitMaskImage: "url(/ascii/portrait.webp)",
+            maskImage: "url(/ascii/portrait.webp)",
             WebkitMaskRepeat: "no-repeat",
             maskRepeat: "no-repeat",
             WebkitMaskPosition: "center",

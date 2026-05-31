@@ -1,6 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
+import { memo } from "react";
 import type { FC } from "react";
 
 import { SchemeMenu } from "@/src/features/portfolio/components/scheme-menu";
@@ -13,7 +14,7 @@ interface StatusBarProps {
   setScheme: (scheme: SchemeName) => void;
 }
 
-export const StatusBar: FC<StatusBarProps> = ({ scheme, setScheme }) => {
+const StatusBarView: FC<StatusBarProps> = ({ scheme, setScheme }) => {
   const pathname = usePathname();
 
   const { sel, total } = useSelectionValue();
@@ -52,3 +53,8 @@ export const StatusBar: FC<StatusBarProps> = ({ scheme, setScheme }) => {
     </div>
   );
 };
+
+// Memoised: scheme/setScheme are stable and the pathname + selection context it
+// reads don't change during the shell's intro/route-transition sweep, so it
+// must not re-render on each of those high-frequency frames.
+export const StatusBar = memo(StatusBarView);

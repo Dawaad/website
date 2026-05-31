@@ -1,7 +1,7 @@
 "use client";
 
 import type { FC } from "react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import {
   decodeClip,
@@ -33,13 +33,23 @@ export const AsciiSkeleton: FC<AsciiSkeletonProps> = ({
   decode = 0,
   decodeDir = "ltr",
 }) => {
-  const [, setTick] = useState(0);
+  const [tick, setTick] = useState(0);
 
   useEffect(() => {
     if (bones.length === 0) return;
     const id = setInterval(() => setTick((t) => t + 1), 60);
     return () => clearInterval(id);
   }, [bones.length]);
+
+  // Regenerate the scramble only on the 60ms tick (or when bones change), not
+  // on every `decode` change. During the intro sweep `decode` updates ~60fps,
+  // which would otherwise re-roll every glyph 4× too often and replace every
+  // span's text each frame — fighting the clip-path animation for frames.
+  const lines = useMemo(
+    () => bones.map((b) => randomLine(b.cols)),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [bones, tick],
+  );
 
   if (bones.length === 0) return null;
 
@@ -67,7 +77,7 @@ export const AsciiSkeleton: FC<AsciiSkeletonProps> = ({
             lineHeight: `${b.height}px`,
           }}
         >
-          {randomLine(b.cols)}
+          {lines[i]}
         </span>
       ))}
     </div>

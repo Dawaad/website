@@ -105,9 +105,9 @@ export const Fastfetch: FC<FastfetchProps> = ({ className }) => {
           // opacity ramp that fades the crest out toward the top-left and
           // bottom-right corners so it dissolves softly into the panel.
           WebkitMaskImage:
-            "url(/ascii/hand.svg), linear-gradient(135deg, transparent 0%, #000 26%, #000 74%, transparent 100%)",
+            "url(/ascii/hand.webp), linear-gradient(135deg, transparent 0%, #000 26%, #000 74%, transparent 100%)",
           maskImage:
-            "url(/ascii/hand.svg), linear-gradient(135deg, transparent 0%, #000 26%, #000 74%, transparent 100%)",
+            "url(/ascii/hand.webp), linear-gradient(135deg, transparent 0%, #000 26%, #000 74%, transparent 100%)",
           WebkitMaskRepeat: "no-repeat, no-repeat",
           maskRepeat: "no-repeat, no-repeat",
           WebkitMaskPosition: "top left, center",
@@ -116,6 +116,11 @@ export const Fastfetch: FC<FastfetchProps> = ({ className }) => {
           maskSize: "contain, 100% 100%",
           WebkitMaskComposite: "source-in",
           maskComposite: "intersect",
+          // Promote to its own compositor layer so the intro's animating
+          // clip-path sweep composites a cached mask texture instead of
+          // repainting the crest each frame.
+          transform: "translateZ(0)",
+          contain: "paint",
         }}
       />
       <FastFetchInfo classname="hidden xl:block" />

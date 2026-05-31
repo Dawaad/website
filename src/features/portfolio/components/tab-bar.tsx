@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { memo } from "react";
 import type { FC, MouseEvent } from "react";
 
 import { TABS } from "@/src/features/portfolio/lib/config/tabs";
@@ -11,7 +12,7 @@ interface TabBarProps {
   onNavigate: (href: string) => void;
 }
 
-export const TabBar: FC<TabBarProps> = ({ onNavigate }) => {
+const TabBarView: FC<TabBarProps> = ({ onNavigate }) => {
   const pathname = usePathname();
 
   const handleClick = (e: MouseEvent<HTMLAnchorElement>, href: string) => {
@@ -57,3 +58,8 @@ export const TabBar: FC<TabBarProps> = ({ onNavigate }) => {
     </div>
   );
 };
+
+// Memoised: its props (onNavigate) and pathname are stable through the shell's
+// high-frequency intro/route-transition re-renders, so it must not reconcile
+// each of those frames.
+export const TabBar = memo(TabBarView);

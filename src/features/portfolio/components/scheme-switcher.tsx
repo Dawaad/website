@@ -1,5 +1,6 @@
 "use client";
 
+import { memo } from "react";
 import type { FC } from "react";
 
 import { SCHEMES } from "@/src/features/portfolio/lib/config/schemes";
@@ -13,10 +14,7 @@ interface SchemeSwitcherProps {
 }
 
 /** Corner control for swapping color schemes — desktop only. */
-export const SchemeSwitcher: FC<SchemeSwitcherProps> = ({
-  scheme,
-  setScheme,
-}) => {
+const SchemeSwitcherView: FC<SchemeSwitcherProps> = ({ scheme, setScheme }) => {
   return (
     <div className="fixed right-4 bottom-4 z-[100] flex items-center gap-2 border border-fg-4 bg-bg-0 px-2.5 py-1.5 font-mono text-[11px] uppercase tracking-[0.06em] text-fg-2 max-md:hidden">
       <span className="text-fg-3">scheme:</span>
@@ -37,3 +35,7 @@ export const SchemeSwitcher: FC<SchemeSwitcherProps> = ({
     </div>
   );
 };
+
+// Memoised: scheme/setScheme are stable through the shell's high-frequency
+// intro/route-transition re-renders, so it stays out of those frames.
+export const SchemeSwitcher = memo(SchemeSwitcherView);

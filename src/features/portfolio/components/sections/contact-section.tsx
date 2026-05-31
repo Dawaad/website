@@ -110,9 +110,9 @@ export const ContactSection: FC = () => {
             // opacity ramp that fades the art out toward all four corners so it
             // dissolves softly into the panel.
             WebkitMaskImage:
-              "url(/ascii/contact.svg), radial-gradient(ellipse 78% 78% at center, #000 55%, transparent 100%)",
+              "url(/ascii/contact.webp), radial-gradient(ellipse 78% 78% at center, #000 55%, transparent 100%)",
             maskImage:
-              "url(/ascii/contact.svg), radial-gradient(ellipse 78% 78% at center, #000 55%, transparent 100%)",
+              "url(/ascii/contact.webp), radial-gradient(ellipse 78% 78% at center, #000 55%, transparent 100%)",
             WebkitMaskRepeat: "no-repeat, no-repeat",
             maskRepeat: "no-repeat, no-repeat",
             WebkitMaskPosition: "center, center",

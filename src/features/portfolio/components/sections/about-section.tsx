@@ -77,9 +77,9 @@ export const AboutSection: FC = () => {
           className="absolute inset-0 bg-fg-1"
           style={{
             WebkitMaskImage:
-              "url(/ascii/hand.svg), radial-gradient(ellipse 78% 78% at center, #000 55%, transparent 100%)",
+              "url(/ascii/hand.webp), radial-gradient(ellipse 78% 78% at center, #000 55%, transparent 100%)",
             maskImage:
-              "url(/ascii/hand.svg), radial-gradient(ellipse 78% 78% at center, #000 55%, transparent 100%)",
+              "url(/ascii/hand.webp), radial-gradient(ellipse 78% 78% at center, #000 55%, transparent 100%)",
             WebkitMaskRepeat: "no-repeat, no-repeat",
             maskRepeat: "no-repeat, no-repeat",
             WebkitMaskPosition: "center, center",
