@@ -6,19 +6,30 @@ import { DESKTOP_WINDOWS } from "@/components/feature-modules/portfolio/config/d
 import { useWindowManager } from "@/components/feature-modules/portfolio/context/window-manager-provider";
 import { cn } from "@/lib/util/utils";
 
+interface Props {
+  /**
+   * Whether the desktop has settled past its boot/scramble intro. The dock eases
+   * in once true and — since the intro never reverts — stays for the session.
+   */
+  visible: boolean;
+}
+
 /**
  * Left-edge dock — one tile per backdrop terminal. A tile reads "running" while
  * its window is open (amber rail, lit mnemonic) and dims when the window is
  * closed or minimised; clicking toggles the window. Desktop (lg+) only, matching
  * the backdrop cluster it controls.
  */
-export const DesktopDock: FC = () => {
+export const DesktopDock: FC<Props> = ({ visible }) => {
   const { isOpen, toggle } = useWindowManager();
 
   return (
     <nav
       aria-label="windows"
-      className="fixed top-1/2 left-3 z-40 hidden -translate-y-1/2 flex-col gap-2 rounded-2xl border border-fg-4/60 bg-bg-0/80 p-2 shadow-lg backdrop-blur-sm lg:flex"
+      className={cn(
+        "fixed top-1/2 left-3 z-40 hidden -translate-y-1/2 flex-col gap-2 rounded-2xl border border-fg-4/60 bg-bg-0/80 p-2 shadow-lg backdrop-blur-sm transition-opacity duration-700 ease-out lg:flex",
+        visible ? "opacity-100" : "pointer-events-none opacity-0",
+      )}
     >
       {DESKTOP_WINDOWS.map((w) => {
         const open = isOpen(w.id);

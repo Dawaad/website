@@ -1,7 +1,7 @@
 "use client";
 
 import type { FC } from "react";
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 
 import { BtopPanel } from "@/components/feature-modules/portfolio/components/background/btop-panel";
 import { FauxTerminal } from "@/components/feature-modules/portfolio/components/background/faux-terminal";
@@ -19,7 +19,7 @@ import { cn } from "@/lib/util/utils";
 
 /**
  * Decorative desktop of faux terminals arranged to mirror the reference rice:
- * nvim (top-left) and btop (top-right) ride above, while cmus, zfs and pfetch
+ * nvim (top-left) and btop (top-right) ride above, while spotify, zfs and pfetch
  * form the lower band (left → right). The whole cluster lives inside a single
  * centered, aspect-bounded *stage* rather than the raw viewport, so it stays
  * pinned to screen-center and never flies apart on tall displays. The stage is
@@ -32,7 +32,7 @@ interface BackgroundTerminalsProps {
   scheme: SchemeName;
 }
 
-export const BackgroundTerminals: FC<BackgroundTerminalsProps> = ({
+const BackgroundTerminalsView: FC<BackgroundTerminalsProps> = ({
   scheme,
 }) => {
   // Fade the whole desktop in on mount so the scrambling panels don't pop in at
@@ -66,16 +66,12 @@ export const BackgroundTerminals: FC<BackgroundTerminalsProps> = ({
       {/* On lg+ the dock occupies the left edge; nudge the whole cluster clear of
           it so the left-column windows' own controls stay reachable. */}
       <div className="relative h-[min(980px,100dvh)] w-full max-w-[min(90dvw,120rem)] lg:translate-x-4">
-        {/* Each window stays mounted through its fade+scale exit; the window
-            manager's open state drives the transition. cmus rides at top-center,
-            rendered first so it sits *behind* nvim and btop and peeks from the
-            gap between them. */}
         <FauxTerminal
-          open={isOpen("cmus")}
-          title="cmus — music"
+          open={isOpen("spotify")}
+          title="spotify — music"
           className="h-[34%] w-[34%]"
           style={{ left: "34%", top: "-5%" }}
-          onClose={() => hide("cmus")}
+          onClose={() => hide("spotify")}
         >
           <ScramblePanel delay={90}>
             <PlaylistPanel />
@@ -154,3 +150,10 @@ export const BackgroundTerminals: FC<BackgroundTerminalsProps> = ({
     </div>
   );
 };
+
+/**
+ * Memoised: the backdrop depends only on `scheme` (and its own window-manager
+ * context), so it must not re-render with the shell's high-frequency intro/route
+ * transition state — that churn dropped frames during the jumble→content reveal.
+ */
+export const BackgroundTerminals = memo(BackgroundTerminalsView);

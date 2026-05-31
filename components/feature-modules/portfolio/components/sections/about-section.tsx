@@ -12,11 +12,9 @@ import { portfolioContent } from "@/components/feature-modules/portfolio/service
 
 const H2 =
   "mb-4 font-mono text-[13px] font-medium uppercase tracking-[0.14em] text-amber before:content-['>_']";
-const DT = "text-[11px] uppercase tracking-[0.08em] text-fg-3";
-const DD = "m-0 text-fg-1";
 
 export const AboutSection: FC = () => {
-  const { about, now, stack } = portfolioContent;
+  const { about, now } = portfolioContent;
   useReportSelection(0, null);
 
   return (

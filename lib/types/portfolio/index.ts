@@ -95,7 +95,6 @@ export interface PortfolioContent {
   user: PortfolioUser;
   about: AboutContent;
   now: NowContent;
-  stack: KeyValue[];
   contact: Contact;
   experience: ExperienceEntry[];
   projects: Project[];

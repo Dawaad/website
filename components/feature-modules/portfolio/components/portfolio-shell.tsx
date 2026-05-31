@@ -1,7 +1,6 @@
 'use client';
 
-import { usePathname } from 'next/navigation';
-import { Suspense, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { Suspense, useRef } from 'react';
 import type { FC, ReactNode } from 'react';
 
 import { AsciiSkeleton } from '@/components/feature-modules/portfolio/components/ascii-skeleton';
@@ -14,35 +13,16 @@ import { StatusBar } from '@/components/feature-modules/portfolio/components/sta
 import { TabBar } from '@/components/feature-modules/portfolio/components/tab-bar';
 import { TerminalScrollbar } from '@/components/feature-modules/portfolio/components/terminal-scrollbar';
 import { TitleBar } from '@/components/feature-modules/portfolio/components/title-bar';
-import { DEFAULT_SCHEME, SCHEMES } from '@/components/feature-modules/portfolio/config/schemes';
 import { StripBand } from '@/components/feature-modules/portfolio/components/strip-band';
 import { SelectionProvider } from '@/components/feature-modules/portfolio/context/selection-provider';
 import { WindowManagerProvider } from '@/components/feature-modules/portfolio/context/window-manager-provider';
+import { useCoverTop } from '@/components/feature-modules/portfolio/hooks/use-cover-top';
+import { useIntroSequence } from '@/components/feature-modules/portfolio/hooks/use-intro-sequence';
 import { usePageTransition } from '@/components/feature-modules/portfolio/hooks/use-page-transition';
 import { useRouteTabKeys } from '@/components/feature-modules/portfolio/hooks/use-route-tab-keys';
+import { useScheme } from '@/components/feature-modules/portfolio/hooks/use-scheme';
 import { portfolioContent } from '@/components/feature-modules/portfolio/service/portfolio-content';
-import {
-  decodeClip,
-  measureSkeleton,
-  type DecodeDir,
-  type SkeletonBone,
-} from '@/components/feature-modules/portfolio/util/skeleton.util';
 import { cn } from '@/lib/util/utils';
-
-type IntroPhase = 'boot' | 'scramble' | 'done';
-
-/** Pure-jumble window before the decode sweep begins. */
-const SCRAMBLE_MS = 200;
-/** Latter-end window over which the jumble undecodes into the real content. */
-const DECODE_MS = 420;
-/** Direction the intro jumble resolves; flip to 'rtl' to sweep right→left. */
-const DECODE_DIR: DecodeDir = 'ltr';
-/**
- * Natural height of a pane-header strip. Seeds the cover so the header reads as
- * grounded on the first painted frame, before the suspended content commits and
- * the real strips can be measured (which then refines it).
- */
-const INITIAL_COVER_TOP = 33;
 
 interface PortfolioShellProps {
   children: ReactNode;
@@ -50,13 +30,12 @@ interface PortfolioShellProps {
 
 /** Persistent terminal frame shared across all section routes. */
 export const PortfolioShell: FC<PortfolioShellProps> = ({ children }) => {
-  const [scheme, setScheme] = useState(DEFAULT_SCHEME);
-  const [intro, setIntro] = useState<IntroPhase>('boot');
-  const [introBones, setIntroBones] = useState<SkeletonBone[]>([]);
-  const [introDecode, setIntroDecode] = useState(0);
-  const [coverTop, setCoverTop] = useState(INITIAL_COVER_TOP);
   const contentRef = useRef<HTMLDivElement>(null);
-  const pathname = usePathname();
+
+  const { scheme, setScheme } = useScheme();
+  const coverTop = useCoverTop(contentRef);
+  const { intro, introBones, introDecode, introClip, decodeDir, beginScramble } =
+    useIntroSequence(contentRef);
 
   const { phase, aOnly, shared, bOnly, navigate } = usePageTransition(contentRef);
 
@@ -66,111 +45,17 @@ export const PortfolioShell: FC<PortfolioShellProps> = ({ children }) => {
   const sharedVisible = phase === 'out' || phase === 'union' || phase === 'collapse';
   const bOnlyVisible = phase === 'union' || phase === 'collapse';
 
-  // During the intro the real content is clipped to the already-decoded edge
-  // (the complement of the skeleton's wipe) rather than hidden under an opaque
-  // cover — so the shell's own glass/blur stays visible the whole time and the
-  // boot state matches the settled state. At boot (introDecode 0) it is fully
-  // clipped away; the decode sweep reveals it edge-to-edge. A nested cover can't
-  // be glassy (its backdrop-filter can't see past the shell's), hence the clip.
-  const introClip =
-    intro === 'done'
-      ? undefined
-      : decodeClip(1 - introDecode, DECODE_DIR === 'ltr' ? 'rtl' : 'ltr');
-
-  // Swap the active scheme class on <body> without clobbering layout classes.
-  useEffect(() => {
-    const body = document.body;
-    SCHEMES.forEach((s) => body.classList.remove('scheme-' + s));
-    body.classList.add('scheme-' + scheme);
-  }, [scheme]);
-
   useRouteTabKeys(navigate);
-
-  // Measure the bottom of the static pane-header strips so every opaque cover
-  // (boot, intro scramble, route transition) can sit below them and keep them
-  // visible. Re-measured per route since the strips belong to the content.
-  const measureCover = useCallback(() => {
-    const content = contentRef.current;
-    if (!content) return;
-    const base = content.getBoundingClientRect();
-    // Only the strips on the top-most row count: on mobile the panels stack, so
-    // lower panels' strips sit far down the scroll and must not push the cover
-    // off-screen (which would expose the real content during the intro).
-    const strips = [...content.querySelectorAll('[data-static]')]
-      .map((el) => {
-        const r = el.getBoundingClientRect();
-        return { top: r.top - base.top, bottom: r.bottom - base.top, height: r.height };
-      })
-      .filter((s) => s.height > 0);
-    // Keep the seeded/last-good height until the real strips commit, so the
-    // header stays grounded instead of collapsing to 0 during the intro.
-    if (strips.length === 0) return;
-    const minTop = Math.min(...strips.map((s) => s.top));
-    const top = strips
-      .filter((s) => s.top <= minTop + s.height)
-      .reduce((m, s) => Math.max(m, s.bottom), 0);
-    setCoverTop(top);
-  }, []);
-
-  useLayoutEffect(() => {
-    const content = contentRef.current;
-    if (!content) return;
-    measureCover();
-    // The route content mounts behind a Suspense boundary (sections call
-    // useSearchParams), so its static strips can commit a frame or two after
-    // this effect first runs. Without a re-measure, coverTop stays seeded, the
-    // intro/transition covers may not line up with the real header. Re-measure
-    // on any subtree commit so the covers sit below the strips precisely.
-    const observer = new MutationObserver(measureCover);
-    observer.observe(content, { childList: true, subtree: true });
-    return () => observer.disconnect();
-  }, [pathname, measureCover]);
-
-  // Measure the real content's shape into the intro jumble during boot, so the
-  // bones are ready the instant the scramble starts. The section mounts behind
-  // Suspense, so this probes every frame until the bones exist — the decode is
-  // gated on them, so the sweep never reveals raw, unjumbled content.
-  useEffect(() => {
-    if (intro === 'done' || introBones.length > 0) return;
-    let frame = 0;
-    const probe = () => {
-      const bones = contentRef.current ? measureSkeleton(contentRef.current) : [];
-      if (bones.length > 0) {
-        setIntroBones(bones);
-        return;
-      }
-      frame = requestAnimationFrame(probe);
-    };
-    frame = requestAnimationFrame(probe);
-    return () => cancelAnimationFrame(frame);
-  }, [intro, introBones.length]);
-
-  // After the boot sequence, hold the pure-jumble window, then undecode the
-  // jumble edge-to-edge into the real content before the final reveal. Gated on
-  // the content-shaped bones existing, so the sweep never reveals raw content.
-  useEffect(() => {
-    if (intro !== 'scramble' || introBones.length === 0) return;
-    const start = performance.now();
-    let frame = 0;
-    const tick = (now: number) => {
-      const elapsed = now - start;
-      setIntroDecode(Math.min(1, Math.max(0, (elapsed - SCRAMBLE_MS) / DECODE_MS)));
-      if (elapsed >= SCRAMBLE_MS + DECODE_MS) {
-        setIntro('done');
-        return;
-      }
-      frame = requestAnimationFrame(tick);
-    };
-    frame = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(frame);
-  }, [intro, introBones.length]);
 
   return (
     <SelectionProvider>
       <WindowManagerProvider>
         <BackgroundTerminals scheme={scheme} />
         <DesktopTopBar handle={portfolioContent.user.handle} />
-        <DesktopDock />
+        {/* Dock mirrors the backdrop terminals it controls: held back through the
+            boot/scramble intro, it eases in only once the desktop has settled and
+            then stays for the session (intro never leaves 'done'). */}
+        <DesktopDock visible={intro === 'done'} />
         <div className="terminal-shell relative z-10 flex h-[min(820px,calc(100dvh-48px))] w-full max-w-[min(max(80dvw,48rem),var(--breakpoint-3xl))] flex-col overflow-hidden rounded-xs border border-fg-3 bg-bg-1 shadow-sm max-md:h-dvh max-md:max-w-none max-md:rounded-none max-md:border-0">
         <TitleBar user={portfolioContent.user} />
         <TabBar onNavigate={navigate} />
@@ -220,10 +105,10 @@ export const PortfolioShell: FC<PortfolioShellProps> = ({ children }) => {
                 <StripBand height={coverTop} />
               </div>
               {intro === 'scramble' && (
-                <AsciiSkeleton bones={introBones} visible decode={introDecode} decodeDir={DECODE_DIR} />
+                <AsciiSkeleton bones={introBones} visible decode={introDecode} decodeDir={decodeDir} />
               )}
               {intro === 'boot' && (
-                <BootOverlay onDone={() => setIntro('scramble')} topOffset={coverTop} />
+                <BootOverlay onDone={beginScramble} topOffset={coverTop} />
               )}
             </>
           )}

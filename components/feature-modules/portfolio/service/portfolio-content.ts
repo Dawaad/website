@@ -5,14 +5,14 @@ import type { PortfolioContent } from "@/lib/types/portfolio";
 export const portfolioContent: PortfolioContent = {
   user: {
     handle: "dawad",
-    name: "Jared",
-    role: "Forward Deployed Engineer & Systems Architect",
-    based: "Melbourne, au — utc+10",
+    name: "jared tucker",
+    role: "forward deployed engineer & systems architect",
+    based: "melbourne, au — utc+10",
   },
 
   about: {
     intro: [
-      "I am a software engineer, bodybuilder, ironman-in-trainer, startup founder and content creator focused on architecting, designing and building both systems and my life",
+      "i am a software engineer, bodybuilder, startup founder and content creator focused on architecting, designing and building both systems and my life",
     ],
     bullets: [
       [
@@ -33,21 +33,6 @@ export const portfolioContent: PortfolioContent = {
       "trying to build more TUIs.",
     ],
   },
-
-  stack: [
-    ["lang", "kotlin · ts · python"],
-    [
-      "backend",
-      "spring boot · distributed systems · kafka · graphql · postgres · redis",
-    ],
-    [
-      "ml/ai",
-      "mcp development · knowledge base construction · semantic/pattern extraction · information retrieval accuracy management",
-    ],
-
-    ["editor", "vscode · intellij"],
-    ["terminal", "ghostty · kitty"],
-  ],
 
   contact: {
     email: "jared@rmr.studio",

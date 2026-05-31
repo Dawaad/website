@@ -1,5 +1,11 @@
 /** Identifiers for the faux desktop terminals the dock manages. */
-export type DesktopWindowId = 'nvim' | 'cmus' | 'btop' | 'imv' | 'zfs' | 'pfetch';
+export type DesktopWindowId =
+  | "nvim"
+  | "spotify"
+  | "btop"
+  | "imv"
+  | "zfs"
+  | "pfetch";
 
 export interface DesktopWindowMeta {
   id: DesktopWindowId;
@@ -21,10 +27,52 @@ export interface DesktopWindowMeta {
  * ids so open/close state stays in sync.
  */
 export const DESKTOP_WINDOWS: DesktopWindowMeta[] = [
-  { id: 'nvim', title: 'nvim ~/src/coreutils/pwd.c', label: 'editor', mnemonic: 'nv', icon: '/icons/nvim.svg', tint: '#6ba63f' },
-  { id: 'cmus', title: 'cmus — music', label: 'music', mnemonic: 'cm', icon: '/icons/cmus.svg', tint: '#1ed760' },
-  { id: 'btop', title: 'btop — system monitor', label: 'monitor', mnemonic: 'bt', icon: '/icons/btop.svg', tint: '#00e441' },
-  { id: 'imv', title: 'imv — ~/wall/current.png', label: 'viewer', mnemonic: 'iv', icon: '/icons/imv.svg', tint: '#36aca3' },
-  { id: 'zfs', title: 'regn@fjell : ~ — zsh', label: 'shell', mnemonic: 'zs', icon: '/icons/zfs.svg', tint: '#c16d35' },
-  { id: 'pfetch', title: 'regn@fjell : ~ — pfetch', label: 'fetch', mnemonic: 'pf', icon: '/icons/pfetch.svg', tint: '#1793d1' },
+  {
+    id: "nvim",
+    title: "nvim ~/src/coreutils/pwd.c",
+    label: "editor",
+    mnemonic: "nv",
+    icon: "/icons/nvim.svg",
+    tint: "#6ba63f",
+  },
+  {
+    id: "spotify",
+    title: "spotify — music",
+    label: "music",
+    mnemonic: "cm",
+    icon: "/icons/spotify.svg",
+    tint: "#1ed760",
+  },
+  {
+    id: "btop",
+    title: "btop — system monitor",
+    label: "monitor",
+    mnemonic: "bt",
+    icon: "/icons/btop.svg",
+    tint: "#00e441",
+  },
+  {
+    id: "imv",
+    title: "imv — ~/wall/current.png",
+    label: "viewer",
+    mnemonic: "iv",
+    icon: "/icons/imv.svg",
+    tint: "#36aca3",
+  },
+  {
+    id: "zfs",
+    title: "regn@fjell : ~ — zsh",
+    label: "shell",
+    mnemonic: "zs",
+    icon: "/icons/zfs.svg",
+    tint: "#c16d35",
+  },
+  {
+    id: "pfetch",
+    title: "regn@fjell : ~ — pfetch",
+    label: "fetch",
+    mnemonic: "pf",
+    icon: "/icons/pfetch.svg",
+    tint: "#1793d1",
+  },
 ];
