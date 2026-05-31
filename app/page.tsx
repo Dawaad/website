@@ -1,4 +1,4 @@
-import { AboutSection } from '@/components/feature-modules/portfolio/components/sections/about-section';
+import { AboutSection } from "@/src/features/portfolio";
 
 export default function Home() {
   return <AboutSection />;

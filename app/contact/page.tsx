@@ -1,4 +1,4 @@
-import { ContactSection } from '@/components/feature-modules/portfolio/components/sections/contact-section';
+import { ContactSection } from "@/src/features/portfolio";
 
 export default function ContactPage() {
   return <ContactSection />;

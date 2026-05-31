@@ -1,4 +1,4 @@
-import { ExperienceSection } from '@/components/feature-modules/portfolio/components/sections/experience-section';
+import { ExperienceSection } from "@/src/features/portfolio";
 
 export default function ExperiencePage() {
   return <ExperienceSection />;

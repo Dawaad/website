@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 
-import { PortfolioShell } from "@/components/feature-modules/portfolio/components/portfolio-shell";
+import { PortfolioShell } from "@/src/features/portfolio";
 
 import "./globals.css";
 

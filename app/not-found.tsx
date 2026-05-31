@@ -1,4 +1,4 @@
-import { NotFoundSection } from "@/components/feature-modules/portfolio/components/sections/not-found-section";
+import { NotFoundSection } from "@/src/features/portfolio";
 
 export default function NotFound() {
   return <NotFoundSection />;

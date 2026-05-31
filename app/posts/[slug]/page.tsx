@@ -1,8 +1,8 @@
-import { notFound } from 'next/navigation';
+import { notFound } from "next/navigation";
 
-import { PostsSection } from '@/components/feature-modules/portfolio/components/sections/posts-section';
-import { ReaderArticle } from '@/components/feature-modules/portfolio/components/sections/reader-article';
-import { getAllPosts, getPostBySlug } from '@/lib/posts/posts';
+import { PostsSection } from "@/src/features/portfolio";
+import { ReaderArticle } from "@/src/features/portfolio";
+import { getAllPosts, getPostBySlug } from "@/src/shared/lib/posts/posts";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -18,5 +18,11 @@ export default async function PostReaderPage({ params }: Props) {
   const [post, posts] = await Promise.all([getPostBySlug(slug), getAllPosts()]);
   if (!post) notFound();
 
-  return <PostsSection posts={posts} activeSlug={slug} article={<ReaderArticle post={post} />} />;
+  return (
+    <PostsSection
+      posts={posts}
+      activeSlug={slug}
+      article={<ReaderArticle post={post} />}
+    />
+  );
 }
