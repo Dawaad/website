@@ -1,54 +1,5 @@
-"use static";
-
-import { Introduction } from "@/components/landing/hero-blurb";
-import { Activity } from "@/components/landing/landing-activity";
-import { Contact } from "@/components/landing/landing-contact";
-import { ExperienceSection } from "@/components/landing/landing-experience";
-import { Skills } from "@/components/landing/landing.skills";
-import { Grid } from "@/components/ui/background/grids";
-import { SkylineHero } from "@/components/ui/background/skyline-background";
-import { LiquidCursor } from "@/components/ui/gsap/liquid-cursor";
-import { Metadata } from "next";
-
-export const metadata: Metadata = {
-    title: "Jared Tucker | Full-stack Engineer & Startup Founder",
-    description:
-        "Portfolio website of Jared Tucker, a full-stack engineer and startup founder based in Australia.",
-    openGraph: {
-        locale: "en_AU",
-        type: "website",
-        url: "https://jtucker.io",
-        title: "Jared Tucker | Full-stack Engineer & Startup Founder",
-        description:
-            "Portfolio website of Jared Tucker, a full-stack engineer and startup founder based in Australia.",
-        siteName: "Jared Tucker",
-    },
-};
+import { AboutSection } from "@/src/features/portfolio";
 
 export default function Home() {
-    return (
-        <>
-            <section id="home" className="min-h-[120dvh] md:min-h-dvh relative overflow-hidden z-20">
-                <Grid className=" opacity-30" size="md" />
-
-                <SkylineHero />
-                <LiquidCursor size={30} />
-                <div className="z-30 flex flex-col items-end justify-center h-[90dvh] space-y-4">
-                    <Introduction />
-                </div>
-            </section>
-            <div id="experience">
-                <ExperienceSection />
-            </div>
-            <div id="activity">
-                <Activity />
-            </div>
-            <div id="skills">
-                <Skills />
-            </div>
-            <div id="contact">
-                <Contact />
-            </div>
-        </>
-    );
+  return <AboutSection />;
 }
