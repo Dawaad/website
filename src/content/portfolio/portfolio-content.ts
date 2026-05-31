@@ -12,7 +12,7 @@ export const portfolioContent: PortfolioContent = {
 
   about: {
     intro: [
-      "i am a software engineer, bodybuilder, startup founder and content creator focused on architecting, designing and building both systems and my life",
+      "i am a software engineer, bodybuilder and startup founder focused on architecting, designing and building both systems and my life. I want to research, explore and share everything about thinking better, living better and creating better.",
     ],
     bullets: [
       [
